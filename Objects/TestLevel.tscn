@@ -92,7 +92,7 @@ transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -300, 2
 shape = SubResource( 4 )
 
 [node name="rock" type="MeshInstance" parent="."]
-transform = Transform( 0.495042, 0.244032, 0.833896, 0, 0.959748, -0.280861, -0.868869, 0.139038, 0.475115, 53.2689, 2.42875, -43.4972 )
+transform = Transform( 0.495042, 0.244032, 0.833896, 0, 0.959748, -0.280861, -0.868869, 0.139038, 0.475115, 53.2689, -3.39723, -43.4972 )
 mesh = SubResource( 5 )
 material/0 = SubResource( 6 )
 
@@ -102,7 +102,7 @@ material/0 = SubResource( 6 )
 shape = SubResource( 7 )
 
 [node name="rock2" type="MeshInstance" parent="."]
-transform = Transform( 0.923671, 0.107622, 0.367763, 0, 0.959748, -0.280861, -0.383187, 0.259423, 0.886492, 77.637, 2.42875, 50.5028 )
+transform = Transform( 0.923671, 0.107622, 0.367763, 0, 0.959748, -0.280861, -0.383187, 0.259423, 0.886492, 77.637, -3.04855, 50.5028 )
 mesh = SubResource( 5 )
 material/0 = SubResource( 6 )
 
@@ -112,7 +112,7 @@ material/0 = SubResource( 6 )
 shape = SubResource( 8 )
 
 [node name="rock3" type="MeshInstance" parent="."]
-transform = Transform( 0.923671, 0.107622, 0.367763, -0.314192, 0.762115, 0.566096, -0.219353, -0.638434, 0.737757, -58.6131, 2.42876, -68.4199 )
+transform = Transform( 0.923671, 0.107622, 0.367763, -0.314192, 0.762115, 0.566096, -0.219353, -0.638434, 0.737757, -58.6131, -4.06374, -68.4199 )
 mesh = SubResource( 5 )
 material/0 = SubResource( 6 )
 
@@ -123,7 +123,7 @@ transform = Transform( 1, 1.49012e-08, 1.49012e-08, -1.49012e-08, 1, 2.98023e-08
 shape = SubResource( 9 )
 
 [node name="rock4" type="MeshInstance" parent="."]
-transform = Transform( 0.597229, -0.22527, -0.769786, 0, 0.959748, -0.280861, 0.802071, 0.167739, 0.57319, -64.1922, 2.42876, -16.0276 )
+transform = Transform( 0.597229, -0.22527, -0.769786, 0, 0.959748, -0.280861, 0.802071, 0.167739, 0.57319, -64.1922, -3.93382, -16.0276 )
 mesh = SubResource( 5 )
 material/0 = SubResource( 6 )
 
@@ -246,7 +246,7 @@ material/0 = SubResource( 12 )
 shape = SubResource( 13 )
 
 [node name="BigAssRock" type="MeshInstance" parent="."]
-transform = Transform( 0.920099, 0.320594, -0.225026, 0.0172725, 0.540737, 0.841014, 0.391304, -0.777704, 0.491994, 29.5096, 9.58008, -83.6479 )
+transform = Transform( 0.920099, 0.320594, -0.225026, 0.0172725, 0.540737, 0.841014, 0.391304, -0.777704, 0.491994, 29.5096, -12.5178, -83.6479 )
 mesh = SubResource( 15 )
 material/0 = null
 

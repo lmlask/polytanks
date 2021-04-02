@@ -8,9 +8,20 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Control",
+"class": "Intro",
+"language": "GDScript",
+"path": "res://Scenes/Intro.gd"
+}, {
+"base": "Node",
+"class": "gameRoot",
+"language": "GDScript",
+"path": "res://Scripts/gameRoot.gd"
+} ]
 _global_script_class_icons={
-
+"Intro": "",
+"gameRoot": ""
 }
 
 [application]

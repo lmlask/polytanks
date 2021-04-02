@@ -14,13 +14,13 @@ export var camLerpSpeed : float = 16.0
 export(NodePath) var target
 
 # Private variables
-var _camTarget : Spatial = null
+onready var _camTarget : Spatial = get_node("../TestLevel")
 var _cam : ClippedCamera
 var _curZoom : float = 0.0
 
 func _ready() -> void:
 	# Setup node references
-	_camTarget = get_node(target)
+#	_camTarget = get_node(target) #set by script
 	_cam = get_node("ClippedCamera")
 	
 	# Setup camera position in rig

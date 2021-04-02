@@ -16,14 +16,15 @@ var taken = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	if get_parent().active:
+	if owner.active:
 		role = "driver"
 		changeRole(role)
 	
 
 func changeRole(newrole):
 	taken[role] = false
-	role = newrole
+	if not owner.auto:
+		role = newrole
 	taken[role] = true
 
 
