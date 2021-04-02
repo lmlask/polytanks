@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/manual_traverse.wav-a346d55442477b7b72b65712f31d674c.sample"
+
+[deps]
+
+source_file="res://Sfx/manual_traverse.wav"
+dest_files=[ "res://.import/manual_traverse.wav-a346d55442477b7b72b65712f31d674c.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

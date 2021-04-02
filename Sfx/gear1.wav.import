@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/gear1.wav-4e2c8b1b3d142699acec7c1a14a8d5fb.sample"
+
+[deps]
+
+source_file="res://Sfx/gear1.wav"
+dest_files=[ "res://.import/gear1.wav-4e2c8b1b3d142699acec7c1a14a8d5fb.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

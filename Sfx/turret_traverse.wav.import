@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/turret_traverse.wav-fcde0f655572bc898d059fe91ada11cf.sample"
+
+[deps]
+
+source_file="res://Sfx/turret_traverse.wav"
+dest_files=[ "res://.import/turret_traverse.wav-fcde0f655572bc898d059fe91ada11cf.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0
