@@ -4,7 +4,6 @@ extends MeshInstance
 export var wheelOffset : Vector3 = Vector3(0,0.62,0)
 export var trackThickness : float = 0.15
 export var returnSpeed : float = 6.0
-export(NodePath) var raycastPath
 
 
 # private variables
@@ -18,10 +17,10 @@ func _ready() -> void:
 	# setup references
 	boneName = self.name
 	if get_parent().name == "Left":
-		trackSkeleton = get_parent().get_parent().get_parent().get_node("Tracks/panzer_armatureL/skeletonL")
+		trackSkeleton = get_parent().get_parent().get_parent().get_node("Tracks/panzer_armatureL/SkeletonL")
 		raycast = get_parent().get_parent().get_parent().get_node("Rays/Left").get_node("Lray" + self.name[6])
 	else:
-		trackSkeleton = get_parent().get_parent().get_parent().get_node("Tracks/panzer_armatureR/skeletonR")
+		trackSkeleton = get_parent().get_parent().get_parent().get_node("Tracks/panzer_armatureR/SkeletonR")
 		raycast = get_parent().get_parent().get_parent().get_node("Rays/Right").get_node("Rray" + self.name[6])
 	trackBone = trackSkeleton.find_bone(boneName)
 	

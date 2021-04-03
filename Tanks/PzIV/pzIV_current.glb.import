@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/pzIV_v18(with base interior).glb-2973cd5f42be5485f2e0b50314bd67bd.scn"
+path="res://.import/pzIV_current.glb-7e362e61d1ca0517951090cd9053dee8.scn"
 
 [deps]
 
-source_file="res://BlenderFiles/pzIV_v18(with base interior).glb"
-dest_files=[ "res://.import/pzIV_v18(with base interior).glb-2973cd5f42be5485f2e0b50314bd67bd.scn" ]
+source_file="res://Tanks/PzIV/pzIV_current.glb"
+dest_files=[ "res://.import/pzIV_current.glb-7e362e61d1ca0517951090cd9053dee8.scn" ]
 
 [params]
 

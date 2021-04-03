@@ -55,8 +55,8 @@ func animate(ZVel, delta):
 	idler.rotate_x(ZVel * idlerSpeedScaling * delta)
 	
 	# animate track texture
-	trackMat.uv1_offset.y += (ZVel * trackUVScaling) * delta
+	# trackMat.uv1_offset.y += (ZVel * trackUVScaling) * delta
 	
 	# clamp UV offset of tracks	
-	if trackMat.uv1_offset.y > 1.0 or trackMat.uv1_offset.y < -1.0:
-		trackMat.uv1_offset.y = 0.0
+	#if trackMat.uv1_offset.y > 1.0 or trackMat.uv1_offset.y < -1.0:
+		#trackMat.uv1_offset.y = 0.0
