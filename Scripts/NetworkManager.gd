@@ -23,7 +23,7 @@ func setup_host():
 
 func join_host():
 	var peer = NetworkedMultiplayerENet.new()
-	peer.create_client("127.0.0.1", 8912)
+	peer.create_client(intro.get_ip(), 8912)
 	get_tree().network_peer = peer
 	
 
@@ -54,9 +54,9 @@ func _server_disconnected():
 	GameState.mode = null
 	intro.enable_options()
 
-func _process(delta):
-	timer += delta
-	if timer > 1.0:
-		timer -= 1
-		print(players)
+#func _process(delta):
+#	timer += delta
+#	if timer > 1.0:
+#		timer -= 1
+#		print(players)
 	

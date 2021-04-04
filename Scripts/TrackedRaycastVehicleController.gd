@@ -18,7 +18,10 @@ onready var brakeForce = engine.brakeForce
 var rnd_power
 var rnd_turn
 var auto = true
-var VehicleMan
+var VehicleMan = null
+var prev_xform:Transform
+var next_xform:Transform
+var weight_xform = 0.0
 
 #stats
 var speed = 0
@@ -28,8 +31,15 @@ func _process(delta):
 	if auto:
 		if (transform.basis.y.y < 0 and transform.origin.y < 2) or translation.distance_to(Vector3.ZERO) > 500:
 			VehicleMan.delete_tank(self)
+	elif VehicleMan == null:
+		weight_xform += delta * 1/0.1
+		transform = prev_xform.interpolate_with(next_xform, weight_xform)
 
-	
+func next_transform(t:Transform):
+#	transform = t
+	weight_xform = 0.0
+	next_xform = t
+	prev_xform = transform
 
 func handleTankDrive(delta) -> void:
 

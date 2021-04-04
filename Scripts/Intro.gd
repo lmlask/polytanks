@@ -37,3 +37,6 @@ func enable_options():
 	$Panel/Host.disabled = false
 	$Panel/Join.disabled = false
 	$Panel/Start.disabled = true
+
+func get_ip():
+	return $Panel/IP.text

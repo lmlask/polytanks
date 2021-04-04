@@ -21,10 +21,10 @@ func _ready():
 
 func _process(_delta):
 	timer += _delta
-	if timer > 0.01 and get_tree().has_network_peer(): #not a good solution
+	if timer > 0.1 and get_tree().has_network_peer(): #not a good solution
 		rpc("set_pos", vehicle.transform)
 #		add_random_tank()
-		timer -= 0.01
+		timer -= 0.1
 	if Input.is_action_pressed("reset_vehicle"):
 		vehicle.linear_velocity = Vector3()
 		vehicle.angular_velocity = Vector3()
@@ -74,6 +74,7 @@ remote func add_tank(t):
 	get_parent().add_child(tank)
 	tank.name = str(get_tree().get_rpc_sender_id())
 	tank.auto = false
+	tank.mode = RigidBody.MODE_KINEMATIC
 	tank.translation = t#start[NM.players.keys().find(get_tree().get_network_unique_id())] #not correct
 
 func load_intro_tanks():
@@ -114,7 +115,7 @@ func delete_tank(t):
 remote func set_pos(t): #totally wrong re-wrtie all this
 	var sid = str(get_tree().get_rpc_sender_id())
 	if get_parent().has_node(sid):
-		get_parent().get_node(sid).transform = t
+		get_parent().get_node(sid).next_transform(t)
 #	other_vehicle.transform = t
 	
 
