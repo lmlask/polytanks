@@ -2,7 +2,7 @@ extends MeshInstance
 
 # public variables
 export var wheelOffset : Vector3 = Vector3(0,0.62,0)
-export var trackThickness : float = 0.15
+export var trackThickness : float
 export var returnSpeed : float = 6.0
 
 
@@ -11,7 +11,6 @@ var boneName
 var raycast : RayCast
 var trackSkeleton : Skeleton
 var trackBone
-var trackOffset : Vector3 = Vector3(0,trackThickness,0)
 
 func _ready() -> void:
 	# setup references
@@ -33,6 +32,6 @@ func _physics_process(delta) -> void:
 		transform.origin.y = lerp(transform.origin.y, (raycast.cast_to + wheelOffset).y, returnSpeed * delta)
 	# deform the track based on wheel position
 	var tbonePos = trackSkeleton.get_bone_global_pose(trackBone)
-	tbonePos.origin = trackSkeleton.global_transform.xform_inv(global_transform.origin + trackOffset)
+	tbonePos.origin = trackSkeleton.global_transform.xform_inv(global_transform.origin + Vector3(0, trackThickness, 0))
 	trackSkeleton.set_bone_global_pose_override(trackBone, tbonePos, 1.0, true)
 	

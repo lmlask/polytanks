@@ -85,19 +85,19 @@ func load_intro_tanks():
 		tank.VehicleMan = self
 		tanks.append(tank)
 	
-	tanks[0].translation = Vector3(-10,0.1,-12)
-	tanks[1].translation = Vector3(6,0.1,-12)
-	tanks[2].translation = Vector3(14,0.1,-12)
+	tanks[0].translation = Vector3(-10,0.5,-12)
+	tanks[1].translation = Vector3(6,0.5,-12)
+	tanks[2].translation = Vector3(14,0.5,-12)
 	
-	tanks[3].translation = Vector3(-10,0.1,-16)
-	tanks[4].translation = Vector3(-2,0.1,-16)
-	tanks[5].translation = Vector3(6,0.1,-16)
-	tanks[6].translation = Vector3(14,0.1,-16)
+	tanks[3].translation = Vector3(-10,0.5,-16)
+	tanks[4].translation = Vector3(-2,0.5,-16)
+	tanks[5].translation = Vector3(6,0.5,-16)
+	tanks[6].translation = Vector3(14,0.5,-16)
 	
-	tanks[7].translation = Vector3(-10,0.1,-8)
-	tanks[8].translation = Vector3(-2,0.1,-8)
-	tanks[9].translation = Vector3(6,0.1,-8)
-	tanks[10].translation = Vector3(14,0.1,-8)
+	tanks[7].translation = Vector3(-10,0.5,-8)
+	tanks[8].translation = Vector3(-2,0.5,-8)
+	tanks[9].translation = Vector3(6,0.5,-8)
+	tanks[10].translation = Vector3(14,0.5,-8)
 	
 func add_random_tank():
 	if tanks.size() > 0 and tanks.size() < 20: #only add tanks when tanks exists, ie game has started

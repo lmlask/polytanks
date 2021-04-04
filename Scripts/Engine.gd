@@ -258,8 +258,8 @@ func manageRPM(delta):
 		#LERP RPM
 		RPM = lerp(RPM, targetRPM, delta*2)
 		
-		if RPM > 0.99: 
-			RPM = 1
+#		if RPM > 0.99: 
+#			RPM = 1
 
 func manageEnginePower(delta):
 

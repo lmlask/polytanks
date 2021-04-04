@@ -1803,7 +1803,8 @@ material_override = ExtResource( 24 )
 mesh = SubResource( 39 )
 material/0 = null
 script = ExtResource( 4 )
-wheelOffset = Vector3( 0, 0.77, 0 )
+wheelOffset = Vector3( 0, 0.785, 0 )
+trackThickness = 0.15
 
 [node name="wheel_2_l" type="MeshInstance" parent="Wheels/Left"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.24798, 0.306834, 0.717145 )
@@ -1811,7 +1812,8 @@ material_override = ExtResource( 24 )
 mesh = SubResource( 40 )
 material/0 = null
 script = ExtResource( 4 )
-wheelOffset = Vector3( 0, 0.77, 0 )
+wheelOffset = Vector3( 0, 0.785, 0 )
+trackThickness = 0.15
 
 [node name="wheel_3_l" type="MeshInstance" parent="Wheels/Left"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.24798, 0.306834, 0.205773 )
@@ -1819,7 +1821,8 @@ material_override = ExtResource( 24 )
 mesh = SubResource( 41 )
 material/0 = null
 script = ExtResource( 4 )
-wheelOffset = Vector3( 0, 0.77, 0 )
+wheelOffset = Vector3( 0, 0.785, 0 )
+trackThickness = 0.15
 
 [node name="wheel_4_l" type="MeshInstance" parent="Wheels/Left"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.24798, 0.306835, -0.305602 )
@@ -1827,7 +1830,8 @@ material_override = ExtResource( 24 )
 mesh = SubResource( 42 )
 material/0 = null
 script = ExtResource( 4 )
-wheelOffset = Vector3( 0, 0.77, 0 )
+wheelOffset = Vector3( 0, 0.785, 0 )
+trackThickness = 0.15
 
 [node name="wheel_5_l" type="MeshInstance" parent="Wheels/Left"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.24798, 0.306835, -0.816977 )
@@ -1835,7 +1839,8 @@ material_override = ExtResource( 24 )
 mesh = SubResource( 43 )
 material/0 = null
 script = ExtResource( 4 )
-wheelOffset = Vector3( 0, 0.77, 0 )
+wheelOffset = Vector3( 0, 0.785, 0 )
+trackThickness = 0.15
 
 [node name="wheel_6_l" type="MeshInstance" parent="Wheels/Left"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.24798, 0.306835, -1.32835 )
@@ -1843,7 +1848,8 @@ material_override = ExtResource( 24 )
 mesh = SubResource( 44 )
 material/0 = null
 script = ExtResource( 4 )
-wheelOffset = Vector3( 0, 0.77, 0 )
+wheelOffset = Vector3( 0, 0.785, 0 )
+trackThickness = 0.15
 
 [node name="wheel_7_l" type="MeshInstance" parent="Wheels/Left"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.24798, 0.306835, -1.83973 )
@@ -1851,7 +1857,8 @@ material_override = ExtResource( 24 )
 mesh = SubResource( 45 )
 material/0 = null
 script = ExtResource( 4 )
-wheelOffset = Vector3( 0, 0.77, 0 )
+wheelOffset = Vector3( 0, 0.785, 0 )
+trackThickness = 0.15
 
 [node name="wheel_8_l" type="MeshInstance" parent="Wheels/Left"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.24798, 0.306835, -2.35111 )
@@ -1859,7 +1866,8 @@ material_override = ExtResource( 24 )
 mesh = SubResource( 46 )
 material/0 = null
 script = ExtResource( 4 )
-wheelOffset = Vector3( 0, 0.77, 0 )
+wheelOffset = Vector3( 0, 0.785, 0 )
+trackThickness = 0.15
 
 [node name="Right" type="Spatial" parent="Wheels"]
 
@@ -1869,7 +1877,8 @@ material_override = ExtResource( 24 )
 mesh = SubResource( 47 )
 material/0 = null
 script = ExtResource( 4 )
-wheelOffset = Vector3( 0, 0.77, 0 )
+wheelOffset = Vector3( 0, 0.785, 0 )
+trackThickness = 0.15
 
 [node name="wheel_2_r" type="MeshInstance" parent="Wheels/Right"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19485, 0.306834, 0.717145 )
@@ -1877,7 +1886,8 @@ material_override = ExtResource( 24 )
 mesh = SubResource( 48 )
 material/0 = null
 script = ExtResource( 4 )
-wheelOffset = Vector3( 0, 0.77, 0 )
+wheelOffset = Vector3( 0, 0.785, 0 )
+trackThickness = 0.15
 
 [node name="wheel_3_r" type="MeshInstance" parent="Wheels/Right"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19485, 0.306834, 0.205773 )
@@ -1885,7 +1895,8 @@ material_override = ExtResource( 24 )
 mesh = SubResource( 49 )
 material/0 = null
 script = ExtResource( 4 )
-wheelOffset = Vector3( 0, 0.77, 0 )
+wheelOffset = Vector3( 0, 0.785, 0 )
+trackThickness = 0.15
 
 [node name="wheel_4_r" type="MeshInstance" parent="Wheels/Right"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19485, 0.306835, -0.305602 )
@@ -1893,7 +1904,8 @@ material_override = ExtResource( 24 )
 mesh = SubResource( 50 )
 material/0 = null
 script = ExtResource( 4 )
-wheelOffset = Vector3( 0, 0.77, 0 )
+wheelOffset = Vector3( 0, 0.785, 0 )
+trackThickness = 0.15
 
 [node name="wheel_5_r" type="MeshInstance" parent="Wheels/Right"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19485, 0.306835, -0.816977 )
@@ -1901,7 +1913,8 @@ material_override = ExtResource( 24 )
 mesh = SubResource( 51 )
 material/0 = null
 script = ExtResource( 4 )
-wheelOffset = Vector3( 0, 0.77, 0 )
+wheelOffset = Vector3( 0, 0.785, 0 )
+trackThickness = 0.15
 
 [node name="wheel_6_r" type="MeshInstance" parent="Wheels/Right"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19485, 0.306835, -1.32835 )
@@ -1909,7 +1922,8 @@ material_override = ExtResource( 24 )
 mesh = SubResource( 52 )
 material/0 = null
 script = ExtResource( 4 )
-wheelOffset = Vector3( 0, 0.77, 0 )
+wheelOffset = Vector3( 0, 0.785, 0 )
+trackThickness = 0.15
 
 [node name="wheel_7_r" type="MeshInstance" parent="Wheels/Right"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19485, 0.306835, -1.83973 )
@@ -1917,7 +1931,8 @@ material_override = ExtResource( 24 )
 mesh = SubResource( 53 )
 material/0 = null
 script = ExtResource( 4 )
-wheelOffset = Vector3( 0, 0.77, 0 )
+wheelOffset = Vector3( 0, 0.785, 0 )
+trackThickness = 0.15
 
 [node name="wheel_8_r" type="MeshInstance" parent="Wheels/Right"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19485, 0.306835, -2.35111 )
@@ -1925,7 +1940,8 @@ material_override = ExtResource( 24 )
 mesh = SubResource( 54 )
 material/0 = null
 script = ExtResource( 4 )
-wheelOffset = Vector3( 0, 0.77, 0 )
+wheelOffset = Vector3( 0, 0.785, 0 )
+trackThickness = 0.15
 
 [node name="SpecialWheels" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.528485 )
