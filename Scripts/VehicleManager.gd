@@ -15,7 +15,6 @@ var alt_start = Vector3(-12,0.1,-12) #simple solution
 func _ready():
 	randomize()
 	
-	
 #	get_parent().call_deferred("add_child", vehicle)
 #	vehicle = get_node(vehiclePath)	
 	
@@ -33,6 +32,8 @@ func _process(_delta):
 
 func start():
 #	get_parent().call_deferred("add_child", vehicle)
+	for i in tanks:
+		i.queue_free() #delete intro tanks
 	GameState.setup_debug() #fix this, make it optional
 	get_parent().add_child(vehicle)
 	get_parent().add_child(other_vehicle)
@@ -54,7 +55,9 @@ func start():
 
 	#add additional vehicles for testing
 	return
-	for i in range(1):
+
+func load_intro_tanks():
+	for i in range(11):
 		var tank = vehicle_scene.instance()
 		get_parent().add_child(tank)
 		tank.rotate_y(-PI/2)
@@ -62,7 +65,6 @@ func start():
 		tanks.append(tank)
 	
 	tanks[0].translation = Vector3(-10,0.1,-12)
-	return
 	tanks[1].translation = Vector3(6,0.1,-12)
 	tanks[2].translation = Vector3(14,0.1,-12)
 	

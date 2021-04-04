@@ -7,6 +7,8 @@ onready var NetworkManager = $NetworkManager
 func _ready():
 	$CanvasLayer/Intro.gameRoot = self
 	$NetworkManager.intro = $CanvasLayer/Intro
+	VehicleManager.load_intro_tanks()
+	
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
