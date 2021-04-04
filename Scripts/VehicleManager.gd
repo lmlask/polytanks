@@ -14,7 +14,6 @@ var alt_start = Vector3(-12,0.1,-12) #simple solution
 
 func _ready():
 	randomize()
-	$"../DebugUI".vehicle = vehicle #define tank to use in debug
 	
 #	get_parent().call_deferred("add_child", vehicle)
 #	vehicle = get_node(vehiclePath)	
@@ -22,7 +21,7 @@ func _ready():
 
 func _process(_delta):
 	timer += _delta
-	if timer > 0.1:
+	if timer > 0.1 and not GameState.mode == null:
 		rpc("set_pos", vehicle.transform)
 #		add_random_tank()
 #		timer = 0.0
@@ -33,6 +32,7 @@ func _process(_delta):
 
 func start():
 #	get_parent().call_deferred("add_child", vehicle)
+	$"../DebugUI".setup() #fix this
 	get_parent().add_child(vehicle)
 	get_parent().add_child(other_vehicle)
 	if GameState.mode == GameState.Mode.Client: #fix this, dont expand

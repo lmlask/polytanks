@@ -1,12 +1,12 @@
 extends Label
 
 #onready var tank = get_parent().get_parent().get_node("PanzerIV")
-onready var tank = get_parent().vehicle
+#onready var tank = get_parent().vehicle
 
 func _process(_delta):
-	if tank.engine.clutch == 0:
-		text = "Gear: " + String(int(tank.engine.gear))
+	if owner.vehicle.engine.clutch == 0:
+		text = "Gear: " + String(int(owner.vehicle.engine.gear))
 	else:
-		text = "Gear: " + String(int(tank.engine.gear)) + "      CLUTCH"
+		text = "Gear: " + String(int(owner.vehicle.engine.gear)) + "      CLUTCH"
 	
 	
