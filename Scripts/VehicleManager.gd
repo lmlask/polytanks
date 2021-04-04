@@ -15,6 +15,7 @@ var alt_start = Vector3(-12,0.1,-12) #simple solution
 func _ready():
 	randomize()
 	
+	
 #	get_parent().call_deferred("add_child", vehicle)
 #	vehicle = get_node(vehiclePath)	
 	
