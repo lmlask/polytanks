@@ -32,7 +32,7 @@ func _process(_delta):
 
 func start():
 #	get_parent().call_deferred("add_child", vehicle)
-	$"../DebugUI".setup() #fix this
+	GameState.setup_debug() #fix this, make it optional
 	get_parent().add_child(vehicle)
 	get_parent().add_child(other_vehicle)
 	if GameState.mode == GameState.Mode.Client: #fix this, dont expand

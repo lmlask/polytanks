@@ -3,13 +3,19 @@ extends Node
 # global vars
 var mouseHidden : bool = false
 var debugMode : bool = false
+var DebugUI = load("res://Scenes/DebugUI.tscn").instance()
+onready var gameRoot = get_node("/root/gameRoot")
 enum Mode {Host, Client}
 var mode
 
 func _ready() -> void:
 	pass
+#	gameRoot.add_child(DebugUI) #make optional
 #	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 #	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+func setup_debug():
+	gameRoot.add_child(DebugUI) #make optional
 
 func _input(event) -> void:
 	if event.is_action_pressed("ui_cancel"):

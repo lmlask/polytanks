@@ -4,8 +4,6 @@ var vehicle# = $"../VehicleManager".vehicle
 
 func _ready():
 	disable()
-
-func setup():
 	vehicle = get_parent().VehicleManager.vehicle #clean up
 
 func disable():
