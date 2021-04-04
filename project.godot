@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Control",
 "class": "Intro",
 "language": "GDScript",
-"path": "res://Scenes/Intro.gd"
+"path": "res://Scripts/Intro.gd"
 }, {
 "base": "Node",
 "class": "gameRoot",

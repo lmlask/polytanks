@@ -2,15 +2,15 @@ extends Node
 
 export(NodePath) var vehiclePath
 onready var vehicle_scene = load("res://Tanks/PzIV/PanzerIV.tscn") #Should be dynamic
-
+onready var NM = get_node("../NetworkManager")
 onready var vehicle : RigidBody = vehicle_scene.instance()
-onready var other_vehicle : RigidBody = vehicle_scene.instance()
+#onready var other_vehicle : RigidBody = vehicle_scene.instance()
 var vehicleStartTransform : Transform
 var tanks = []
 var timer:float = 0.0
+var players = {}
 
-var std_start = Vector3(-2,0.1,-12)
-var alt_start = Vector3(-12,0.1,-12) #simple solution
+var start = [Vector3(-2,0.1,-12), Vector3(-12,0.1,-12),Vector3(6,0.1,-16),Vector3(14,0.1,-16)] #simple solution
 
 func _ready():
 	randomize()
@@ -21,10 +21,10 @@ func _ready():
 
 func _process(_delta):
 	timer += _delta
-	if timer > 0.1 and not GameState.mode == null:
+	if timer > 0.01 and get_tree().has_network_peer(): #not a good solution
 		rpc("set_pos", vehicle.transform)
 #		add_random_tank()
-#		timer = 0.0
+		timer -= 0.01
 	if Input.is_action_pressed("reset_vehicle"):
 		vehicle.linear_velocity = Vector3()
 		vehicle.angular_velocity = Vector3()
@@ -36,25 +36,45 @@ func start():
 		i.queue_free() #delete intro tanks
 	GameState.setup_debug() #fix this, make it optional
 	get_parent().add_child(vehicle)
-	get_parent().add_child(other_vehicle)
-	if GameState.mode == GameState.Mode.Client: #fix this, dont expand
-		vehicle.translation = alt_start
-		other_vehicle.translation = std_start
-	else:
-		vehicle.translation = std_start 
-		other_vehicle.translation = alt_start
+#	get_parent().add_child(other_vehicle)
+#	if GameState.mode == GameState.Mode.Client: #fix this, dont expand
+	vehicle.translation = start[NM.players.keys().find(get_tree().get_network_unique_id())]
+	players[get_tree().get_network_unique_id()] = vehicle
+	vehicle.name = str(get_tree().get_network_unique_id())
+#		vehicle.translation = start[1]
+#		other_vehicle.translation = start[0]
+#	else:
+#		vehicle.translation = start[0] 
+#		other_vehicle.translation = start[1]
 	vehicle.rotate_y(-PI/2)
-	other_vehicle.rotate_y(-PI/2)
+#	other_vehicle.rotate_y(-PI/2)
 	vehicle.auto = false #set manual control
-	other_vehicle.auto = false #set manual control
+#	other_vehicle.auto = false #set manual control
 	vehicle.VehicleMan = self
 	vehicleStartTransform = vehicle.global_transform
 	$"../CameraRig"._camTarget = vehicle #give cam target
 	
 	$"../DebugUI".enable()
-
+#	rpc("start_remote_tank")
 	#add additional vehicles for testing
+	rpc("get_remote_tanks")
+	rpc("add_tank", vehicle.translation)
 	return
+#
+#remote func new_tank(t):
+	
+
+remote func get_remote_tanks():
+	var nid = get_tree().get_rpc_sender_id()
+	rpc_id(nid, "add_tank", vehicle.translation)
+
+remote func add_tank(t):
+	print("starting remote tank")
+	var tank = vehicle_scene.instance()
+	get_parent().add_child(tank)
+	tank.name = str(get_tree().get_rpc_sender_id())
+	tank.auto = false
+	tank.translation = t#start[NM.players.keys().find(get_tree().get_network_unique_id())] #not correct
 
 func load_intro_tanks():
 	for i in range(11):
@@ -92,8 +112,10 @@ func delete_tank(t):
 	tanks.erase(t)
 
 remote func set_pos(t): #totally wrong re-wrtie all this
-#	print(pos)
-	other_vehicle.transform = t
+	var sid = str(get_tree().get_rpc_sender_id())
+	if get_parent().has_node(sid):
+		get_parent().get_node(sid).transform = t
+#	other_vehicle.transform = t
 	
 
 

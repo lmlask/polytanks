@@ -1,7 +1,9 @@
 extends Node
 
 var intro:Intro #intro?
+remotesync var players = {}
 
+var timer = 0.0 #for debug
 
 func _ready():
 	get_tree().connect("network_peer_connected", self, "_player_connected")
@@ -17,6 +19,7 @@ func setup_host():
 	intro.set_status("Your are host")
 	intro.disable_options()
 	GameState.mode = GameState.Mode.Host
+	players[get_tree().get_network_unique_id()] = ""
 
 func join_host():
 	var peer = NetworkedMultiplayerENet.new()
@@ -26,20 +29,34 @@ func join_host():
 
 func _player_connected(id):
 	print("_player_connected-", id)
-	intro.set_status("Player %s connected" % id)
+	if get_tree().is_network_server() and players.size() < 4:
+		players[id] = ""
+		rset("players", players)
+	else:
+		get_tree().network_peer.disconnect_peer(id)
 	
 func _player_disconnected(id):
 	print("_player_disconnected-", id)
+	players.erase(id)
 	
 func _connected_ok():
 	print("_connected_ok")
 	intro.set_status("Your are connected")
 	intro.disable_options()
-	GameState.mode = GameState.Mode.Client
-	
+	GameState.mode = GameState.Mode.Client	
+
 func _connected_fail():
 	print("_connected_fail")
 	
 func _server_disconnected():
 	print("_server_disconnected")
+	intro.set_status("You have been disconnected")
+	GameState.mode = null
+	intro.enable_options()
+
+func _process(delta):
+	timer += delta
+	if timer > 1.0:
+		timer -= 1
+		print(players)
 	

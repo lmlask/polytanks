@@ -5,7 +5,7 @@
 [ext_resource path="res://Objects/ExternalCamera.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Objects/VehicleManager.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scripts/gameRoot.gd" type="Script" id=13]
-[ext_resource path="res://Scenes/NetworkManager.gd" type="Script" id=15]
+[ext_resource path="res://Scripts/NetworkManager.gd" type="Script" id=15]
 
 [node name="gameRoot" type="Node"]
 script = ExtResource( 13 )
