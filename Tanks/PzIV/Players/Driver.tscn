@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/DriverInput.gd" type="Script" id=1]
+
+[node name="Driver" type="Spatial"]
+__meta__ = {
+"_editor_description_": "Dinamically loaded driver player node. Must be spatial to transmit location information to child nodes, such as a camera."
+}
+
+[node name="DriverInput" type="Node" parent="."]
+script = ExtResource( 1 )

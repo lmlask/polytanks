@@ -2,15 +2,11 @@ extends Node
 
 onready var engine_sfx = get_parent().get_node("Sfx/engine_sfx")
 onready var engine_sfx2 = get_parent().get_node("Sfx/engine_sfx2")
-onready var transmission_sfx = get_parent().get_node("Sfx/transmission_sfx")
 onready var role = get_parent().get_node("RoleController").role
 onready var startup_sfx = preload("res://Sfx/startup2.wav")
 onready var startupwarm_sfx = preload("res://Sfx/warm_startup.wav")
 onready var idle1_sfx = preload("res://Sfx/idle1.wav")
 onready var shutdown_sfx = preload("res://Sfx/shutdown.wav")
-onready var gear1_sfx = preload("res://Sfx/gear1.wav")
-onready var gear2_sfx = preload("res://Sfx/gear2.wav")
-onready var gear3_sfx = preload("res://Sfx/gear3.wav")
 onready var rev2 = preload("res://Sfx/rev2.wav")
 var gear_sounds
 
@@ -54,6 +50,7 @@ var gear = 0
 var clutch = 0
 var throttle = 0
 var brake = 0
+var turning = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -62,20 +59,10 @@ func _ready():
 		engine_sfx.play()
 		
 func _process(delta):
-	#Startup and shutdown
-	if Input.is_action_just_pressed("ignition") and role == "driver":
-		if state == "OFF" or state == "OFF WARM":
-			engineStartUp()
-		elif state == "ON":
-			engineShutdown()
-			
 	#Update player role
 	role = get_parent().get_node("RoleController").role
 	
 	#Engine behavior
-	manageThrottle(delta)
-	manageBrake(delta)
-	manageTransmission()
 	manageRPM(delta)
 	manageEngineSound()
 	manageEnginePower(delta)
@@ -151,58 +138,6 @@ func engineShutdown():
 	
 	t.queue_free()
 
-func manageThrottle(delta):
-	# Manage throttle
-	if role == "driver":
-		if Input.is_action_pressed("ui_up"):
-			throttle = lerp(throttle, 1.0, delta*2)
-			if throttle > 0.99:
-				throttle = 1
-			elif throttle < 0.01:
-				throttle = 0
-		else:
-			throttle = lerp(throttle, 0.0, delta*1.5)
-	else:
-			throttle = lerp(throttle, 0.0, delta*1.5)
-			
-func manageBrake(delta):
-	if role == "driver":
-		if Input.is_action_pressed("brake"):
-			brake = lerp(brake, 1.0, delta*3)
-			if brake > 0.99:
-				brake = 1
-			elif brake < 0.01:
-				brake = 0
-		else:
-			brake = lerp(brake, 0.0, delta*2)
-	else:
-			brake = lerp(brake, 0.0, delta*2)
-		
-func manageTransmission():
-	if role == "driver":
-		if Input.is_action_pressed("clutch"):
-			clutch = 1
-		else:
-			clutch = 0
-			
-		if Input.is_action_just_pressed("clutch"):
-			transmission_sfx.stream = gear3_sfx
-			transmission_sfx.play()
-			
-		if clutch:
-			if Input.is_action_just_pressed("gear_up") and gear < forward_gears:
-				gear += 1
-				transmission_sfx.stream = gear2_sfx
-				transmission_sfx.play()
-			elif Input.is_action_just_pressed("gear_down") and gear > -reverse_gears:
-				gear -= 1
-				transmission_sfx.stream = gear2_sfx
-				transmission_sfx.play()
-			elif Input.is_action_just_pressed("gear_neutral"):
-				gear = 0
-				transmission_sfx.stream = gear2_sfx
-				transmission_sfx.play()
-
 func manageRPM(delta):
 	#RPM from 0.0 to 1.0
 	var targetRPM
@@ -230,7 +165,7 @@ func manageRPM(delta):
 				targetRPM = 0
 				
 			#Performance while turning
-			elif Input.is_action_pressed("ui_right") or Input.is_action_pressed("ui_left"):
+			elif turning:
 				possibleRPM = (abs(get_parent().speed) * turnModifier) / gearTopSpeeds[gear]
 				targetRPM = clamp(possibleRPM, 0, 1)
 			
@@ -257,18 +192,14 @@ func manageRPM(delta):
 				
 		#LERP RPM
 		RPM = lerp(RPM, targetRPM, delta*2)
-		
-#		if RPM > 0.99: 
-#			RPM = 1
 
 func manageEnginePower(delta):
-
 	if state == "OFF" or state == "SHUTTING DOWN":
 		enginePower = 0
 	elif state == "ON":
 		if clutch == 1 or gear == 0:
 			enginePower = 0
-		elif Input.is_action_pressed("ui_right") or Input.is_action_pressed("ui_left"):
+		elif turning:
 			enginePower = maxEnginePower * turnModifier * throttle
 		else:
 			enginePower = maxEnginePower * throttle

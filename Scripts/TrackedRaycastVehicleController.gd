@@ -9,6 +9,7 @@ export var active = false
 
 var driveForce = 0
 var dir
+var turning_dir = null
 
 #references
 onready var role = $RoleController.role
@@ -42,41 +43,36 @@ func next_transform(t:Transform):
 	prev_xform = transform
 
 func handleTankDrive(delta) -> void:
-
 	for ray in rayElements:
 		if engine.clutch == 0:
-			if engine.gear > 0:
-				dir = 1
-			elif engine.gear == 0:
+			if engine.gear >= 0:
 				dir = 1
 			elif engine.gear == -1:
 				dir = -1
 		
 		drivePerRay = engine.enginePower / rayElements.size()
-		
+	
 		if auto: #drive around randomly
 			driveForce = global_transform.basis.z * rnd_power
 			ray.applyDriveForce(driveForce)
 			add_torque(Vector3(0,rnd_turn,0))
 		
-		elif role == "driver":
-			if speed > 1 and engine.gear != 0:
-				if Input.is_action_pressed("ui_left"):
-					add_torque(Vector3(0, (50*log(speed))/engine.gear, 0))
-		
-				if Input.is_action_pressed("ui_right"):
-					add_torque(Vector3(0, (-50*log(speed))/engine.gear, 0))
-					
-			elif speed < -1 and engine.gear != 0:
-				if Input.is_action_pressed("ui_left"):
-					add_torque(Vector3(0, (30*log(-speed))/engine.gear, 0))
-		
-				if Input.is_action_pressed("ui_right"):
-					add_torque(Vector3(0, (-30*log(-speed))/engine.gear, 0))
-				
+		else:
 			driveForce = dir * drivePerRay * global_transform.basis.z
 			ray.applyDriveForce(driveForce)
 			
+	if turning_dir and speed > 1 and engine.gear != 0:
+		if turning_dir == "left":
+			add_torque(Vector3(0, (800*log(speed))/engine.gear, 0))
+		elif turning_dir == "right":
+			add_torque(Vector3(0, (-800*log(speed))/engine.gear, 0))
+			
+	elif turning_dir and speed < -1 and engine.gear != 0:
+		if turning_dir == "left":
+			add_torque(Vector3(0, (600*log(-speed))/engine.gear, 0))
+		elif turning_dir == "right":
+			add_torque(Vector3(0, (-600*log(-speed))/engine.gear, 0))
+
 
 func _ready() -> void:
 	randomize()
@@ -98,7 +94,4 @@ func _physics_process(delta) -> void:
 
 func calcStats(delta):
 	speed = 3.6 * self.transform.basis.xform_inv(self.linear_velocity).z
-	
-
-	
 	
