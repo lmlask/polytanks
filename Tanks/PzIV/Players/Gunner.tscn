@@ -2,7 +2,6 @@
 
 [ext_resource path="res://Scripts/GunnerInput.gd" type="Script" id=1]
 
-
 [node name="Gunner" type="Spatial"]
 __meta__ = {
 "_editor_description_": "Dinamically loaded gunner player node. Must be spatial to transmit location information to child nodes, such as a camera."

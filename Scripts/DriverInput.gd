@@ -4,11 +4,11 @@ extends Node
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-onready var engine = get_parent().get_parent().get_parent().get_node("EngineController")
-onready var transmission_sfx = get_parent().get_parent().get_parent().get_node("Sfx/transmission_sfx")
+onready var engine = owner.owner.get_node("EngineController")
+onready var transmission_sfx = owner.owner.get_node("Sfx/transmission_sfx")
 onready var gear3_sfx = preload("res://Sfx/gear3.wav")
 onready var gear2_sfx = preload("res://Sfx/gear2.wav")
-onready var tank = get_parent().get_parent().get_parent()
+onready var tank = owner.owner
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

@@ -16,11 +16,11 @@ func _ready() -> void:
 	# setup references
 	boneName = self.name
 	if get_parent().name == "Left":
-		trackSkeleton = get_parent().get_parent().get_parent().get_node("Tracks/panzer_armatureL/SkeletonL")
-		raycast = get_parent().get_parent().get_parent().get_node("Rays/Left").get_node("Lray" + self.name[6])
+		trackSkeleton = owner.get_node("Tracks/panzer_armatureL/SkeletonL") #probably should not use model specific names
+		raycast = owner.get_node("Rays/Left").get_node("Lray" + self.name[6])
 	else:
-		trackSkeleton = get_parent().get_parent().get_parent().get_node("Tracks/panzer_armatureR/SkeletonR")
-		raycast = get_parent().get_parent().get_parent().get_node("Rays/Right").get_node("Rray" + self.name[6])
+		trackSkeleton = owner.get_node("Tracks/panzer_armatureR/SkeletonR")
+		raycast = owner.get_node("Rays/Right").get_node("Rray" + self.name[6])
 	trackBone = trackSkeleton.find_bone(boneName)
 	
 	

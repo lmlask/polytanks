@@ -5,8 +5,8 @@ extends Node
 # var a = 2
 # var b = "text"
 
-onready var turret = get_parent().get_node("Visuals/turret")
-onready var roleController = get_parent().get_node("RoleController")
+onready var turret = owner.get_node("Visuals/turret")
+onready var roleController = owner.get_node("RoleController")
 onready var crankslow = preload("res://Sfx/crank_slow.wav")
 onready var crankfast = preload("res://Sfx/crank_fast.wav")
 

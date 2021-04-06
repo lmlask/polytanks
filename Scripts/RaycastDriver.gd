@@ -38,7 +38,7 @@ var gearSlideMods = {
 			6 : 0.2
 		}
 
-onready var engine = get_parent().get_parent().get_parent().get_node("EngineController")
+onready var engine = owner.get_node("EngineController")
 
 # function for applying drive force to parent body (if grounded)
 func applyDriveForce(force : Vector3) -> void:
@@ -49,7 +49,7 @@ func applyDriveForce(force : Vector3) -> void:
 
 func _ready() -> void:
 	# setup references (only need to get once, should be more efficient?)
-	parentBody = get_parent().get_parent().get_parent()
+	parentBody = owner
 	add_exception(parentBody)
 	
 func _physics_process(delta) -> void:

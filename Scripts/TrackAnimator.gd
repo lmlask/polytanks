@@ -18,15 +18,15 @@ var lastPos : Vector3 = Vector3()
 func _ready() -> void:
 	# setup references
 	if self.name ==  "trackL":
-		roadWheels = get_parent().get_parent().get_parent().get_parent().get_node("Wheels/Left").get_children()
-		sprocket = get_parent().get_parent().get_parent().get_parent().get_node("SpecialWheels/sprocketL")
-		idler = get_parent().get_parent().get_parent().get_parent().get_node("SpecialWheels/idlerL")
+		roadWheels = owner.get_node("Wheels/Left").get_children()
+		sprocket = owner.get_node("SpecialWheels/sprocketL")
+		idler = owner.get_node("SpecialWheels/idlerL")
 	else:
-		roadWheels = get_parent().get_parent().get_parent().get_parent().get_node("Wheels/Right").get_children()
-		sprocket = get_parent().get_parent().get_parent().get_parent().get_node("SpecialWheels/sprocketR")
-		idler = get_parent().get_parent().get_parent().get_parent().get_node("SpecialWheels/idlerR")
+		roadWheels = owner.get_node("Wheels/Right").get_children()
+		sprocket = owner.get_node("SpecialWheels/sprocketR")
+		idler = owner.get_node("SpecialWheels/idlerR")
 	trackMat = mesh.surface_get_material(0)
-	parentBody = get_parent().get_parent().get_parent().get_parent()
+	parentBody = owner
 
 func _physics_process(delta) -> void:
 	# obtain velocity of the track

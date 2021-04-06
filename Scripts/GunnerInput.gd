@@ -1,6 +1,7 @@
 extends Node
 
-onready var turretCon = get_parent().get_parent().get_parent().get_node("TurretController")
+#onready var turretCon = get_parent().get_parent().get_parent().get_node("TurretController")
+onready var turretCon = owner.owner.get_node("TurretController")
 
 func _ready():
 	pass
