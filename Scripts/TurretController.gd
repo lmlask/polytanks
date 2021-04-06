@@ -58,4 +58,11 @@ func toggleTraverseMode():
 	elif traverse_mode == "manual":
 		traverse_mode = "power"
 	
+func fire():
+	var shell = $shell_test.duplicate()
+	shell.global_transform = turret.get_node("gun").global_transform
+	add_child(shell)
+	shell.free = true
+	shell.show()
+	shell.set_process(true)
 	

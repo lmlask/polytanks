@@ -37,3 +37,7 @@ func _process(delta):
 	if Input.is_action_pressed("turret_fine"):
 		turretCon.dir = turretCon.dir/3
 		turretCon.eledir = turretCon.eledir/6
+
+	if Input.is_action_just_pressed("ui_select"):
+		turretCon.fire()
+		owner.owner.VehicleMan.rpc("fire", str(GameState.DriverID[GameState.tank]))

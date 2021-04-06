@@ -46,15 +46,16 @@ func start():
 	players[get_tree().get_network_unique_id()] = vehicle
 	if GameState.role == GameState.Role.Driver:
 		vehicle.name = str(get_tree().get_network_unique_id()) #set tank name to id as this is driver
-		vehicle.VehicleMan = self #dont think this is a good idea
 	else:
 		vehicle.name = str(GameState.DriverID[GameState.tank]) #set tank name to id of driver
+		
 #		vehicle.translation = start[1]
 #		other_vehicle.translation = start[0]
 #	else:
 #		vehicle.translation = start[0] 
 #		other_vehicle.translation = start[1]
 	vehicle.rotate_y(-PI/2)
+	vehicle.VehicleMan = self #dont think this is a good idea
 #	other_vehicle.rotate_y(-PI/2)
 	vehicle.auto = false #set manual control
 #	other_vehicle.auto = false #set manual control
@@ -137,5 +138,6 @@ remote func set_pos(t): #needs a re-wrtie all this
 		get_parent().get_node(sid).next_transform(t)
 #	other_vehicle.transform = t
 	
-
+remotesync func fire(id):
+	get_parent().get_node(id).get_node("TurretController").fire()
 

@@ -32,7 +32,7 @@ func _process(delta):
 	if auto:
 		if (transform.basis.y.y < 0 and transform.origin.y < 2) or translation.distance_to(Vector3.ZERO) > 500:
 			VehicleMan.delete_tank(self)
-	elif VehicleMan == null:
+	elif VehicleMan == null or GameState.role == GameState.Role.Gunner:
 		weight_xform += delta * 1/0.1
 		transform = prev_xform.interpolate_with(next_xform, weight_xform)
 
