@@ -29,11 +29,12 @@ func join_host():
 
 func _player_connected(id):
 	print("_player_connected-", id)
-	if get_tree().is_network_server() and players.size() < 4:
+	if get_tree().is_network_server():
 		players[id] = ""
 		rset("players", players)
 	else:
 		get_tree().network_peer.disconnect_peer(id)
+	intro.Grid.rpc("disable_role")
 	
 func _player_disconnected(id):
 	print("_player_disconnected-", id)
@@ -43,7 +44,8 @@ func _connected_ok():
 	print("_connected_ok")
 	intro.set_status("Your are connected")
 	intro.disable_options()
-	GameState.mode = GameState.Mode.Client	
+	GameState.mode = GameState.Mode.Client
+	
 
 func _connected_fail():
 	print("_connected_fail")
@@ -53,6 +55,7 @@ func _server_disconnected():
 	intro.set_status("You have been disconnected")
 	GameState.mode = null
 	intro.enable_options()
+	get_tree().network_peer = null
 
 #func _process(delta):
 #	timer += delta

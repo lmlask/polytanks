@@ -2,6 +2,7 @@ extends Control
 class_name Intro #intro? rename this
 
 var gameRoot:gameRoot
+onready var Grid = $Panel/LobbyGrid
 
 func _ready():
 	set_status("")
@@ -13,6 +14,8 @@ func _ready():
 #	pass
 
 func _on_Start_pressed():
+	GameState.tank = Grid.selected[0]
+	GameState.role = Grid.selected[1]
 	gameRoot.VehicleManager.start()
 	GameState.hide_mouse()
 	hide()
@@ -32,11 +35,13 @@ func disable_options():
 	$Panel/Host.disabled = true
 	$Panel/Join.disabled = true
 	$Panel/Start.disabled = false
+	Grid.set_all_roles(false)
 
 func enable_options():
 	$Panel/Host.disabled = false
 	$Panel/Join.disabled = false
 	$Panel/Start.disabled = true
+	Grid.set_all_roles(true)
 
 func get_ip():
 	return $Panel/IP.text

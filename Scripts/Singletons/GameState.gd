@@ -6,7 +6,11 @@ var debugMode : bool = false
 var DebugUI = load("res://Scenes/DebugUI.tscn").instance()
 onready var gameRoot = get_node("/root/gameRoot")
 enum Mode {Host, Client}
+enum Role {Driver, Gunner}
 var mode
+var role:int
+var tank:int
+var NID = null
 
 func _ready() -> void:
 	pass

@@ -38,7 +38,8 @@ func start():
 	get_parent().add_child(vehicle)
 #	get_parent().add_child(other_vehicle)
 #	if GameState.mode == GameState.Mode.Client: #fix this, dont expand
-	vehicle.translation = start[NM.players.keys().find(get_tree().get_network_unique_id())]
+#	vehicle.translation = start[NM.players.keys().find(get_tree().get_network_unique_id())]
+	vehicle.translation = start[(GameState.tank-1)]
 	players[get_tree().get_network_unique_id()] = vehicle
 	vehicle.name = str(get_tree().get_network_unique_id())
 #		vehicle.translation = start[1]

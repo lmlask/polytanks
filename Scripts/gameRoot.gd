@@ -5,8 +5,8 @@ onready var VehicleManager = $VehicleManager
 onready var NetworkManager = $NetworkManager
 
 func _ready():
-	$CanvasLayer/Intro.gameRoot = self
-	$NetworkManager.intro = $CanvasLayer/Intro
+	$Lobby/Intro.gameRoot = self
+	$NetworkManager.intro = $Lobby/Intro
 	VehicleManager.load_intro_tanks()
 	
 	
