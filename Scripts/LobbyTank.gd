@@ -1,6 +1,6 @@
 extends VBoxContainer
 
-var Tank = 1
+var Tank = 0
 
 func _ready():
 	pass # Replace with function body.

@@ -10,13 +10,19 @@ enum Role {Driver, Gunner}
 var mode
 var role:int
 var tank:int
-var NID = null
+var InGame = false
+puppet var DriverID = {}
 
 func _ready() -> void:
 	pass
 #	gameRoot.add_child(DebugUI) #make optional
 #	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 #	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+remotesync func set_driver_id(tank, id):
+#	print("set driver",tank,id)
+	DriverID[tank] = id
+#	print(DriverID)
 
 func setup_debug():
 	gameRoot.add_child(DebugUI) #make optional
@@ -42,3 +48,6 @@ func show_mouse():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 #	OS.window_fullscreen = false
 	mouseHidden = false
+
+#func _process(delta):
+#	print(DriverID)

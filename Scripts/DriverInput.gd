@@ -17,6 +17,8 @@ func _ready():
 
 
 func _process(delta):
+	if not GameState.role == GameState.Role.Driver:
+		return
 	manageIgnition()
 	manageThrottle(delta)
 	manageBrake(delta)

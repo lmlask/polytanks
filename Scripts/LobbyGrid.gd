@@ -3,12 +3,12 @@ extends GridContainer
 var selected = [null,null]
 
 func _ready():
-	for i in range(3):
+	for i in range(1,4):
 		var x = $Tank1.duplicate()
 		add_child(x)
-		x.get_node("Label").text = str("Tank %s" % (i+2))
-		x.name = str("Tank%s" % (i+2))
-		x.Tank = i+2
+		x.get_node("Label").text = str("Tank %s" % (i+1))
+		x.name = str("Tank%s" % (i+1))
+		x.Tank = i
 
 func set_all_roles(state):
 	for i in get_children():

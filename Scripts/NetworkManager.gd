@@ -32,6 +32,7 @@ func _player_connected(id):
 	if get_tree().is_network_server():
 		players[id] = ""
 		rset("players", players)
+		GameState.rset("DriverID",GameState.DriverID)
 	else:
 		get_tree().network_peer.disconnect_peer(id)
 	intro.Grid.rpc("disable_role")

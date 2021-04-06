@@ -39,9 +39,13 @@ func start():
 #	get_parent().add_child(other_vehicle)
 #	if GameState.mode == GameState.Mode.Client: #fix this, dont expand
 #	vehicle.translation = start[NM.players.keys().find(get_tree().get_network_unique_id())]
-	vehicle.translation = start[(GameState.tank-1)]
+	vehicle.translation = start[GameState.tank]
 	players[get_tree().get_network_unique_id()] = vehicle
-	vehicle.name = str(get_tree().get_network_unique_id())
+	if GameState.role == GameState.Role.Driver:
+		vehicle.name = str(get_tree().get_network_unique_id()) #set tank name to id as this is driver
+		vehicle.VehicleMan = self #dont think this is a good idea
+	else:
+		vehicle.name = str(GameState.DriverID[GameState.tank]) #set tank name to id of driver
 #		vehicle.translation = start[1]
 #		other_vehicle.translation = start[0]
 #	else:
@@ -51,32 +55,37 @@ func start():
 #	other_vehicle.rotate_y(-PI/2)
 	vehicle.auto = false #set manual control
 #	other_vehicle.auto = false #set manual control
-	vehicle.VehicleMan = self
+	
 	vehicleStartTransform = vehicle.global_transform
 	$"../CameraRig"._camTarget = vehicle #give cam target
 	
 	$"../DebugUI".enable()
 #	rpc("start_remote_tank")
 	#add additional vehicles for testing
-	rpc("get_remote_tanks")
-	rpc("add_tank", vehicle.translation)
+	rpc("get_remote_tanks") #get remote tanks
+	if GameState.role == GameState.Role.Driver: #dont add tanks if this is not driver
+		rpc("add_tank", vehicle.translation, GameState.tank) #only add tanks if this is this driver
 	return
 #
 #remote func new_tank(t):
 	
 
 remote func get_remote_tanks():
-	var nid = get_tree().get_rpc_sender_id()
-	rpc_id(nid, "add_tank", vehicle.translation)
+#	print(GameState.role)
+	if GameState.role == GameState.Role.Driver: #only for drivers
+		var nid = get_tree().get_rpc_sender_id()
+		rpc_id(nid, "add_tank", vehicle.translation, GameState.tank)
 
-remote func add_tank(t):
-	print("starting remote tank")
-	var tank = vehicle_scene.instance()
-	get_parent().add_child(tank)
-	tank.name = str(get_tree().get_rpc_sender_id())
-	tank.auto = false
-	tank.mode = RigidBody.MODE_KINEMATIC
-	tank.translation = t#start[NM.players.keys().find(get_tree().get_network_unique_id())] #not correct
+remote func add_tank(t,tid):
+#	print("starting remote tank")
+	print(tid, GameState.tank)
+	if not tid == GameState.tank: #if adding tank is the current drivers tank do no add
+		var tank = vehicle_scene.instance()
+		get_parent().add_child(tank)
+		tank.name = str(get_tree().get_rpc_sender_id())
+		tank.auto = false
+		tank.mode = RigidBody.MODE_KINEMATIC
+		tank.translation = t#start[NM.players.keys().find(get_tree().get_network_unique_id())] #not correct
 
 func load_intro_tanks():
 	for i in range(11):
@@ -113,7 +122,7 @@ func delete_tank(t):
 	t.queue_free()
 	tanks.erase(t)
 
-remote func set_pos(t): #totally wrong re-wrtie all this
+remote func set_pos(t): #needs a re-wrtie all this
 	var sid = str(get_tree().get_rpc_sender_id())
 	if get_parent().has_node(sid):
 		get_parent().get_node(sid).next_transform(t)

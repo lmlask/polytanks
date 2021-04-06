@@ -7,6 +7,8 @@ func _ready():
 	pass
 
 func _process(delta):
+	if not GameState.role == GameState.Role.Gunner:
+		return
 	#Traverse mode
 	if Input.is_action_just_pressed("traverse_manual"):
 		if turretCon.traverse_mode == "power":
