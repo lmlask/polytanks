@@ -24,7 +24,7 @@ func _process(delta):
 	manageBrake(delta)
 	manageTransmission()
 	manageSteering()
-
+	
 func _physics_process(delta):
 	manageSteeringPhysics()
 			

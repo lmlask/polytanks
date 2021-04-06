@@ -22,7 +22,10 @@ func _ready():
 func _process(_delta):
 	timer += _delta
 	if timer > 0.1 and get_tree().has_network_peer(): #not a good solution
-		rpc("set_pos", vehicle.transform)
+		if GameState.role == GameState.Role.Driver:
+			rpc("set_pos", vehicle.transform)
+		if GameState.role == GameState.Role.Gunner:
+			rpc("set_tur", vehicle.get_node("Visuals/turret").rotation,vehicle.get_node("Visuals/turret/gun").rotation, str(GameState.DriverID[GameState.tank]) )
 #		add_random_tank()
 		timer -= 0.1
 	if Input.is_action_pressed("reset_vehicle"):
@@ -86,6 +89,7 @@ remote func add_tank(t,tid):
 		tank.auto = false
 		tank.mode = RigidBody.MODE_KINEMATIC
 		tank.translation = t#start[NM.players.keys().find(get_tree().get_network_unique_id())] #not correct
+		tank.get_node("Players").queue_free()
 
 func load_intro_tanks():
 	for i in range(11):
@@ -121,6 +125,11 @@ func add_random_tank():
 func delete_tank(t):
 	t.queue_free()
 	tanks.erase(t)
+
+remote func set_tur(tr,te,id): #set turrent rotation, change to work like tank transform
+	if get_parent().has_node(id):
+		get_parent().get_node(id).get_node("Visuals/turret").rotation = tr
+		get_parent().get_node(id).get_node("Visuals/turret/gun").rotation = te
 
 remote func set_pos(t): #needs a re-wrtie all this
 	var sid = str(get_tree().get_rpc_sender_id())
