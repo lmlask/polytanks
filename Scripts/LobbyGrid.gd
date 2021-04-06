@@ -3,7 +3,7 @@ extends GridContainer
 var selected = [null,null]
 
 func _ready():
-	for i in range(1,4):
+	for i in range(1,5):
 		var x = $Tank1.duplicate()
 		add_child(x)
 		x.get_node("Label").text = str("Tank %s" % (i+1))

@@ -10,7 +10,7 @@ var tanks = []
 var timer:float = 0.0
 var players = {}
 
-var start = [Vector3(-2,0.1,-12), Vector3(-12,0.1,-12),Vector3(6,0.1,-16),Vector3(14,0.1,-16)] #simple solution
+var start = [Vector3(-2,0.1,-12), Vector3(-12,0.1,-12),Vector3(6,0.1,-16),Vector3(14,0.1,-16),Vector3(14,0.5,-8)] #simple solution
 
 func _ready():
 	randomize()
