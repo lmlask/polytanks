@@ -78,6 +78,8 @@ remote func add_tank(t,tid):
 		tank.auto = false
 		tank.mode = RigidBody.MODE_KINEMATIC
 		tank.translation = t#start[NM.players.keys().find(get_tree().get_network_unique_id())] #not correct
+		tank.rotate_y(-PI/2) #shouldnt be fixed
+		tank.next_transform(tank.transform)
 		tank.get_node("Players").queue_free()
 
 func load_intro_tanks():
