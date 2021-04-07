@@ -20,6 +20,7 @@ var turn_speed = 0
 var ele_speed_tgt = 0
 var ele_speed = 0
 var accel_speed = 1
+var timer:float = 0.0
 
 var was_playing = false
 var ele_was_playing = false
@@ -29,7 +30,7 @@ func _ready():
 	pass # Replace with function body.
 	
 func _process(delta):
-
+	
 	#Lerp lever, control mode
 	if traverse_mode == "power":
 			traverse_multiplier = 2
@@ -51,6 +52,12 @@ func _process(delta):
 	#Clamp
 	turret.get_node("gun").rotation_degrees.x = clamp(turret.get_node("gun").rotation_degrees.x, -17, 10)
 	
+	if owner.auto:
+		timer += delta #for auto firing during intro
+		var firetime = randf() + 2.0
+		if timer > firetime:
+			timer -= firetime
+			fire()
 	
 func toggleTraverseMode():
 	if traverse_mode == "power":
