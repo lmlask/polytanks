@@ -67,6 +67,7 @@ func toggleTraverseMode():
 		traverse_mode = "power"
 	
 func fire():
+	#spawning shell
 	var shell = pzgr39.instance()
 	shell.global_transform = turret.get_node("gun/gunMesh/barrel/projectile_spawner").global_transform
 	add_child(shell)
