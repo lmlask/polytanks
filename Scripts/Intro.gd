@@ -1,17 +1,18 @@
-extends Control
+extends CanvasLayer
 class_name Intro #intro? rename this
 
 var gameRoot:gameRoot
-onready var Grid = $Panel/LobbyGrid
+onready var Grid = $Intro/Panel/VBoxContainer/LobbyGrid
+onready var Host = $Intro/Panel/VBoxContainer/HBoxContainer/Host
+onready var Join = $Intro/Panel/VBoxContainer/HBoxContainer/Join
+onready var IPadd = $Intro/Panel/VBoxContainer/HBoxContainer/IP
+onready var Start = $Intro/Panel/VBoxContainer/HBoxContainer/Start
+onready var Status = $Intro/Panel/VBoxContainer/Status
 
 func _ready():
 	set_status("")
 	enable_options()
 	pass
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
 
 func _on_Start_pressed():
 	GameState.tank = Grid.selected[0]
@@ -20,7 +21,7 @@ func _on_Start_pressed():
 		GameState.rpc("set_driver_id", Grid.selected[0], get_tree().get_network_unique_id())
 		gameRoot.VehicleManager.start()
 		GameState.hide_mouse()
-		hide()
+		$Intro.hide()
 		GameState.InGame = true
 	else:
 		print(GameState.DriverID)
@@ -28,7 +29,7 @@ func _on_Start_pressed():
 		if GameState.DriverID.has(Grid.selected[0]):
 			gameRoot.VehicleManager.start()
 			GameState.hide_mouse()
-			hide()
+			$Intro.hide()
 			GameState.InGame = true
 		else:
 			set_status("Driver must join first")
@@ -39,23 +40,23 @@ func _on_Join_pressed():
 
 
 func _on_Host_pressed():
-	$Panel/Start.disabled = false
+#	Start.disabled = true
 	gameRoot.NetworkManager.setup_host()
 
 func set_status(msg):
-	$Panel/Status.text = str(msg)
+	Status.text = str(msg)
 
 func disable_options():
-	$Panel/Host.disabled = true
-	$Panel/Join.disabled = true
-	$Panel/Start.disabled = false
+	Host.disabled = true
+	Join.disabled = true
+	Start.disabled = false
 	Grid.set_all_roles(false)
 
 func enable_options():
-	$Panel/Host.disabled = false
-	$Panel/Join.disabled = false
-	$Panel/Start.disabled = true
+	Host.disabled = false
+	Join.disabled = false
+	Start.disabled = true
 	Grid.set_all_roles(true)
 
 func get_ip():
-	return $Panel/IP.text
+	return IPadd.text
