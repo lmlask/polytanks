@@ -1,16 +1,11 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/shell_test.gd" type="Script" id=1]
-[ext_resource path="res://Materials/Toon/Projectiles/Pzgr39_75mm/fuze.material" type="Material" id=2]
 [ext_resource path="res://Materials/Toon/Projectiles/Pzgr39_75mm/band.material" type="Material" id=3]
-[ext_resource path="res://Materials/Toon/Projectiles/Pzgr39_75mm/tip.material" type="Material" id=4]
-[ext_resource path="res://Materials/Toon/Projectiles/Pzgr39_75mm/body.material" type="Material" id=5]
 [ext_resource path="res://Materials/Toon/Projectiles/Pzgr39_75mm/body.material" type="Material" id=6]
 [ext_resource path="res://Materials/Toon/Projectiles/Pzgr39_75mm/tip.material" type="Material" id=7]
 [ext_resource path="res://Materials/Toon/Projectiles/Pzgr39_75mm/bands.material" type="Material" id=8]
 [ext_resource path="res://Materials/Toon/Projectiles/Pzgr39_75mm/fuze.material" type="Material" id=9]
-
-
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "shell"
@@ -21,7 +16,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 288,
-"material": ExtResource( 5 ),
+"material": ExtResource( 6 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 89
@@ -33,7 +28,7 @@ surfaces/1 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 102,
-"material": ExtResource( 4 ),
+"material": ExtResource( 7 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 38
@@ -57,7 +52,7 @@ surfaces/3 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 102,
-"material": ExtResource( 2 ),
+"material": ExtResource( 9 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 24
@@ -85,5 +80,4 @@ transform = Transform( 27.5774, 0, 0, 0, -4.49293e-06, 27.5774, 0, -27.5774, -4.
 
 [node name="CollisionShape" type="CollisionShape" parent="shell/Area"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0858359 )
-visible = false
 shape = SubResource( 2 )
