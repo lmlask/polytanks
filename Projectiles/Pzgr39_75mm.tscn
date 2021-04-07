@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scripts/shell_test.gd" type="Script" id=1]
 [ext_resource path="res://Materials/Toon/Projectiles/Pzgr39_75mm/band.material" type="Material" id=3]
@@ -62,6 +62,23 @@ surfaces/3 = {
 radius = 0.0379197
 height = 0.212755
 
+[sub_resource type="SpatialMaterial" id=3]
+flags_transparent = true
+albedo_color = Color( 0.796078, 0.796078, 0.796078, 0.215686 )
+
+[sub_resource type="ParticlesMaterial" id=4]
+direction = Vector3( 0, 0, 0 )
+spread = 180.0
+flatness = 1.0
+gravity = Vector3( 0, -1, 0 )
+initial_velocity = 10.0
+
+[sub_resource type="SphereMesh" id=5]
+radius = 0.03
+height = 0.061
+radial_segments = 6
+rings = 6
+
 [node name="projectile" type="Spatial"]
 script = ExtResource( 1 )
 
@@ -81,3 +98,14 @@ transform = Transform( 27.5774, 0, 0, 0, -4.49293e-06, 27.5774, 0, -27.5774, -4.
 [node name="CollisionShape" type="CollisionShape" parent="shell/Area"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0858359 )
 shape = SubResource( 2 )
+
+[node name="Particles" type="Particles" parent="shell"]
+transform = Transform( 1, 0, 0, 0, 1, 2.84217e-14, 0, -2.84217e-14, 1, 0, -0.666076, 1.7053e-13 )
+material_override = SubResource( 3 )
+cast_shadow = 0
+amount = 500
+lifetime = 0.2
+visibility_aabb = AABB( -0.929575, -4, -0.899413, 1.85915, 8, 1.79883 )
+local_coords = false
+process_material = SubResource( 4 )
+draw_pass_1 = SubResource( 5 )
