@@ -1,6 +1,7 @@
 extends RigidBody
 
 func _ready():
+	apply_impulse(Vector3(randf(), .1, randf()) - Vector3.ONE * 0.75, -translation.normalized() / 10 + Vector3.UP * 10)
 	var material : SpatialMaterial = $MeshInstance.mesh.surface_get_material(0)
 	if not material:
 		return

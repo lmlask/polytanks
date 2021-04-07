@@ -1,6 +1,6 @@
 extends Spatial
 
-var life:float = 2.0
+var life:float = 4.0
 var last_pos
 onready var mat = $shell/Particles.process_material
 
@@ -9,7 +9,7 @@ func _ready():
 
 func _process(delta):
 	#Lifetime
-	life -= (delta/2)
+	life -= delta
 	
 	#Update last_pos
 	last_pos = transform.origin
