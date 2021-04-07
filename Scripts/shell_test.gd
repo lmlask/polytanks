@@ -8,7 +8,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	life -= delta
-	transform.origin += transform.basis.z
+	transform.origin += transform.basis.z * delta #Multiplying by delta to prevent framerate-dependent shell speed
 	rotate(transform.basis.x, delta/15)
 	if life < 0.0:
 		queue_free()
