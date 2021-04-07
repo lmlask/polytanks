@@ -47,10 +47,6 @@ config/icon="res://icon.png"
 GameState="*res://Scripts/Singletons/GameState.gd"
 DrawLine3D="*res://Scripts/Singletons/DrawLine3D.gd"
 
-[debug]
-
-settings/fps/force_fps=100
-
 [display]
 
 window/size/width=1280
