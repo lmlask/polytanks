@@ -1207,6 +1207,7 @@ turnModifier = 0.8
 script = ExtResource( 11 )
 
 [node name="shell_test" type="MeshInstance" parent="TurretController"]
+visible = false
 mesh = SubResource( 3 )
 material/0 = null
 script = ExtResource( 7 )

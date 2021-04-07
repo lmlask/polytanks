@@ -9,7 +9,7 @@ export var zoomStep : float = 2
 export var zoomYStep : float = 0.15
 export var verticalSensitivity : float = 0.002
 export var horizontalSensitivity : float = 0.002
-export var camYOffset : float = 4.0
+export var camYOffset : float = 3.0
 export var camLerpSpeed : float = 16.0
 export(NodePath) var target
 
@@ -17,11 +17,14 @@ export(NodePath) var target
 onready var _camTarget : Spatial = get_node("../TestLevel")
 var _cam : ClippedCamera
 var _curZoom : float = 0.0
+var canrotx = false
 
 func _ready() -> void:
 	# Setup node references
 #	_camTarget = get_node(target) #set by script
 	_cam = get_node("ClippedCamera")
+	rotate_y(-PI/2)
+	rotation.x = -PI/8
 	
 	# Setup camera position in rig
 	_cam.translate(Vector3(0,camYOffset,maxZoom))
@@ -31,7 +34,8 @@ func _input(event) -> void:
 	if event is InputEventMouseMotion:
 		# Rotate the rig around the target
 		rotate_y(-event.relative.x * horizontalSensitivity)
-		rotation.x = clamp(rotation.x - event.relative.y * verticalSensitivity, deg2rad(minPitch), deg2rad(maxPitch))
+		if canrotx:
+			rotation.x = clamp(rotation.x - event.relative.y * verticalSensitivity, deg2rad(minPitch), deg2rad(maxPitch))
 		orthonormalize()
 		
 	if event is InputEventMouseButton:

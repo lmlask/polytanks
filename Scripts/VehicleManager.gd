@@ -34,37 +34,25 @@ func _process(_delta):
 		vehicle.global_transform = vehicleStartTransform
 
 func start():
-#	get_parent().call_deferred("add_child", vehicle)
 	for i in tanks:
 		i.queue_free() #delete intro tanks
 	GameState.setup_debug() #fix this, make it optional
 	get_parent().add_child(vehicle)
-#	get_parent().add_child(other_vehicle)
-#	if GameState.mode == GameState.Mode.Client: #fix this, dont expand
-#	vehicle.translation = start[NM.players.keys().find(get_tree().get_network_unique_id())]
 	vehicle.translation = start[GameState.tank]
+	vehicle.rotate_y(-PI/2) #shouldnt be fixed
+	vehicle.next_transform(vehicle.transform)
 	players[get_tree().get_network_unique_id()] = vehicle
 	if GameState.role == GameState.Role.Driver:
 		vehicle.name = str(get_tree().get_network_unique_id()) #set tank name to id as this is driver
 	else:
 		vehicle.name = str(GameState.DriverID[GameState.tank]) #set tank name to id of driver
-		
-#		vehicle.translation = start[1]
-#		other_vehicle.translation = start[0]
-#	else:
-#		vehicle.translation = start[0] 
-#		other_vehicle.translation = start[1]
-	vehicle.rotate_y(-PI/2)
 	vehicle.VehicleMan = self #dont think this is a good idea
-#	other_vehicle.rotate_y(-PI/2)
 	vehicle.auto = false #set manual control
-#	other_vehicle.auto = false #set manual control
 	
 	vehicleStartTransform = vehicle.global_transform
 	$"../CameraRig"._camTarget = vehicle #give cam target
-	
+	$"../CameraRig".canrotx = true #make cam rotatable on x
 	$"../DebugUI".enable()
-#	rpc("start_remote_tank")
 	#add additional vehicles for testing
 	rpc("get_remote_tanks") #get remote tanks
 	if GameState.role == GameState.Role.Driver: #dont add tanks if this is not driver
@@ -100,6 +88,7 @@ func load_intro_tanks():
 		tank.VehicleMan = self
 		tanks.append(tank)
 	
+	$"../CameraRig"._camTarget = tanks[rand_range(0,tanks.size())]
 	tanks[0].translation = Vector3(-10,0.5,-12)
 	tanks[1].translation = Vector3(6,0.5,-12)
 	tanks[2].translation = Vector3(14,0.5,-12)
