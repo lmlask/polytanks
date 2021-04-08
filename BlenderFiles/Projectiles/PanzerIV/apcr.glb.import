@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/pzgr_39_75mm.glb-cfac72e30eb71eb64e356702327eba29.scn"
+path="res://.import/apcr.glb-6fb9294dbd735c0a7609d35f174f6071.scn"
 
 [deps]
 
-source_file="res://BlenderFiles/Projectiles/pzgr_39_75mm.glb"
-dest_files=[ "res://.import/pzgr_39_75mm.glb-cfac72e30eb71eb64e356702327eba29.scn" ]
+source_file="res://BlenderFiles/Projectiles/PanzerIV/apcr.glb"
+dest_files=[ "res://.import/apcr.glb-6fb9294dbd735c0a7609d35f174f6071.scn" ]
 
 [params]
 

@@ -9,7 +9,8 @@ onready var turret = owner.get_node("Visuals/turret")
 onready var roleController = owner.get_node("RoleController")
 onready var crankslow = preload("res://Sfx/crank_slow.wav")
 onready var crankfast = preload("res://Sfx/crank_fast.wav")
-onready var pzgr39 = preload("res://Projectiles/Pzgr39_75mm.tscn")
+
+export var shell_scene = preload("res://Projectiles/PanzerIV/HE.tscn")
 
 var traverse_multiplier = 0.4 
 var elevation_multiplier = 1 
@@ -68,7 +69,7 @@ func toggleTraverseMode():
 	
 func fire():
 	#spawning shell
-	var shell = pzgr39.instance()
+	var shell = shell_scene.instance()
 	shell.global_transform = turret.get_node("gun/gunMesh/barrel/projectile_spawner").global_transform
 	add_child(shell)
 	shell.show()
