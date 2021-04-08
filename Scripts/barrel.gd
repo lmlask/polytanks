@@ -22,8 +22,14 @@ func _process(delta):
 
 func recoil():
 	if state == "idle":
-		$projectile_spawner/CPUParticles.restart()
-		$projectile_spawner/CPUParticles.emitting = true
+		$projectile_spawner/MuzzleFlash1.restart()
+		$projectile_spawner/MuzzleFlash1.emitting = true
+		$projectile_spawner/MuzzleFlash2.restart()
+		$projectile_spawner/MuzzleFlash2.emitting = true
+		$projectile_spawner/MuzzleFlash3.restart()
+		$projectile_spawner/MuzzleFlash3.emitting = true
+		$projectile_spawner/Smoke.restart()
+		$projectile_spawner/Smoke.emitting = true
 		$projectile_spawner/OmniLight.visible = true
 		$projectile_spawner/OmniLight.light_energy = 16
 		state = "back"
