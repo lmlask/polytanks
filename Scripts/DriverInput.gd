@@ -32,7 +32,6 @@ func manageThrottle(delta):
 	# Manage throttle
 	if Input.is_action_pressed("ui_up"):
 		engine.throttle = lerp(engine.throttle, 1.0, delta*2)
-		print(engine.throttle)
 		engine.throttle = clamp(engine.throttle, 0.0,1.0)
 #		if engine.throttle > 0.99:
 #			engine.throttle = 1
