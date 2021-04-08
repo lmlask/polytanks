@@ -40,6 +40,7 @@ func _player_connected(id):
 func _player_disconnected(id):
 	print("_player_disconnected-", id)
 	players.erase(id)
+	GameState.remove_role(id)
 	
 func _connected_ok():
 	print("_connected_ok")
@@ -57,6 +58,7 @@ func _server_disconnected():
 	GameState.mode = null
 	intro.enable_options()
 	get_tree().network_peer = null
+	
 
 #func _process(delta):
 #	timer += delta

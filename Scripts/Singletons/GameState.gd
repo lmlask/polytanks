@@ -34,6 +34,11 @@ remotesync func set_roles(t,r,id):
 		rpc_id(id, "update_roles", roles)
 	RoleSelect.setup_panel()
 	
+remote func remove_role(id):
+	for i in roles:
+		if roles[i] == id:
+			roles.erase(i)
+	
 
 func change_roles(i):
 	print("try to change roles")
