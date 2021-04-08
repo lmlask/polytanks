@@ -11,7 +11,7 @@ onready var rev2 = preload("res://Sfx/rev2.wav")
 var gear_sounds
 
 var enginePower = 0
-export var state = "OFF"
+export var state = "OFF" #should be an enum
 
 export var maxEnginePower : float
 export var brakeForce : float

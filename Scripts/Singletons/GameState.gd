@@ -83,8 +83,9 @@ func _input(event) -> void:
 			debugMode = false
 		else:
 			debugMode = true
-	if Input.is_action_just_pressed("F2") and InGame:
-		RoleSelect.toggle()
+	if Input.is_action_just_pressed("F2") and InGame: #move to roles
+		if gameRoot.VehicleManager.vehicle.engine.state == "OFF WARM": #enum this
+			RoleSelect.toggle()
 
 func hide_mouse():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
