@@ -6,6 +6,7 @@ extends Node
 # var b = "text"
 
 onready var turret = owner.get_node("Visuals/turret")
+onready var barrel = owner.get_node("Visuals/turret/gun/gunMesh/barrel")
 onready var roleController = owner.get_node("RoleController")
 onready var crankslow = preload("res://Sfx/crank_slow.wav")
 onready var crankfast = preload("res://Sfx/crank_fast.wav")
@@ -74,3 +75,6 @@ func fire():
 	add_child(shell)
 	shell.show()
 	shell.set_process(true)
+	
+	#barrel recoil anim
+	barrel.recoil()
