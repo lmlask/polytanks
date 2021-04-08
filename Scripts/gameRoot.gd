@@ -25,5 +25,5 @@ func _process(delta):
 	timer += delta
 	if timer > 1.0:
 		timer -= 1.0
-		print("Role, ID ", GameState.roles)
+#		print("Role, ID ", GameState.roles)
 		print("Tank, ID ", GameState.DriverID)

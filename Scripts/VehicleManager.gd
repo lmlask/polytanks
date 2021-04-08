@@ -21,8 +21,8 @@ func _ready():
 
 func _process(_delta):
 	timer += _delta
-	if timer > 0.1 and get_tree().has_network_peer(): #not a good solution
-		if GameState.role == GameState.Role.Driver:
+	if timer > 0.1 and GameState.DriverID.has(GameState.tank): #not a good solution
+		if GameState.DriverID[GameState.tank] == get_tree().get_network_unique_id():
 			rpc("set_pos", vehicle.transform)
 		if GameState.role == GameState.Role.Gunner:
 			rpc("set_tur", vehicle.get_node("Visuals/turret").rotation,vehicle.get_node("Visuals/turret/gun").rotation, str(GameState.DriverID[GameState.tank]) )

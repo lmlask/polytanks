@@ -24,9 +24,26 @@ func _ready() -> void:
 remotesync func set_roles(t,r,id):
 	if not t == tank:
 		return
+	for zr in roles:
+		if roles[zr] == id:
+			roles.erase(zr)
 	roles[r] = id
+	if r == Role.Driver:
+		rpc("set_driver_id", tank, id)
 	if role == Role.Driver and not id == DriverID[tank]:
 		rpc_id(id, "update_roles", roles)
+	RoleSelect.setup_panel()
+
+func change_roles(i):
+	print("change roles")
+#	if role == Role.Driver:
+#		roles.erase(Role.Driver)
+#		role = Role.None
+	if roles.has(i):
+		print("role taken")
+		return
+	rpc("set_roles",tank,i,get_tree().get_network_unique_id())
+	role = i
 
 remote func update_roles(r):
 	roles = r
@@ -34,6 +51,11 @@ remote func update_roles(r):
 remotesync func set_driver_id(tank, id):
 #	print("set driver",tank,id)
 	DriverID[tank] = id
+	if not role == Role.Driver:
+		var nid = str(get_tree().get_network_unique_id())
+		var node = gameRoot.find_node(nid,false)
+		if node is Spatial:
+			node.name = id
 #	print(DriverID)
 
 func setup_debug():
