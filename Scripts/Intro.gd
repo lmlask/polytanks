@@ -15,21 +15,21 @@ func _ready():
 	pass
 
 func _on_Start_pressed():
-	GameState.tank = Grid.selected[0]
-	GameState.role = Grid.selected[1]
+#	GameState.tank = Grid.selected[0]
+#	GameState.role = Grid.selected[1]
 	if GameState.role == GameState.Role.Driver:
-		GameState.rpc("set_driver_id", Grid.selected[0], get_tree().get_network_unique_id())
+		GameState.rpc("set_driver_id", GameState.tank, get_tree().get_network_unique_id())
 		setup_game()
 	else:
 		print(GameState.DriverID)
-		print(Grid.selected[0])
-		if GameState.DriverID.has(Grid.selected[0]):
+		print(GameState.tank)
+		if GameState.DriverID.has(GameState.tank):
 			setup_game()
 		else:
 			set_status("Driver must join first")
 
 func setup_game():
-	GameState.rpc("set_roles", Grid.selected[0],Grid.selected[1],get_tree().get_network_unique_id())
+	GameState.rpc("set_roles", GameState.tank,GameState.role,get_tree().get_network_unique_id())
 	gameRoot.VehicleManager.start()
 	GameState.hide_mouse()
 	$Panel.hide()

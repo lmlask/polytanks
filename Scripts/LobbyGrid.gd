@@ -16,6 +16,9 @@ func set_all_roles(state):
 			if j is Button:
 				j.disabled = state
 	
-remotesync func disable_role():
+remotesync func disable_role(j=false):
+	if j:
+		set_all_roles(false)
 	for i in get_children():
-		i.rpc("disable_role",selected[0],selected[1])
+#		i.rpc("disable_role",selected[0],selected[1])
+		i.rpc("disable_role",GameState.tank,GameState.role)

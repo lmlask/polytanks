@@ -20,7 +20,9 @@ func _on_Gunner_pressed():
 remotesync func select(tank, role):
 	get_parent().set_all_roles(false)
 	if get_tree().get_network_unique_id() == get_tree().get_rpc_sender_id():
-		get_parent().selected = [tank,role]
+#		get_parent().selected = [tank,role]
+		GameState.tank = tank
+		GameState.role = role
 	get_parent().rpc("disable_role")
 	
 remotesync func disable_role(tank,role):

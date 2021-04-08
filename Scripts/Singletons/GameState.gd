@@ -33,6 +33,7 @@ remotesync func set_roles(t,r,id):
 	if role == Role.Driver and not id == DriverID[tank]:
 		rpc_id(id, "update_roles", roles)
 	RoleSelect.setup_panel()
+	
 
 func change_roles(i):
 	print("try to change roles")
@@ -44,6 +45,7 @@ func change_roles(i):
 		return
 	rpc("set_roles",tank,i,get_tree().get_network_unique_id())
 	role = i
+	gameRoot.get_node("Lobby").Grid.rpc("disable_role", true)
 
 remote func update_roles(r):
 	roles = r
