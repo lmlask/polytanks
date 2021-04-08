@@ -1526,7 +1526,7 @@ omni_shadow_detail = 0
 [node name="gunSoundExterior" type="AudioStreamPlayer3D" parent="Visuals/turret/gun/gunMesh/barrel"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.895433 )
 stream = ExtResource( 12 )
-unit_db = 2.0
+unit_db = 1.0
 unit_size = 30.0
 
 [node name="Tracks" type="Spatial" parent="."]
