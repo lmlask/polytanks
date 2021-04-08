@@ -35,7 +35,7 @@ remotesync func set_roles(t,r,id):
 	RoleSelect.setup_panel()
 
 func change_roles(i):
-	print("change roles")
+	print("try to change roles")
 #	if role == Role.Driver:
 #		roles.erase(Role.Driver)
 #		role = Role.None
@@ -50,12 +50,16 @@ remote func update_roles(r):
 
 remotesync func set_driver_id(tank, id):
 #	print("set driver",tank,id)
+#	DriverID[tank] = id
+#	if not role == Role.Driver:
+#	var nid = str(get_tree().get_network_unique_id())
+	if DriverID.size() > 0:
+		var node = gameRoot.find_node(str(DriverID[tank]),false,false)  #!!!! DONT DO THIS FIX IT
+	#		print(node)
+		if node is RigidBody:#!!!! DONT DO THIS FIX IT
+			node.name = str(id) #This however is correct, I think
+	#			print(node.name)
 	DriverID[tank] = id
-	if not role == Role.Driver:
-		var nid = str(get_tree().get_network_unique_id())
-		var node = gameRoot.find_node(nid,false)
-		if node is Spatial:
-			node.name = id
 #	print(DriverID)
 
 func setup_debug():
