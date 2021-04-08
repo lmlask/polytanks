@@ -17,8 +17,3 @@ func _ready():
 		var house = $TestLevel/house.duplicate()
 		house.translation.x += 15 * i
 		$TestLevel.add_child(house)
-	
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass

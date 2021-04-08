@@ -5,7 +5,6 @@
 [ext_resource path="res://Scripts/LobbyGrid.gd" type="Script" id=3]
 [ext_resource path="res://Scripts/LobbyTank.gd" type="Script" id=4]
 
-
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.6, 0.6, 0.6, 0.133333 )
 
@@ -13,14 +12,7 @@ bg_color = Color( 0.6, 0.6, 0.6, 0.133333 )
 layer = 2
 script = ExtResource( 1 )
 
-[node name="Intro" type="Control" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Panel" type="Panel" parent="Intro"]
+[node name="Panel" type="Panel" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -2.0
@@ -31,7 +23,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Intro/Panel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
 anchor_left = 0.5
 anchor_top = 0.3
 anchor_right = 0.5
@@ -45,12 +37,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Intro/Panel/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
 margin_right = 888.0
 margin_bottom = 59.0
 size_flags_horizontal = 4
 
-[node name="Host" type="Button" parent="Intro/Panel/VBoxContainer/HBoxContainer"]
+[node name="Host" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
 margin_right = 134.0
 margin_bottom = 59.0
 custom_fonts/font = ExtResource( 2 )
@@ -59,7 +51,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Join" type="Button" parent="Intro/Panel/VBoxContainer/HBoxContainer"]
+[node name="Join" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
 margin_left = 138.0
 margin_right = 262.0
 margin_bottom = 59.0
@@ -69,7 +61,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="IP" type="LineEdit" parent="Intro/Panel/VBoxContainer/HBoxContainer"]
+[node name="IP" type="LineEdit" parent="Panel/VBoxContainer/HBoxContainer"]
 margin_left = 266.0
 margin_right = 741.0
 margin_bottom = 59.0
@@ -81,7 +73,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Start" type="Button" parent="Intro/Panel/VBoxContainer/HBoxContainer"]
+[node name="Start" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
 margin_left = 745.0
 margin_right = 888.0
 margin_bottom = 59.0
@@ -91,7 +83,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Status" type="Label" parent="Intro/Panel/VBoxContainer"]
+[node name="Status" type="Label" parent="Panel/VBoxContainer"]
 margin_left = 444.0
 margin_top = 63.0
 margin_right = 444.0
@@ -103,7 +95,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LobbyGrid" type="GridContainer" parent="Intro/Panel/VBoxContainer"]
+[node name="LobbyGrid" type="GridContainer" parent="Panel/VBoxContainer"]
 margin_top = 116.0
 margin_right = 888.0
 margin_bottom = 283.0
@@ -115,12 +107,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Tank1" type="VBoxContainer" parent="Intro/Panel/VBoxContainer/LobbyGrid"]
+[node name="Tank1" type="VBoxContainer" parent="Panel/VBoxContainer/LobbyGrid"]
 margin_right = 211.0
 margin_bottom = 167.0
 script = ExtResource( 4 )
 
-[node name="Label" type="Label" parent="Intro/Panel/VBoxContainer/LobbyGrid/Tank1"]
+[node name="Label" type="Label" parent="Panel/VBoxContainer/LobbyGrid/Tank1"]
 margin_right = 211.0
 margin_bottom = 49.0
 custom_fonts/font = ExtResource( 2 )
@@ -129,7 +121,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Driver" type="Button" parent="Intro/Panel/VBoxContainer/LobbyGrid/Tank1"]
+[node name="Driver" type="Button" parent="Panel/VBoxContainer/LobbyGrid/Tank1"]
 margin_top = 53.0
 margin_right = 211.0
 margin_bottom = 108.0
@@ -139,7 +131,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Gunner" type="Button" parent="Intro/Panel/VBoxContainer/LobbyGrid/Tank1"]
+[node name="Gunner" type="Button" parent="Panel/VBoxContainer/LobbyGrid/Tank1"]
 margin_top = 112.0
 margin_right = 211.0
 margin_bottom = 167.0
@@ -148,8 +140,8 @@ text = "Gunner"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="Intro/Panel/VBoxContainer/HBoxContainer/Host" to="." method="_on_Host_pressed"]
-[connection signal="pressed" from="Intro/Panel/VBoxContainer/HBoxContainer/Join" to="." method="_on_Join_pressed"]
-[connection signal="pressed" from="Intro/Panel/VBoxContainer/HBoxContainer/Start" to="." method="_on_Start_pressed"]
-[connection signal="pressed" from="Intro/Panel/VBoxContainer/LobbyGrid/Tank1/Driver" to="Intro/Panel/VBoxContainer/LobbyGrid/Tank1" method="_on_Driver_pressed"]
-[connection signal="pressed" from="Intro/Panel/VBoxContainer/LobbyGrid/Tank1/Gunner" to="Intro/Panel/VBoxContainer/LobbyGrid/Tank1" method="_on_Gunner_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/Host" to="." method="_on_Host_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/Join" to="." method="_on_Join_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/Start" to="." method="_on_Start_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/LobbyGrid/Tank1/Driver" to="Panel/VBoxContainer/LobbyGrid/Tank1" method="_on_Driver_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/LobbyGrid/Tank1/Gunner" to="Panel/VBoxContainer/LobbyGrid/Tank1" method="_on_Gunner_pressed"]

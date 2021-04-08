@@ -2,12 +2,12 @@ extends CanvasLayer
 class_name Intro #intro? rename this
 
 var gameRoot:gameRoot
-onready var Grid = $Intro/Panel/VBoxContainer/LobbyGrid
-onready var Host = $Intro/Panel/VBoxContainer/HBoxContainer/Host
-onready var Join = $Intro/Panel/VBoxContainer/HBoxContainer/Join
-onready var IPadd = $Intro/Panel/VBoxContainer/HBoxContainer/IP
-onready var Start = $Intro/Panel/VBoxContainer/HBoxContainer/Start
-onready var Status = $Intro/Panel/VBoxContainer/Status
+onready var Grid = $Panel/VBoxContainer/LobbyGrid
+onready var Host = $Panel/VBoxContainer/HBoxContainer/Host
+onready var Join = $Panel/VBoxContainer/HBoxContainer/Join
+onready var IPadd = $Panel/VBoxContainer/HBoxContainer/IP
+onready var Start = $Panel/VBoxContainer/HBoxContainer/Start
+onready var Status = $Panel/VBoxContainer/Status
 
 func _ready():
 	set_status("")
@@ -21,7 +21,7 @@ func _on_Start_pressed():
 		GameState.rpc("set_driver_id", Grid.selected[0], get_tree().get_network_unique_id())
 		gameRoot.VehicleManager.start()
 		GameState.hide_mouse()
-		$Intro.hide()
+		$Panel.hide()
 		GameState.InGame = true
 	else:
 		print(GameState.DriverID)
@@ -29,7 +29,7 @@ func _on_Start_pressed():
 		if GameState.DriverID.has(Grid.selected[0]):
 			gameRoot.VehicleManager.start()
 			GameState.hide_mouse()
-			$Intro.hide()
+			$Panel.hide()
 			GameState.InGame = true
 		else:
 			set_status("Driver must join first")
