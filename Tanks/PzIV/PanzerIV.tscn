@@ -1,4 +1,4 @@
-[gd_scene load_steps=91 format=2]
+[gd_scene load_steps=95 format=2]
 
 [ext_resource path="res://Tanks/PzIV/Players/Driver.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Tanks/PzIV/Players/Gunner.tscn" type="PackedScene" id=2]
@@ -796,6 +796,25 @@ surfaces/2 = {
 "vertex_count": 8
 }
 
+[sub_resource type="SpatialMaterial" id=71]
+flags_transparent = true
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SphereMesh" id=72]
+material = SubResource( 71 )
+radius = 0.25
+height = 0.5
+radial_segments = 8
+rings = 4
+
+[sub_resource type="Curve" id=74]
+max_value = 100.0
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 94.0909 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=73]
+offsets = PoolRealArray( 0, 0.25, 0.5 )
+colors = PoolColorArray( 1, 1, 0, 0.294118, 0, 0, 0, 0.294118, 0, 0, 0, 0 )
+
 [sub_resource type="ArrayMesh" id=36]
 surfaces/0 = {
 "aabb": AABB( -1.38167, 0.0303699, -2.80564, 0.386008, 1.11388, 5.46577 ),
@@ -1421,6 +1440,29 @@ script = ExtResource( 7 )
 
 [node name="projectile_spawner" type="Spatial" parent="Visuals/turret/gun/gunMesh/barrel"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.24479 )
+
+[node name="CPUParticles" type="CPUParticles" parent="Visuals/turret/gun/gunMesh/barrel/projectile_spawner"]
+emitting = false
+amount = 250
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+lifetime_randomness = 1.0
+local_coords = false
+mesh = SubResource( 72 )
+direction = Vector3( 0, 0, 1 )
+spread = 15.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 50.0
+initial_velocity_random = 1.0
+damping = 100.0
+damping_curve = SubResource( 74 )
+color_ramp = SubResource( 73 )
+
+[node name="OmniLight" type="OmniLight" parent="Visuals/turret/gun/gunMesh/barrel/projectile_spawner"]
+light_energy = 0.0
+omni_shadow_detail = 0
 
 [node name="gunSoundExterior" type="AudioStreamPlayer3D" parent="Visuals/turret/gun/gunMesh/barrel"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.895433 )
