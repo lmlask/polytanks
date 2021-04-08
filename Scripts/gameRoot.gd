@@ -4,6 +4,8 @@ class_name gameRoot
 onready var VehicleManager = $VehicleManager
 onready var NetworkManager = $NetworkManager
 
+var timer = 0.0 #User for debug
+
 func _ready():
 	$Lobby.gameRoot = self
 	$NetworkManager.intro = $Lobby
@@ -17,3 +19,11 @@ func _ready():
 		var house = $TestLevel/house.duplicate()
 		house.translation.x += 15 * i
 		$TestLevel.add_child(house)
+
+#Used for debug, comment out if needed
+func _process(delta):
+	timer += delta
+	if timer > 1.0:
+		timer -= 1.0
+		print("Role, ID ", GameState.roles)
+		print("Tank, ID ", GameState.DriverID)

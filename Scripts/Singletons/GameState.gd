@@ -5,6 +5,7 @@ var mouseHidden : bool = false
 var debugMode : bool = false
 var DebugUI = load("res://Scenes/DebugUI.tscn").instance()
 onready var gameRoot = get_node("/root/gameRoot")
+onready var RoleSelect = gameRoot.get_node("Roles")
 enum Mode {Host, Client}
 enum Role {None, Driver, Gunner}
 var mode
@@ -12,12 +13,23 @@ var role:int
 var tank:int
 var InGame = false
 puppet var DriverID = {}
+var roles = {}
 
 func _ready() -> void:
 	pass
 #	gameRoot.add_child(DebugUI) #make optional
 #	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 #	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+remotesync func set_roles(t,r,id):
+	if not t == tank:
+		return
+	roles[r] = id
+	if role == Role.Driver and not id == DriverID[tank]:
+		rpc_id(id, "update_roles", roles)
+
+remote func update_roles(r):
+	roles = r
 
 remotesync func set_driver_id(tank, id):
 #	print("set driver",tank,id)
@@ -38,6 +50,8 @@ func _input(event) -> void:
 			debugMode = false
 		else:
 			debugMode = true
+	if Input.is_action_just_pressed("F2") and InGame:
+		RoleSelect.toggle()
 
 func hide_mouse():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)

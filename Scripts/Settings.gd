@@ -22,9 +22,13 @@ func _on_Save_pressed():
 	settings.close()
 
 func _input(event):
-	if event is InputEventKey:
-		if event.scancode == KEY_F1 and event.pressed and not event.echo:
-			$Panel.visible = !$Panel.visible
+	if Input.is_action_just_pressed("F1"):
+		$Panel.visible = !$Panel.visible
+		if $Panel.visible: #merge into a function
+			GameState.show_mouse()
+		else:
+			GameState.hide_mouse()
+			
 
 func load_settings():
 	var settings = File.new()
