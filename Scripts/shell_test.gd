@@ -2,7 +2,7 @@ extends Spatial
 
 var life:float = 4.0
 var last_pos
-onready var mat = $shell/Particles.process_material
+onready var mat = $Particles.process_material
 
 func _ready():
 	set_process(false)
@@ -20,7 +20,7 @@ func _process(delta):
 	
 	#Particle emission extents
 	#Put particle box halfway between the last shell position and the current one
-	$shell/Particles.global_transform.origin = ((last_pos + global_transform.origin)/2)
+	$Particles.global_transform.origin = ((last_pos + global_transform.origin)/2)
 	#Set box boundaries to be from curr pos to last pos
 	var dist = global_transform.origin.distance_to(last_pos)
 	#for some reason the dist is too small? multiplying it by 10 makes good trails, so be it

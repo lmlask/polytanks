@@ -10,7 +10,7 @@ onready var roleController = owner.get_node("RoleController")
 onready var crankslow = preload("res://Sfx/crank_slow.wav")
 onready var crankfast = preload("res://Sfx/crank_fast.wav")
 
-export var shell_scene = preload("res://Projectiles/PanzerIV/HE.tscn")
+export var shell_scene = preload("res://Projectiles/PanzerIV/Projectile.tscn")
 
 var traverse_multiplier = 0.4 
 var elevation_multiplier = 1 
