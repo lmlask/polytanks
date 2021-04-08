@@ -6,3 +6,5 @@ func _on_Area_area_entered(area):
 	if area.is_in_group("shell") and intact:
 		intact = false
 		$Cube/Destruction.destroy()
+		$Smoke.emitting = true
+		$Pieces.emitting = true
