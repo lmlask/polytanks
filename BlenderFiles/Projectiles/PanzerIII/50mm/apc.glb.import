@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/pzgr_39_50mm.glb-3415f7078de1a46b1fc384d2bc508f70.scn"
+path="res://.import/apc.glb-6f0740789043ae1429bf7a275be8c4c5.scn"
 
 [deps]
 
-source_file="res://BlenderFiles/Projectiles/pzgr_39_50mm.glb"
-dest_files=[ "res://.import/pzgr_39_50mm.glb-3415f7078de1a46b1fc384d2bc508f70.scn" ]
+source_file="res://BlenderFiles/Projectiles/PanzerIII/50mm/apc.glb"
+dest_files=[ "res://.import/apc.glb-6f0740789043ae1429bf7a275be8c4c5.scn" ]
 
 [params]
 

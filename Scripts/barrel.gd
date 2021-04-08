@@ -15,7 +15,6 @@ func _process(delta):
 			state = "idle"
 		else:
 			translation.z = lerp(translation.z, 2.3, delta*3)
-	print(state)
 
 func recoil():
 	if state == "idle":

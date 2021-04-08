@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/pzIV_current.glb-7e362e61d1ca0517951090cd9053dee8.scn"
+path="res://.import/apc.glb-ce306dc8ad2f8bc6f964b9a18ae7fb6d.scn"
 
 [deps]
 
-source_file="res://Tanks/PzIV/pzIV_current.glb"
-dest_files=[ "res://.import/pzIV_current.glb-7e362e61d1ca0517951090cd9053dee8.scn" ]
+source_file="res://BlenderFiles/Projectiles/PanzerIII/37mm/apc.glb"
+dest_files=[ "res://.import/apc.glb-ce306dc8ad2f8bc6f964b9a18ae7fb6d.scn" ]
 
 [params]
 

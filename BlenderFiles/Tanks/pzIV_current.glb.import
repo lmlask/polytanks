@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/shermanv3.glb-98399a02858d2bb2879fcc7b11b633b4.scn"
+path="res://.import/pzIV_current.glb-7077c4dfd0e9b4d4407308fafa32a854.scn"
 
 [deps]
 
-source_file="res://BlenderFiles/shermanv3.glb"
-dest_files=[ "res://.import/shermanv3.glb-98399a02858d2bb2879fcc7b11b633b4.scn" ]
+source_file="res://BlenderFiles/Tanks/pzIV_current.glb"
+dest_files=[ "res://.import/pzIV_current.glb-7077c4dfd0e9b4d4407308fafa32a854.scn" ]
 
 [params]
 

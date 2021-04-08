@@ -1,4 +1,4 @@
-[gd_scene load_steps=90 format=2]
+[gd_scene load_steps=91 format=2]
 
 [ext_resource path="res://Tanks/PzIV/Players/Driver.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Tanks/PzIV/Players/Gunner.tscn" type="PackedScene" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://Scripts/Engine.gd" type="Script" id=9]
 [ext_resource path="res://Sfx/gear3.wav" type="AudioStream" id=10]
 [ext_resource path="res://Scripts/TurretController.gd" type="Script" id=11]
+[ext_resource path="res://Sfx/cannon_close1.wav" type="AudioStream" id=12]
 [ext_resource path="res://Materials/Toon/Tanks/PanzerIV/panzer_iv_desert_camo.tres" type="Material" id=21]
 [ext_resource path="res://Materials/Toon/Tanks/PanzerIV/panzer_iv_wheels.material" type="Material" id=24]
 [ext_resource path="res://Materials/Toon/Tanks/PanzerIV/panzer_iv_dark.tres" type="Material" id=29]
@@ -1420,6 +1421,12 @@ script = ExtResource( 7 )
 
 [node name="projectile_spawner" type="Spatial" parent="Visuals/turret/gun/gunMesh/barrel"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.24479 )
+
+[node name="gunSoundExterior" type="AudioStreamPlayer3D" parent="Visuals/turret/gun/gunMesh/barrel"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.895433 )
+stream = ExtResource( 12 )
+unit_db = 3.0
+unit_size = 30.0
 
 [node name="Tracks" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00549108, 0.550448 )

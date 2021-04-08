@@ -7,7 +7,6 @@
 [ext_resource path="res://Materials/Toon/Tanks/PanzerIV/panzer_iv_desert_camo.tres" type="Material" id=5]
 [ext_resource path="res://Materials/Toon/Tanks/PanzerIV/panzer_iv_green.tres" type="Material" id=6]
 
-
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "trackR"
 surfaces/0 = {

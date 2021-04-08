@@ -7,6 +7,7 @@ extends Node
 
 onready var turret = owner.get_node("Visuals/turret")
 onready var barrel = owner.get_node("Visuals/turret/gun/gunMesh/barrel")
+onready var muzzleSound = owner.get_node("Visuals/turret/gun/gunMesh/barrel/gunSoundExterior")
 onready var roleController = owner.get_node("RoleController")
 onready var crankslow = preload("res://Sfx/crank_slow.wav")
 onready var crankfast = preload("res://Sfx/crank_fast.wav")
@@ -78,3 +79,6 @@ func fire():
 	
 	#barrel recoil anim
 	barrel.recoil()
+	
+	#sound
+	muzzleSound.play()
