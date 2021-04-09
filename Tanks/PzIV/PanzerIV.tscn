@@ -1417,6 +1417,7 @@ material/0 = ExtResource( 31 )
 
 [node name="cupola_details" type="MeshInstance" parent="Visuals/turret"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000597134, 0.77103, -0.786425 )
+visible = false
 material_override = ExtResource( 24 )
 mesh = SubResource( 33 )
 material/0 = null
@@ -2049,7 +2050,8 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07257, -2.44165 )
 shape = SubResource( 75 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( -0.0669183, -0.856454, 0.511867, 0, 0.513017, 0.858378, -0.997759, 0.0574412, -0.0343302, 7.46909, 4.29583, -5.30854e-08 )
+transform = Transform( -0.0669183, -0.966382, -0.24825, -2.17515e-08, -0.248808, 0.968553, -0.997758, 0.0648139, 0.0166498, 7.46909, 4.29583, -5.30854e-08 )
+shadow_enabled = true
 editor_only = true
 
 [node name="CrosshairContainer" type="CenterContainer" parent="."]
