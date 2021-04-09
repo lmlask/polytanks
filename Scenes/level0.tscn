@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scenes/Lobby.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Objects/TestLevel.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Settings.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Objects/ExternalCamera.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Objects/VehicleManager.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scripts/FloorFinder.gd" type="Script" id=6]
 [ext_resource path="res://Scenes/Roles.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scripts/gameRoot.gd" type="Script" id=13]
 [ext_resource path="res://Scripts/NetworkManager.gd" type="Script" id=15]
@@ -13,6 +14,13 @@
 script = ExtResource( 13 )
 
 [node name="VehicleManager" parent="." instance=ExtResource( 5 )]
+
+[node name="FloorFinder" type="Spatial" parent="VehicleManager"]
+script = ExtResource( 6 )
+
+[node name="RayCast" type="RayCast" parent="VehicleManager/FloorFinder"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 500, 0 )
+cast_to = Vector3( 0, -1000, 0 )
 
 [node name="TestLevel" parent="." instance=ExtResource( 2 )]
 

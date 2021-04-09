@@ -2,6 +2,7 @@ extends Node
 
 export(NodePath) var vehiclePath
 onready var vehicle_scene = load("res://Tanks/PzIV/PanzerIV.tscn") #Should be dynamic
+onready var FloorFinder = $FloorFinder
 onready var NM = get_node("../NetworkManager")
 onready var vehicle : RigidBody = vehicle_scene.instance()
 #onready var other_vehicle : RigidBody = vehicle_scene.instance()
@@ -83,7 +84,7 @@ remote func add_tank(t,tid):
 		tank.get_node("Players").queue_free()
 
 func load_intro_tanks():
-	for i in range(11):
+	for i in range(10):
 		var tank = vehicle_scene.instance()
 		get_parent().add_child(tank)
 		tank.rotate_y(-PI/2)
@@ -91,19 +92,29 @@ func load_intro_tanks():
 		tanks.append(tank)
 	
 	$"../CameraRig"._camTarget = tanks[rand_range(0,tanks.size())]
-	tanks[0].translation = Vector3(-10,0.5,-12)
-	tanks[1].translation = Vector3(6,0.5,-12)
-	tanks[2].translation = Vector3(14,0.5,-12)
+#	var data = FloorFinder.find_floor()
+#	tanks[0].transform.basis.y = data[1]
+#	tanks[0].transform = Transform.looking_at(-data[1],Vector3(0,1,0).rotated(Vector3(0,0,0),PI/2))
+#	var tsf = Transform.looking_at(-data[1],Vector3(0,1,0))
+#	tsf = tsf.rotated(tsf.basis.x,PI/2)
 	
-	tanks[3].translation = Vector3(-10,0.5,-16)
-	tanks[4].translation = Vector3(-2,0.5,-16)
-	tanks[5].translation = Vector3(6,0.5,-16)
-	tanks[6].translation = Vector3(14,0.5,-16)
-	
-	tanks[7].translation = Vector3(-10,0.5,-8)
-	tanks[8].translation = Vector3(-2,0.5,-8)
-	tanks[9].translation = Vector3(6,0.5,-8)
-	tanks[10].translation = Vector3(14,0.5,-8)
+#	tanks[0].transform = FloorFinder.find_floor(tanks[0])
+	for t in tanks:
+		FloorFinder.find_floor(t)
+#	tanks[0].transform.origin = data[0] + tsf.basis.y/10
+#	tanks[0].next_transform(tanks[0].transform)
+#	tanks[1].translation = Vector3(6,0.5,-12)
+#	tanks[2].translation = Vector3(14,0.5,-12)
+#
+#	tanks[3].translation = Vector3(-10,0.5,-16)
+#	tanks[4].translation = Vector3(-2,0.5,-16)
+#	tanks[5].translation = Vector3(6,0.5,-16)
+#	tanks[6].translation = Vector3(14,0.5,-16)
+#
+#	tanks[7].translation = Vector3(-10,0.5,-8)
+#	tanks[8].translation = Vector3(-2,0.5,-8)
+#	tanks[9].translation = Vector3(6,0.5,-8)
+#	tanks[10].translation = Vector3(14,0.5,-8)
 	
 func add_random_tank():
 	if tanks.size() > 0 and tanks.size() < 20: #only add tanks when tanks exists, ie game has started
