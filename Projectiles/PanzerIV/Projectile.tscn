@@ -1,13 +1,10 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Projectiles/PanzerIV/shell_particles.material" type="Material" id=1]
 [ext_resource path="res://Scripts/shell_test.gd" type="Script" id=2]
 [ext_resource path="res://Materials/Toon/Projectiles/PanzerIV/shell_green.material" type="Material" id=3]
 [ext_resource path="res://Materials/Toon/Projectiles/PanzerIV/bands_light.material" type="Material" id=4]
 [ext_resource path="res://Materials/Toon/Projectiles/PanzerIV/fuze.material" type="Material" id=5]
-[ext_resource path="res://Materials/Toon/Projectiles/PanzerIV/shell.material" type="Material" id=6]
-[ext_resource path="res://Materials/Toon/Projectiles/PanzerIV/bands.material" type="Material" id=7]
-[ext_resource path="res://Materials/Toon/Projectiles/PanzerIV/cap.material" type="Material" id=8]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "shell"
@@ -191,17 +188,17 @@ material/2 = ExtResource( 5 )
 transform = Transform( 0.0362616, 0, 0, 0, -5.90776e-09, -0.0362616, 0, 0.0362616, -5.90776e-09, 0, 0, 0 )
 visible = false
 mesh = SubResource( 2 )
-material/0 = ExtResource( 6 )
-material/1 = ExtResource( 8 )
-material/2 = ExtResource( 7 )
+material/0 = null
+material/1 = null
+material/2 = null
 material/3 = ExtResource( 5 )
 
 [node name="apcr_model" type="MeshInstance" parent="."]
 transform = Transform( 0.0362616, 0, 0, 0, -5.90776e-09, -0.0362616, 0, 0.0362616, -5.90776e-09, 0, 0, 0 )
 visible = false
 mesh = SubResource( 3 )
-material/0 = ExtResource( 6 )
-material/1 = ExtResource( 7 )
+material/0 = null
+material/1 = null
 material/2 = ExtResource( 5 )
 
 [node name="hollow_model" type="MeshInstance" parent="."]
