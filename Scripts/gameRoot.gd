@@ -11,14 +11,14 @@ func _ready():
 	$NetworkManager.intro = $Lobby
 	VehicleManager.load_intro_tanks()
 	
-	for i in range(20):
-		var house = $TestLevel/house.duplicate()
-		house.translation.z += 15 * i
-		$TestLevel.add_child(house)
-	for i in range(20):
-		var house = $TestLevel/house.duplicate()
-		house.translation.x += 15 * i
-		$TestLevel.add_child(house)
+#	for i in range(10):
+#		var house = $TestLevel/house.duplicate()
+#		house.translation.z += 15 * i
+#		$TestLevel.add_child(house)
+#	for i in range(10):
+#		var house = $TestLevel/house.duplicate()
+#		house.translation.x += 15 * i
+#		$TestLevel.add_child(house)
 
 #Used for debug, comment out if needed
 func _process(delta):
