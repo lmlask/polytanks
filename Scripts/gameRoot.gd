@@ -3,6 +3,7 @@ class_name gameRoot
 
 onready var VehicleManager = $VehicleManager
 onready var NetworkManager = $NetworkManager
+onready var Map = $Map
 
 var timer = 0.0 #User for debug
 
@@ -11,14 +12,7 @@ func _ready():
 	$NetworkManager.intro = $Lobby
 	VehicleManager.load_intro_tanks()
 	
-#	for i in range(10):
-#		var house = $TestLevel/house.duplicate()
-#		house.translation.z += 15 * i
-#		$TestLevel.add_child(house)
-#	for i in range(10):
-#		var house = $TestLevel/house.duplicate()
-#		house.translation.x += 15 * i
-#		$TestLevel.add_child(house)
+
 
 #Used for debug, comment out if needed
 func _process(delta):
@@ -27,3 +21,5 @@ func _process(delta):
 		timer -= 1.0
 #		print("Role, ID ", GameState.roles)
 #		print("Tank, ID ", GameState.DriverID)
+#		print("hostingame", GameState.InGame,GameState.hostInGame)
+#		print("map", GameState.map)

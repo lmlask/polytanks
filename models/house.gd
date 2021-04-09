@@ -16,14 +16,20 @@ func _on_Area_area_entered(area):
 		$Pieces.emitting = true
 		$Cube/Area.queue_free()
 		$Cube/StaticBody.queue_free()
-		material = $house_rubble.mesh.surface_get_material(0)
+		var mesh = $house_rubble.mesh.duplicate()
+		$house_rubble.mesh = mesh
+		$house_rubble.rotate_y(randf()*TAU)
+		material = $house_rubble.mesh.surface_get_material(0).duplicate()
+		$house_rubble.mesh.surface_set_material(0, material)
 		material.albedo_color.a = 0.0
 		col = material.albedo_color
 		$house_rubble.visible = true
 		$house_rubble/StaticBody/CollisionShape.disabled = false
 		set_process(true)
+#		print("start process")
 
 func _process(delta):
+	print(col)
 	if alpha > 0.0:
 		col.a = alpha
 		material.albedo_color = col

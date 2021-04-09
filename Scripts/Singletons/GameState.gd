@@ -12,8 +12,10 @@ var mode
 var role:int
 var tank:int
 var InGame = false
+var hostInGame = false
 puppet var DriverID = {}
 var roles = {}
+var map
 
 func _ready() -> void:
 	pass
@@ -38,7 +40,10 @@ remote func remove_role(id):
 	for i in roles:
 		if roles[i] == id:
 			roles.erase(i)
-	
+
+remotesync func set_hostInGame(i,j):
+	hostInGame = i
+	map = j
 
 func change_roles(i):
 	print("try to change roles")
