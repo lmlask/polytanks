@@ -29,7 +29,6 @@ func _on_Area_area_entered(area):
 #		print("start process")
 
 func _process(delta):
-	print(col)
 	if alpha > 0.0:
 		col.a = alpha
 		material.albedo_color = col

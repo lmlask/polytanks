@@ -5,9 +5,12 @@ onready var ray = $RayCast
 func _ready():
 	pass # Replace with function body.
 
-func find_floor(tank):
+func find_floor(tank, pos = Vector3.ZERO):
 	ray.enabled = true
-	ray.translation = Vector3(rand_range(-50,50),500,rand_range(-50,50))
+	if pos == Vector3.ZERO:
+		ray.translation = Vector3(rand_range(-50,50),500,rand_range(-50,50))
+	else:
+		ray.translation = pos + Vector3(0,500,0)
 #	ray.translation = Vector3(rand_range(-54,-54),500,rand_range(83,83))
 	ray.force_raycast_update()
 	if ray.is_colliding():

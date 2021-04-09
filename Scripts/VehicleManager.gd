@@ -11,7 +11,7 @@ var tanks = []
 var timer:float = 0.0
 var players = {}
 
-var start = [Vector3(-2,0.1,-12), Vector3(-12,0.1,-12),Vector3(6,0.1,-16),Vector3(14,0.1,-16),Vector3(14,0.5,-8)] #simple solution
+var start = [Vector3(-2,0,-12), Vector3(-12,0,-12),Vector3(6,0,-16),Vector3(14,0,-16),Vector3(14,0,-8)] #simple solution
 
 func _ready():
 	randomize()
@@ -39,7 +39,10 @@ func start():
 		i.queue_free() #delete intro tanks
 	GameState.setup_debug() #fix this, make it optional
 	get_parent().add_child(vehicle)
-	vehicle.translation = start[GameState.tank]
+	
+#	vehicle.translation = start[GameState.tank]
+	FloorFinder.find_floor(vehicle,start[GameState.tank])
+	
 	vehicle.rotate_y(-PI/2) #shouldnt be fixed
 	vehicle.next_transform(vehicle.transform)
 	players[get_tree().get_network_unique_id()] = vehicle
@@ -78,7 +81,10 @@ remote func add_tank(t,tid):
 		tank.name = str(get_tree().get_rpc_sender_id())
 		tank.auto = false
 		tank.mode = RigidBody.MODE_KINEMATIC
+		
 		tank.translation = t#start[NM.players.keys().find(get_tree().get_network_unique_id())] #not correct
+#		FloorFinder.find_floor(tank,start[GameState.tank])
+		
 		tank.rotate_y(-PI/2) #shouldnt be fixed
 		tank.next_transform(tank.transform)
 		tank.get_node("Players").queue_free()

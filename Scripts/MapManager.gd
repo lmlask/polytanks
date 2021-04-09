@@ -6,6 +6,7 @@ var map = null
 func _ready():
 	maps[0] = preload("res://Objects/TestLevel.tscn")
 	maps[1] = preload("res://Objects/CityLevel.tscn")
+	maps[2] = preload("res://Objects/hills map.tscn")
 	load_map(0)
 	
 func load_map(i):
