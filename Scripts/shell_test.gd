@@ -51,5 +51,4 @@ func _on_Area_body_entered(body):
 		hit(body)
 	
 func hit(target):
-	print("hit", target)
 	life = -1

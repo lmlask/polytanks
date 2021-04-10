@@ -69,7 +69,7 @@ func start():
 
 remote func get_remote_tanks():
 #	print(GameState.role)
-	if GameState.role == GameState.Role.Driver: #only for drivers
+	if GameState.role == GameState.Role.Driver or GameState.DriverID[GameState.tank] == get_tree().get_network_unique_id(): #only for drivers
 		var nid = get_tree().get_rpc_sender_id()
 		rpc_id(nid, "add_tank", vehicle.translation, GameState.tank)
 
