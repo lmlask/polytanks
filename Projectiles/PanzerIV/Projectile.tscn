@@ -162,7 +162,6 @@ surfaces/2 = {
 
 [sub_resource type="CapsuleShape" id=5]
 radius = 0.0379197
-height = 0.256566
 
 [sub_resource type="SpatialMaterial" id=6]
 flags_transparent = true

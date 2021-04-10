@@ -4,6 +4,7 @@ var intact = true
 var col
 var alpha = -0.5
 var material:SpatialMaterial
+onready var Explosion = preload("res://Scenes/Explosion.tscn")
 
 func _ready():
 	set_process(false)
@@ -12,8 +13,7 @@ func _on_Area_area_entered(area):
 	if area.is_in_group("shell") and intact:
 		intact = false
 		$Cube/Destruction.destroy()
-		$Smoke.emitting = true
-		$Pieces.emitting = true
+		add_child(Explosion.instance())
 		$Cube/Area.queue_free()
 		$Cube/StaticBody.queue_free()
 		var mesh = $house_rubble.mesh.duplicate()
