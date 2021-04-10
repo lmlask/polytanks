@@ -2,6 +2,7 @@ extends CanvasLayer
 
 onready var Volume = $Panel/Volume
 onready var Wind = $Panel/Wind
+onready var Speed = $Panel/Speed
 onready var Master = AudioServer.get_bus_index("Master")
 const SettingsFile = "user://Settings.dat"
 var data = {}
@@ -18,6 +19,7 @@ func _on_Save_pressed():
 	data = {}
 	data["Vol"] = Volume.value
 	data["Wind"] = Wind.wind_vector
+	data["Speed"] = Speed.value
 	var settings = File.new()
 	settings.open(SettingsFile, File.WRITE)
 	settings.store_var(data)
@@ -45,5 +47,12 @@ func load_settings():
 		Wind.wind_vector = data.Wind
 		Wind._ready()
 		GameState.wind_vector = data.Wind
+	if data.has("Speed"):
+		Speed.value = data.Speed
+		GameState.speed = data.Speed
 	settings.close()
 
+
+
+func _on_Speed_value_changed(value):
+	GameState.speed = value

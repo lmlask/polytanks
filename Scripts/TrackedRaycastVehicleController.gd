@@ -58,7 +58,7 @@ func handleTankDrive(delta) -> void:
 			add_torque(Vector3(0,rnd_turn,0))
 		
 		else:
-			driveForce = dir * drivePerRay * global_transform.basis.z
+			driveForce = dir * drivePerRay * global_transform.basis.z * GameState.speed
 			ray.applyDriveForce(driveForce)
 			
 	if turning_dir and speed > 1 and engine.gear != 0:

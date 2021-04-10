@@ -1,6 +1,6 @@
 extends Spatial
 
-var life:float = 5.0
+var life:float = 20.0
 var last_pos
 onready var mat = $Particles.process_material
 onready var view = $view
@@ -10,9 +10,8 @@ func _ready():
 	set_process(false)
 
 func _process(delta):
-	if life < 0.0:
+	if life < 0.0 or translation.y < -100:
 		queue_free()
-		return
 	life -= delta
 	
 	#Update last_pos
@@ -21,7 +20,7 @@ func _process(delta):
 	#Movement. To be improved later
 	transform.origin += transform.basis.z * delta * 100 #Multiplying by delta to prevent framerate-dependent shell speed
 	var dot = Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector)#.normalized()
-	rotate(transform.basis.x, delta/15)
+	rotate(transform.basis.x, delta/25)
 	rotate(transform.basis.y, delta*dot/1000)
 #	print(Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector.normalized()))
 #	transform.origin += Vector3(GameState.wind_vector.x,0,GameState.wind_vector.y)/100

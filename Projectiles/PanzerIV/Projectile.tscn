@@ -244,5 +244,6 @@ render_target_update_mode = 3
 
 [node name="Camera" type="Camera" parent="view/Viewport"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.51508, 2.20614 )
+far = 1000.0
 [connection signal="area_entered" from="Area" to="." method="_on_Area_area_entered"]
 [connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]

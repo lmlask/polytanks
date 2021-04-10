@@ -17,6 +17,7 @@ remote var DriverID = {}
 var roles = {}
 remote var map
 remote var wind_vector = Vector2.ZERO
+var speed:float = 1
 
 func _ready() -> void:
 	pass
