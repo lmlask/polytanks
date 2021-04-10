@@ -8,7 +8,7 @@
 [ext_resource path="res://Scripts/FloorFinder.gd" type="Script" id=6]
 [ext_resource path="res://Scenes/Roles.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scenes/GUI.tscn" type="PackedScene" id=8]
-[ext_resource path="res://Textures/desert_1k.hdr" type="Texture" id=9]
+[ext_resource path="res://Textures/clear_1k.hdr" type="Texture" id=9]
 [ext_resource path="res://Scripts/gameRoot.gd" type="Script" id=13]
 [ext_resource path="res://Scripts/NetworkManager.gd" type="Script" id=15]
 
