@@ -23,5 +23,5 @@ func _process(delta):
 		timer -= 1.0
 #		print("Role, ID ", GameState.roles)
 #		print("Tank, ID ", GameState.DriverID)
-		print("hostingame", GameState.InGame,GameState.hostInGame)
-		print("map", GameState.map)
+#		print("hostingame", GameState.InGame,GameState.hostInGame)
+#		print("map", GameState.map)

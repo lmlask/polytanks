@@ -69,11 +69,13 @@ func toggleTraverseMode():
 	elif traverse_mode == "manual":
 		traverse_mode = "power"
 	
-func fire():
+func fire(view = false):
 	#spawning shell
 	var shell = shell_scene.instance()
 	shell.global_transform = turret.get_node("gun/gunMesh/barrel/projectile_spawner").global_transform
+#	shell.transform.origin += shell.transform.basis.z*100
 	add_child(shell)
+	shell.view.visible = view
 	shell.show()
 	shell.set_process(true)
 	

@@ -212,10 +212,9 @@ material/2 = ExtResource( 5 )
 [node name="Area" type="Area" parent="." groups=[
 "shell",
 ]]
-transform = Transform( 1, 0, 0, 0, 1, 5.40012e-13, 0, -5.40012e-13, 1, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 5.40012e-13, 0, -5.40012e-13, 1, 0, 0, 0.11 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Area"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.10987 )
 shape = SubResource( 5 )
 
 [node name="Particles" type="Particles" parent="."]
@@ -228,3 +227,22 @@ visibility_aabb = AABB( -0.929575, -3.19099, -0.899413, 1.85915, 6.38199, 1.7988
 local_coords = false
 process_material = ExtResource( 1 )
 draw_pass_1 = SubResource( 7 )
+
+[node name="view" type="ViewportContainer" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -200.0
+margin_right = 200.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="view"]
+size = Vector2( 200, 200 )
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="Camera" type="Camera" parent="view/Viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.51508, 2.20614 )
+[connection signal="area_entered" from="Area" to="." method="_on_Area_area_entered"]
+[connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]

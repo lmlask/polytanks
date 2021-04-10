@@ -1,14 +1,18 @@
 extends Spatial
 
-var life:float = 4.0
+var life:float = 5.0
 var last_pos
 onready var mat = $Particles.process_material
+onready var view = $view
 
 func _ready():
+	view.hide()
 	set_process(false)
 
 func _process(delta):
-	#Lifetime
+	if life < 0.0:
+		queue_free()
+		return
 	life -= delta
 	
 	#Update last_pos
@@ -29,7 +33,23 @@ func _process(delta):
 	var dist = global_transform.origin.distance_to(last_pos)
 	#for some reason the dist is too small? multiplying it by 10 makes good trails, so be it
 	mat.emission_box_extents = Vector3(1, dist*10, 1)
+	$view/Viewport/Camera.global_transform = global_transform
+	$view/Viewport/Camera.rotate(transform.basis.y, PI)
+	$view/Viewport/Camera.transform.origin -= transform.basis.z/5
+	$view/Viewport/Camera.transform.origin += transform.basis.y/5
 	
 	#Despawn
-	if life < 0.0:
-		queue_free()
+	
+
+
+func _on_Area_area_entered(area):
+	if life > 0:
+		hit(area)
+	
+func _on_Area_body_entered(body):
+	if life > 0:
+		hit(body)
+	
+func hit(target):
+	print("hit", target)
+	life = -1

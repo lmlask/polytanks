@@ -147,6 +147,6 @@ remote func set_pos(t): #needs a re-wrtie all this
 		get_parent().get_node(sid).next_transform(t)
 #	other_vehicle.transform = t
 	
-remotesync func fire(id):
+remote func fire(id):
 	get_parent().get_node(id).get_node("TurretController").fire()
 
