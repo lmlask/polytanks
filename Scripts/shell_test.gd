@@ -16,7 +16,10 @@ func _process(delta):
 	
 	#Movement. To be improved later
 	transform.origin += transform.basis.z * delta * 100 #Multiplying by delta to prevent framerate-dependent shell speed
+	var dot = Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector)#.normalized()
 	rotate(transform.basis.x, delta/15)
+	rotate(transform.basis.y, delta*dot/1000)
+#	print(Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector.normalized()))
 #	transform.origin += Vector3(GameState.wind_vector.x,0,GameState.wind_vector.y)/100
 	
 	#Particle emission extents
