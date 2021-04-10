@@ -14,8 +14,6 @@ onready var tank = owner.owner
 func _ready():
 	pass # Replace with function body.
 
-
-
 func _process(delta):
 	if not GameState.role == GameState.Role.Driver:
 		return
@@ -32,6 +30,7 @@ func manageCamera():
 			get_tree().get_root().get_node("gameRoot/CameraRig/ClippedCamera").current = true
 		else:
 			get_parent().get_node("Camera").set_current()
+			get_parent().get_node("Camera").resetCamera()
 
 func _physics_process(delta):
 	manageSteeringPhysics()
