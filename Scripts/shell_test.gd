@@ -26,6 +26,7 @@ func _process(delta):
 	var dot = Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector)#.normalized()
 	rotate(transform.basis.x, delta/10)
 	rotate(transform.basis.y, delta*dot/1000)
+	
 #	print(Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector.normalized()))
 #	transform.origin += Vector3(GameState.wind_vector.x,0,GameState.wind_vector.y)/100
 	

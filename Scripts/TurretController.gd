@@ -6,6 +6,7 @@ extends Node
 # var b = "text"
 
 onready var turret = owner.get_node("Visuals/turret")
+onready var turret_int = owner.get_node("Interior/turret_interior")
 onready var barrel = owner.get_node("Visuals/turret/gun/gunMesh/barrel")
 onready var muzzleSound = owner.get_node("Visuals/turret/gun/gunMesh/barrel/gunSoundExterior")
 onready var roleController = owner.get_node("RoleController")
@@ -47,6 +48,7 @@ func _process(delta):
 	turn_speed_tgt = traverse_multiplier * dir * 0.1
 	turn_speed = lerp(turn_speed, turn_speed_tgt, (accel_speed*0.1))
 	turret.rotate(Vector3(0, 1, 0), turn_speed*delta)
+	turret_int.rotate(Vector3(0, 1, 0), turn_speed*delta)
 	
 	#Elevate
 	ele_speed_tgt = eledir * elevation_multiplier * 0.05

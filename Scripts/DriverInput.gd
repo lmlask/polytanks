@@ -19,12 +19,20 @@ func _ready():
 func _process(delta):
 	if not GameState.role == GameState.Role.Driver:
 		return
+	manageCamera()
 	manageIgnition()
 	manageThrottle(delta)
 	manageBrake(delta)
 	manageTransmission()
 	manageSteering()
-	
+
+func manageCamera():
+	if Input.is_action_just_pressed("external_cam"):
+		if get_parent().get_node("Camera/OuterGimbal/InnerGimbal/ClippedCamera").current:
+			get_tree().get_root().get_node("gameRoot/CameraRig/ClippedCamera").current = true
+		else:
+			get_parent().get_node("Camera").set_current()
+
 func _physics_process(delta):
 	manageSteeringPhysics()
 			
