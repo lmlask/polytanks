@@ -11,7 +11,7 @@ var tanks = []
 var timer:float = 0.0
 var players = {}
 
-var start = [Vector3(-2,0,-12), Vector3(-12,0,-12),Vector3(6,0,-16),Vector3(14,0,-16),Vector3(14,0,-8)] #simple solution
+var start = [Vector3(20,0,-12), Vector3(-12,0,-12),Vector3(6,0,-16),Vector3(14,0,-16),Vector3(14,0,-8)] #simple solution
 
 func _ready():
 	randomize()
@@ -41,6 +41,7 @@ func start():
 	get_parent().add_child(vehicle)
 	
 #	vehicle.translation = start[GameState.tank]
+	vehicle.auto = false #set manual control
 	FloorFinder.find_floor(vehicle,start[GameState.tank])
 	
 	vehicle.rotate_y(-PI/2) #shouldnt be fixed
@@ -51,7 +52,7 @@ func start():
 	else:
 		vehicle.name = str(GameState.DriverID[GameState.tank]) #set tank name to id of driver
 	vehicle.VehicleMan = self #dont think this is a good idea
-	vehicle.auto = false #set manual control
+	
 	
 	vehicleStartTransform = vehicle.global_transform
 	$"../CameraRig"._camTarget = vehicle #give cam target
@@ -90,7 +91,7 @@ remote func add_tank(t,tid):
 		tank.get_node("Players").queue_free()
 
 func load_intro_tanks():
-	for i in range(10):
+	for i in range(5):
 		var tank = vehicle_scene.instance()
 		get_parent().add_child(tank)
 		tank.rotate_y(-PI/2)

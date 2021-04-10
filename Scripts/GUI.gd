@@ -17,3 +17,4 @@ func _ready():
 
 func set_compass(b):
 	$Compass.transform.basis = b.inverse()
+	$Compass/MeshInstance.rotation = Vector3(PI/2,-Vector2.UP.angle_to_point(GameState.wind_vector),0)

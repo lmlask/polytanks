@@ -201,7 +201,7 @@ material/0 = SubResource( 12 )
 shape = SubResource( 13 )
 
 [node name="ramp4" type="MeshInstance" parent="."]
-transform = Transform( -1, 5.01437e-08, -7.16126e-08, 0, 0.819152, 0.573577, 8.74228e-08, 0.573577, -0.819152, 45, 1, -4 )
+transform = Transform( -1, 5.01437e-08, -7.16126e-08, 0, 0.819152, 0.573577, 8.74228e-08, 0.573577, -0.819152, 58.6477, 0.999996, -23.9891 )
 mesh = SubResource( 11 )
 material/0 = SubResource( 12 )
 

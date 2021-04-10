@@ -16,6 +16,7 @@ var hostInGame = false
 puppet var DriverID = {}
 var roles = {}
 var map
+var wind_vector = Vector2.ZERO
 
 func _ready() -> void:
 	pass
