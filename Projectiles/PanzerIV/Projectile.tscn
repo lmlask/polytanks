@@ -162,6 +162,7 @@ surfaces/2 = {
 
 [sub_resource type="CapsuleShape" id=5]
 radius = 0.0379197
+height = 1.0956
 
 [sub_resource type="SpatialMaterial" id=6]
 flags_transparent = true
@@ -211,9 +212,10 @@ material/2 = ExtResource( 5 )
 [node name="Area" type="Area" parent="." groups=[
 "shell",
 ]]
-transform = Transform( 1, 0, 0, 0, 1, 5.40012e-13, 0, -5.40012e-13, 1, 0, 0, 0.11 )
+transform = Transform( 1, 0, 0, 0, 1, 5.40012e-13, 0, -5.40012e-13, 1, 0, 0, 0.1 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Area"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.79628e-13, 0.332636 )
 shape = SubResource( 5 )
 
 [node name="Particles" type="Particles" parent="."]
