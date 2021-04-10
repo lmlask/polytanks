@@ -14,7 +14,7 @@ export var camLerpSpeed : float = 16.0
 export(NodePath) var target
 
 # Private variables
-onready var _camTarget : Spatial = get_node("../TestLevel")
+onready var _camTarget : Spatial = $"../Map"
 var _cam : ClippedCamera
 var _curZoom : float = 0.0
 var canrotx = false

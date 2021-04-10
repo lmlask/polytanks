@@ -46,7 +46,7 @@ func handleTankDrive(delta) -> void:
 	for ray in rayElements:
 		if engine.clutch == 0:
 			if engine.gear >= 0:
-				dir = 1
+				dir = 1 
 			elif engine.gear == -1:
 				dir = -1
 		
