@@ -9,12 +9,12 @@ onready var Explosion = preload("res://Scenes/Explosion.tscn")
 func _ready():
 	set_process(false)
 
-func _on_Area_area_entered(area):
-	if area.is_in_group("shell") and intact:
+func hit(object):
+	print("got hit")
+	if object.is_in_group("shell") and intact:
 		intact = false
 		$Cube/Destruction.destroy()
 		add_child(Explosion.instance())
-		$Cube/Area.queue_free()
 		$Cube/StaticBody.queue_free()
 		var mesh = $house_rubble.mesh.duplicate()
 		$house_rubble.mesh = mesh

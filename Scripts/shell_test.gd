@@ -15,16 +15,16 @@ func _process(delta):
 		var explo = Explosion.instance()
 		explo.global_transform.origin = global_transform.origin
 		get_parent().add_child(explo)
-		queue_free()
+		call_deferred("queue_free")
 	life -= delta
 	
 	#Update last_pos
 	last_pos = transform.origin
 	
 	#Movement. To be improved later
-	transform.origin += transform.basis.z * delta * 100 #Multiplying by delta to prevent framerate-dependent shell speed
+	transform.origin += transform.basis.z * delta * 750 #Multiplying by delta to prevent framerate-dependent shell speed
 	var dot = Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector)#.normalized()
-	rotate(transform.basis.x, delta/50)
+	rotate(transform.basis.x, delta/10)
 	rotate(transform.basis.y, delta*dot/1000)
 #	print(Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector.normalized()))
 #	transform.origin += Vector3(GameState.wind_vector.x,0,GameState.wind_vector.y)/100
@@ -42,7 +42,15 @@ func _process(delta):
 	$view/Viewport/Camera.transform.origin += transform.basis.y/5
 	
 	#Despawn
-	
+	if $RayCast.is_colliding():
+		var col = $RayCast.get_collider()
+		if not col == null:
+			col = col.owner
+			if not col == null:
+				if col.has_method("hit"):
+					print("hit")
+					col.hit(self)
+			life = -1
 
 
 func _on_Area_area_entered(area):
@@ -54,4 +62,5 @@ func _on_Area_body_entered(body):
 		hit(body)
 	
 func hit(target):
+	print("noooo")
 	life = -1
