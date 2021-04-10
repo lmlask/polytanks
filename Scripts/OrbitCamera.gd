@@ -36,7 +36,9 @@ func _input(event) -> void:
 		rotate_y(-event.relative.x * horizontalSensitivity)
 		if canrotx:
 			rotation.x = clamp(rotation.x - event.relative.y * verticalSensitivity, deg2rad(minPitch), deg2rad(maxPitch))
+		get_parent().GUI.set_compass(transform.basis)
 		orthonormalize()
+		
 		
 	if event is InputEventMouseButton:
 		# Change zoom level on mouse wheel rotation

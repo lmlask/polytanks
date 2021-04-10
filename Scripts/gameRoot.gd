@@ -4,10 +4,12 @@ class_name gameRoot
 onready var VehicleManager = $VehicleManager
 onready var NetworkManager = $NetworkManager
 onready var Map = $Map
+onready var GUI = $ViewportContainer/View/GUI
 
 var timer = 0.0 #User for debug
 
 func _ready():
+	print(GUI)
 	$Lobby.gameRoot = self
 	$NetworkManager.intro = $Lobby
 	VehicleManager.load_intro_tanks()

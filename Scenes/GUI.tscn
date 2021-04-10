@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Scripts/GUI.gd" type="Script" id=1]
+
+[sub_resource type="Gradient" id=2]
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 0.784314, 0.180392, 0.180392, 1 )
+albedo_texture = SubResource( 3 )
+
+[sub_resource type="PrismMesh" id=1]
+material = SubResource( 4 )
+size = Vector3( 1, 2, 0.5 )
+
+[node name="GUI" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.58185 )
+projection = 1
+size = 3.0
+
+[node name="Compass" type="Spatial" parent="."]
+
+[node name="MeshInstance" type="MeshInstance" parent="Compass"]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = null
