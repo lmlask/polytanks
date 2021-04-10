@@ -21,6 +21,7 @@ func _on_Start_pressed():
 #	GameState.role = Grid.selected[1]
 	if get_tree().is_network_server():
 		GameState.map = Map.selected
+		GameState.hostInGame = true
 	elif not GameState.hostInGame:
 		set_status("Host must join first")
 		return
@@ -41,7 +42,7 @@ func setup_game():
 	$Panel.hide()
 	GameState.InGame = true
 	if get_tree().is_network_server():
-		GameState.rpc("set_hostInGame", GameState.InGame, GameState.map)
+		GameState.send_game_data()
 	gameRoot.Map.load_map(GameState.map)
 	gameRoot.VehicleManager.start()
 	

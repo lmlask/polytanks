@@ -17,6 +17,7 @@ func _process(delta):
 	#Movement. To be improved later
 	transform.origin += transform.basis.z * delta * 100 #Multiplying by delta to prevent framerate-dependent shell speed
 	rotate(transform.basis.x, delta/15)
+#	transform.origin += Vector3(GameState.wind_vector.x,0,GameState.wind_vector.y)/100
 	
 	#Particle emission extents
 	#Put particle box halfway between the last shell position and the current one

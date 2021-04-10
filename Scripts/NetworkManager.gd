@@ -33,10 +33,10 @@ func _player_connected(id):
 		players[id] = ""
 		rset("players", players)
 		GameState.rset("DriverID",GameState.DriverID)
-		print("send in game to ", id)
-		GameState.rpc_id(id, "set_hostInGame", GameState.InGame, GameState.map)
-	else:
-		get_tree().network_peer.disconnect_peer(id)
+		print("send data to ", id)
+		GameState.send_game_data()
+#	else:
+#		get_tree().network_peer.disconnect_peer(id)
 	intro.Grid.rpc("disable_role")
 	
 func _player_disconnected(id):

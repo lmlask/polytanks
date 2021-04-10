@@ -12,11 +12,11 @@ var mode
 var role:int
 var tank:int
 var InGame = false
-var hostInGame = false
-puppet var DriverID = {}
+remote var hostInGame = false
+remote var DriverID = {}
 var roles = {}
-var map
-var wind_vector = Vector2.ZERO
+remote var map
+remote var wind_vector = Vector2.ZERO
 
 func _ready() -> void:
 	pass
@@ -42,9 +42,10 @@ remote func remove_role(id):
 		if roles[i] == id:
 			roles.erase(i)
 
-remotesync func set_hostInGame(i,j):
-	hostInGame = i
-	map = j
+master func send_game_data():
+	rset("hostInGame", hostInGame)
+	rset("map", map)
+	rset("wind_vector", wind_vector)
 
 func change_roles(i):
 	print("try to change roles")

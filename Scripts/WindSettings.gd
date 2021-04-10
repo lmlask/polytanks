@@ -31,6 +31,7 @@ func _on_Wind_mouse_exited():
 	update()
 	wind_vector = wind_pos-rect_size/2
 	GameState.wind_vector = wind_vector
+	GameState.send_game_data()
 
 func _on_Wind_gui_input(event):
 	if event is InputEventMouseButton:
