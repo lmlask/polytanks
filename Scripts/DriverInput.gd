@@ -31,7 +31,10 @@ func manageCamera():
 		else:
 			get_parent().get_node("Camera").set_current()
 			get_parent().get_node("Camera").resetCamera()
-
+	if Input.is_action_just_pressed("action") and get_parent().get_node("Camera/OuterGimbal/InnerGimbal/ClippedCamera").current:
+		#get_parent().get_node("Camera").aimedObject.interact()
+		pass
+	
 func _physics_process(delta):
 	manageSteeringPhysics()
 			

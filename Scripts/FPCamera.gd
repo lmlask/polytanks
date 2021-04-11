@@ -37,6 +37,8 @@ var true_offset = Vector2(0, 0)
 
 #raycast
 onready var ray = $OuterGimbal/InnerGimbal/ClippedCamera/RayCast
+var aimedObject = null
+var interact_areas = []
 
 #modes
 var mode = "pan"
@@ -45,7 +47,6 @@ func _ready():
 	default_transform = global_transform
 
 func _process(delta):
-	lookatHandler()
 	applyOffset(target_offset_x, target_offset_y)
 	
 	#clamp rotation
@@ -62,6 +63,8 @@ func _process(delta):
 	#set target for portmode:
 	if target:
 		global_transform.origin = target.global_transform.origin
+		
+	lookatHandler()
 
 func set_current():
 	get_node("OuterGimbal/InnerGimbal/ClippedCamera").current = true
@@ -114,75 +117,28 @@ func applyOffset(x, y):
 		target_offset_y = 0
 
 func resetCamera():
-	rotation_degrees.y = 0
 	true_offset = Vector2(0, 0)
 	target = null
 	mode = "pan" 
 	$OuterGimbal/InnerGimbal.rotation.x = 0
 	$OuterGimbal.rotation.y = 0
 	transform.origin = Vector3.ZERO
-	zoom = 1
 	$OuterGimbal/InnerGimbal/ClippedCamera.translation.z = 0
+	get_node("OuterGimbal/InnerGimbal/ClippedCamera").fov = 70
 
-func togglePortMode(port):
+func togglePortMode(port, transY, rotY, rotX):
 	if mode == "pan":
-		if port == get_parent().get_node("driver_visor_area"):
-			mode = "port"
-			target = port
-			$OuterGimbal/InnerGimbal/ClippedCamera.translate(Vector3(0, 0, 0.2))
-			true_offset = Vector2(0, 0)
-		elif port == get_parent().get_node("driver_sideport_area") or port == get_parent().get_node("radioman_sideport_area"):
-			if role == "driver":
-				rotation_degrees.y = -100
-			elif role == "radioman":
-				rotation_degrees.y = 100
-			mode = "port"
-			target = port
-			$OuterGimbal/InnerGimbal/ClippedCamera.translate(Vector3(0, 0, 0.2))
-			$OuterGimbal/InnerGimbal.rotation_degrees.x = 0
-			true_offset = Vector2(0, 0)
-		elif port == get_parent().get_node("gunner_sideport_area"):
-			if role == "gunner":
-				rotation_degrees.y = -80
-			mode = "port"
-			target = port
-			$OuterGimbal/InnerGimbal/ClippedCamera.translate(Vector3(0, 0, 0.2))
-			$OuterGimbal/InnerGimbal.rotation_degrees.x = 0
-			true_offset = Vector2(0, 0)
-			
+		mode = "port"
+		target = "port"
+		$OuterGimbal/InnerGimbal/ClippedCamera.translate(Vector3(0, 0, transY))
+		$OuterGimbal.rotation_degrees.y = rotY
+		$OuterGimbal/InnerGimbal.rotation_degrees.x = rotX
+		true_offset = Vector2(0, 0)
 	elif mode == "port":
 		resetCamera()
 
 func lookatHandler():
-	pass
-#	if (mode == "pan" or mode == "port"):
-#	#Check the lookats
-#		if role == "driver":
-#			controlNode = get_parent().get_parent().get_node("DriverControl")
-#			if ray.get_collider() == get_parent().get_node("driver_light_area"):
-#				aimedObject = ray.get_collider()
-#
-#			elif ray.get_collider() == get_parent().get_node("driver_panel_light_area"):
-#				aimedObject = ray.get_collider()
-#
-#			elif ray.get_collider() == get_parent().get_node("driver_visor_area"):
-#				aimedObject = ray.get_collider()
-#
-#			elif ray.get_collider() == get_parent().get_node("driver_sideport_area"):
-#				aimedObject = ray.get_collider()
-#
-#			elif ray.get_collider() == get_parent().get_node("driver_hatch_area"):
-#				aimedObject = ray.get_collider()
-#
-#			elif ray.get_collider() == get_parent().get_node("driver_lever1_area"):
-#				aimedObject = ray.get_collider()
-#
-#			elif ray.get_collider() == get_parent().get_node("driver_lever2_area"):
-#				aimedObject = ray.get_collider()
-#
-#			else:
-#				aimedObject = null
-#
-#
-#	else:
-#		aimedObject = null
+	if $OuterGimbal/InnerGimbal/ClippedCamera.current and (mode == "pan" or mode == "port") and interact_areas.has(ray.get_collider()):
+		aimedObject = ray.get_collider()
+	else:
+		aimedObject = null
