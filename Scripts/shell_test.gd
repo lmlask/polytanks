@@ -14,21 +14,23 @@ func _ready():
 	view.hide()
 	set_process(false)
 
+remotesync func explode(pos):
+	var explo = Explosion.instance()
+	explo.global_transform.origin = pos
+	get_parent().add_child(explo) #owner of shell should say where the explosion is
+	call_deferred("queue_free")
+
 func _process(delta):
-	if life < 0.0 or translation.y < -100:
-		var explo = Explosion.instance()
-		explo.global_transform.origin = global_transform.origin
-		get_parent().add_child(explo) #owner of shell should say where the explosion is
-		call_deferred("queue_free")
+	if life < 0.0 or translation.y < -100 and host:
+		rpc("explode", transform.origin)
 		return
-	life -= delta
-	timer += delta
-	
 	#Update last_pos
 	last_pos = transform.origin
 	
 	#Movement. To be improved later
 	if host:
+		life -= delta
+		timer += delta
 		transform.origin += transform.basis.z * delta * shell_speed #Multiplying by delta to prevent framerate-dependent shell speed
 		var dot = Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector)#.normalized()
 		rotate(transform.basis.x, delta/25)
