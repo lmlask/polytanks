@@ -12,13 +12,14 @@ var mode
 var role:int
 var tank:int
 var InGame = false
-remote var hostInGame = false
+remote var hostInGame = false #Maybe consolidate these into a dictionary
 remote var DriverID = {}
 var roles = {}
 remote var map
 remote var wind_vector = Vector2.ZERO
 var speed:float = 1
 var ShellCam = false
+var WindView = false
 
 func _ready() -> void:
 	pass

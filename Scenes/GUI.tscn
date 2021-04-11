@@ -2,17 +2,17 @@
 
 [ext_resource path="res://Scripts/GUI.gd" type="Script" id=1]
 
-[sub_resource type="Gradient" id=2]
+[sub_resource type="Gradient" id=1]
 
-[sub_resource type="GradientTexture" id=3]
-gradient = SubResource( 2 )
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
 
-[sub_resource type="SpatialMaterial" id=4]
+[sub_resource type="SpatialMaterial" id=3]
 albedo_color = Color( 0.784314, 0.180392, 0.180392, 1 )
-albedo_texture = SubResource( 3 )
+albedo_texture = SubResource( 2 )
 
-[sub_resource type="PrismMesh" id=1]
-material = SubResource( 4 )
+[sub_resource type="PrismMesh" id=4]
+material = SubResource( 3 )
 size = Vector3( 1, 2, 0.5 )
 
 [node name="GUI" type="Spatial"]
@@ -27,5 +27,5 @@ size = 3.0
 
 [node name="MeshInstance" type="MeshInstance" parent="Compass"]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
-mesh = SubResource( 1 )
+mesh = SubResource( 4 )
 material/0 = null
