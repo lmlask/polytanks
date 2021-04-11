@@ -34,6 +34,7 @@ func _process(_delta):
 		vehicle.angular_velocity = Vector3()
 		vehicle.global_transform = vehicleStartTransform
 
+
 func start():
 	for i in tanks:
 		i.queue_free() #delete intro tanks

@@ -3,25 +3,26 @@ extends Spatial
 onready var VM = $"../VehicleManager"
 var maps = {}
 var map = null
-var maptiles = []
+var maptiles = {}
 var prev_tile
-var tile_offset = [Vector3(1,0,0),Vector3(0,0,1),Vector3(-1,0,0),Vector3(0,0,-1),Vector3(1,0,1),Vector3(-1,0,1),Vector3(1,0,-1),Vector3(-1,0,-1)]
+var tile_offset = [Vector3(0,0,0),Vector3(1,0,0),Vector3(0,0,1),Vector3(-1,0,0),Vector3(0,0,-1),Vector3(1,0,1),Vector3(-1,0,1),Vector3(1,0,-1),Vector3(-1,0,-1)]
 
 func _ready():
 	maps[0] = preload("res://Objects/TestLevel.tscn")
 	maps[1] = preload("res://Objects/CityLevel.tscn")
 	maps[2] = preload("res://Objects/hills map.tscn")
-	load_map(0)
+	load_map(0,Vector3.ZERO)
 	
-func load_map(i): #Need to add a location
-	if not map == null:
-		map.queue_free()
-	map = maps[i].instance()
-	add_child(map)
+func load_map(i,start_pos): #Need to add a location
+	for mt in maptiles:
+		maptiles[mt].queue_free()
+	map = i
+	maptiles.clear()
+	check_area((start_pos/1000).snapped(Vector3(1,1,1)))
 #	map.get_node("DirectionalLight").show()
 	
-	#Dont expand on this
-	if i == 1:
+	#Dont expand on this. the map itself should do this
+	if map == 1 and false: #fix later
 		for i in range(10):
 			for j in range(10):
 				var house = map.get_node("house").duplicate()
@@ -58,16 +59,15 @@ func load_map(i): #Need to add a location
 func _process(delta):
 	var cur_tile = (VM.vehicle.transform.origin/1000).snapped(Vector3(1,1,1))
 	if not cur_tile == prev_tile:
-		print("moved to new tile ", cur_tile)
 		prev_tile = cur_tile
 		check_area(cur_tile)
 	
 func check_area(center):
-	if not maptiles.has(center):
-		maptiles.append(center)
+#	if not maptiles.has(center):
+#		maptiles.append(center)
 	for i in tile_offset:
 		if not maptiles.has(center+i):
-			maptiles.append(center+i)
-			var tile = maps[2].instance()
+			var tile = maps[map].instance()
+			maptiles[center+i] = tile
 			tile.translation += (center+i)*1000
 			add_child(tile)
