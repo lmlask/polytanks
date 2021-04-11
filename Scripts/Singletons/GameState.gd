@@ -70,11 +70,11 @@ remotesync func set_driver_id(tank, id):
 #	DriverID[tank] = id
 #	if not role == Role.Driver:
 #	var nid = str(get_tree().get_network_unique_id())
-	if DriverID.size() > 0 and DriverID.has(tank):
-		var node = gameRoot.find_node(str(DriverID[tank]),false,false)  #!!!! DONT DO THIS FIX IT
+#	if DriverID.size() > 0 and DriverID.has(tank):
+#		var node = gameRoot.find_node(str(DriverID[tank]),false,false)  #!!!! DONT DO THIS FIX IT
 	#		print(node)
-		if node is RigidBody:#!!!! DONT DO THIS FIX IT
-			node.name = str(id) #This however is correct, I think
+#		if node is RigidBody:#!!!! DONT DO THIS FIX IT
+#			node.name = str(id) #This however is correct, I think
 	#			print(node.name)
 	DriverID[tank] = id
 #	print(DriverID)

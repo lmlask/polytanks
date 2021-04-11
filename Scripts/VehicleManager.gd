@@ -9,7 +9,7 @@ onready var vehicle : RigidBody = vehicle_scene.instance()
 var vehicleStartTransform : Transform
 var tanks = []
 var timer:float = 0.0
-var players = {}
+#var players = {}
 
 var start = [Vector3(20,0,-12), Vector3(-12,0,-12),Vector3(6,0,-16),Vector3(14,0,-16),Vector3(14,0,-8)] #simple solution
 
@@ -23,16 +23,18 @@ func _ready():
 func _process(_delta):
 	timer += _delta
 	if timer > 0.1 and GameState.DriverID.has(GameState.tank): #not a good solution
-		if GameState.DriverID[GameState.tank] == get_tree().get_network_unique_id():
-			rpc("set_pos", vehicle.transform)
+#		if GameState.DriverID[GameState.tank] == get_tree().get_network_unique_id():
+		if GameState.role == GameState.Role.Driver:
+			rpc("set_pos", vehicle.transform, GameState.tank)
 		if GameState.role == GameState.Role.Gunner:
-			rpc("set_tur", vehicle.get_node("Visuals/turret").rotation,vehicle.get_node("Visuals/turret/gun").rotation, str(GameState.DriverID[GameState.tank]) )
+			rpc("set_tur", vehicle.get_node("Visuals/turret").rotation,vehicle.get_node("Visuals/turret/gun").rotation, str(GameState.tank) )
 #		add_random_tank()
 		timer -= 0.1
 	if Input.is_action_just_pressed("reset_vehicle"):
 		reset_tank()
 
 func reset_tank():		
+	print("reset tank")
 	vehicle.linear_velocity = Vector3()
 	vehicle.angular_velocity = Vector3()
 #		vehicle.global_transform = vehicleStartTransform
@@ -47,18 +49,20 @@ func start():
 	get_parent().add_child(vehicle)
 #	vehicle.translation = start[GameState.tank]
 	vehicle.auto = false #set manual control
-	FloorFinder.find_floor(vehicle,start[GameState.tank])
-	
+	if GameState.role == GameState.Role.Driver:
+		FloorFinder.find_floor(vehicle,start[GameState.tank])
+#	else:
+#		vehicle.mode = RigidBody.MODE_KINEMATIC
 	vehicle.transform.origin += vehicle.transform.basis.y #Fix a weird bug
 	vehicle.rotate_y(PI) #shouldnt be fixed
 	vehicle.next_transform(vehicle.transform)
-	players[get_tree().get_network_unique_id()] = vehicle
-	if GameState.role == GameState.Role.Driver:
-		vehicle.name = str(get_tree().get_network_unique_id()) #set tank name to id as this is driver
-	else:
-		vehicle.name = str(GameState.DriverID[GameState.tank]) #set tank name to id of driver
+#	players[get_tree().get_network_unique_id()] = vehicle #dont think this is used???
+#	if GameState.role == GameState.Role.Driver:
+#		vehicle.name = str(get_tree().get_network_unique_id()) #set tank name to id as this is driver
+#	else:
+#		vehicle.name = str(GameState.DriverID[GameState.tank]) #set tank name to id of driver
 	vehicle.VehicleMan = self #dont think this is a good idea
-	
+	vehicle.name = str(GameState.tank)
 	
 	vehicleStartTransform = vehicle.global_transform
 	$"../CameraRig"._camTarget = vehicle #give cam target
@@ -85,16 +89,17 @@ remote func add_tank(t,tid):
 	if not tid == GameState.tank: #if adding tank is the current drivers tank do no add
 		var tank = vehicle_scene.instance()
 		get_parent().add_child(tank)
-		tank.name = str(get_tree().get_rpc_sender_id())
+#		tank.name = str(get_tree().get_rpc_sender_id())
+		tank.name = str(tid)
 		tank.auto = false
 		tank.mode = RigidBody.MODE_KINEMATIC
 		
-		tank.translation = t#start[NM.players.keys().find(get_tree().get_network_unique_id())] #not correct
+#		tank.translation = t#start[NM.players.keys().find(get_tree().get_network_unique_id())] #not correct
 #		FloorFinder.find_floor(tank,start[GameState.tank])
 		
-		tank.rotate_y(-PI/2) #shouldnt be fixed
+#		tank.rotate_y(-PI/2) #shouldnt be fixed
 		tank.next_transform(tank.transform)
-		tank.get_node("Players").queue_free()
+#		tank.get_node("Players").queue_free()
 
 func load_intro_tanks():
 	for i in range(5):
@@ -147,10 +152,11 @@ remote func set_tur(tr,te,id): #set turrent rotation, change to work like tank t
 		get_parent().get_node(id).get_node("Visuals/turret").rotation = tr
 		get_parent().get_node(id).get_node("Visuals/turret/gun").rotation = te
 
-remote func set_pos(t): #needs a re-wrtie all this
-	var sid = str(get_tree().get_rpc_sender_id())
-	if get_parent().has_node(sid):
-		get_parent().get_node(sid).next_transform(t)
+remote func set_pos(t,id): #needs a re-wrtie all this
+#	var sid = str(get_tree().get_rpc_sender_id())
+#	sid = str(GameState.tank)
+	if get_parent().has_node(str(id)):
+		get_parent().get_node(str(id)).next_transform(t)
 #	other_vehicle.transform = t
 	
 remote func fire(id,number):

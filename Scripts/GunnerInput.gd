@@ -40,5 +40,5 @@ func _process(delta):
 
 	if Input.is_action_just_pressed("ui_select"):
 		turretCon.fire(get_tree().get_network_unique_id(),shell_number,true)
-		owner.owner.VehicleMan.rpc("fire", str(GameState.DriverID[GameState.tank]), shell_number)
+		owner.owner.VehicleMan.rpc("fire", str(GameState.tank), shell_number)
 		shell_number += 1
