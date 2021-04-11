@@ -213,6 +213,7 @@ F2={
 3d_render/layer_2="tank_interior"
 3d_physics/layer_2="targets"
 3d_render/layer_3="tank_exterior"
+3d_physics/layer_20="Map"
 
 [physics]
 

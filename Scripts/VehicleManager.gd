@@ -29,23 +29,25 @@ func _process(_delta):
 			rpc("set_tur", vehicle.get_node("Visuals/turret").rotation,vehicle.get_node("Visuals/turret/gun").rotation, str(GameState.DriverID[GameState.tank]) )
 #		add_random_tank()
 		timer -= 0.1
-	if Input.is_action_pressed("reset_vehicle"):
+	if Input.is_action_just_pressed("reset_vehicle"):
 		vehicle.linear_velocity = Vector3()
 		vehicle.angular_velocity = Vector3()
-		vehicle.global_transform = vehicleStartTransform
-
+#		vehicle.global_transform = vehicleStartTransform
+		
+		FloorFinder.find_floor(vehicle,vehicle.transform.origin)
+		
 
 func start():
 	for i in tanks:
 		i.queue_free() #delete intro tanks
 	GameState.setup_debug() #fix this, make it optional
 	get_parent().add_child(vehicle)
-	
 #	vehicle.translation = start[GameState.tank]
 	vehicle.auto = false #set manual control
 	FloorFinder.find_floor(vehicle,start[GameState.tank])
 	
-	vehicle.rotate_y(-PI/2) #shouldnt be fixed
+	vehicle.transform.origin += vehicle.transform.basis.y
+	vehicle.rotate_y(PI) #shouldnt be fixed
 	vehicle.next_transform(vehicle.transform)
 	players[get_tree().get_network_unique_id()] = vehicle
 	if GameState.role == GameState.Role.Driver:

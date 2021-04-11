@@ -34,6 +34,7 @@ shard_template = ExtResource( 4 )
 shard_scene = ExtResource( 3 )
 
 [node name="StaticBody" type="StaticBody" parent="Cube" index="1"]
+collision_layer = 524289
 
 [node name="CollisionShape" type="CollisionShape" parent="Cube/StaticBody" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50031, 0 )

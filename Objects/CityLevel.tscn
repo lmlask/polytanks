@@ -27,6 +27,7 @@ __meta__ = {
 }
 
 [node name="StaticBody" type="StaticBody" parent="Floor"]
+collision_layer = 524289
 
 [node name="CollisionShape" type="CollisionShape" parent="Floor/StaticBody"]
 shape = SubResource( 3 )
