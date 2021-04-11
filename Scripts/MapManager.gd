@@ -18,7 +18,7 @@ func load_map(i): #Need to add a location
 		map.queue_free()
 	map = maps[i].instance()
 	add_child(map)
-	map.get_node("DirectionalLight").show()
+#	map.get_node("DirectionalLight").show()
 	
 	#Dont expand on this
 	if i == 1:

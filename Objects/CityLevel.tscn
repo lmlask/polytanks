@@ -48,12 +48,5 @@ shape = SubResource( 4 )
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -300, 20, 0 )
 shape = SubResource( 4 )
 
-[node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( 0.788623, 0.0203435, -0.61454, 0.582063, 0.297439, 0.756791, 0.198184, -0.954524, 0.222726, -0.0101757, 42.3175, 72.3205 )
-layers = 7
-light_indirect_energy = 0.33
-light_cull_mask = 4294967293
-shadow_enabled = true
-
 [node name="house" parent="." instance=ExtResource( 1 )]
 transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, -88.6944, -3.8147e-06, -90.2844 )
