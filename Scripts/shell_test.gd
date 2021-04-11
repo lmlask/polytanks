@@ -7,6 +7,8 @@ onready var view = $view
 onready var Explosion = preload("res://Scenes/Explosion.tscn")
 var host = false
 remote var xform = null
+var timer:float = 0.0
+var shell_speed = 750
 
 func _ready():
 	view.hide()
@@ -16,23 +18,27 @@ func _process(delta):
 	if life < 0.0 or translation.y < -100:
 		var explo = Explosion.instance()
 		explo.global_transform.origin = global_transform.origin
-		get_parent().add_child(explo)
+		get_parent().add_child(explo) #owner of shell should say where the explosion is
 		call_deferred("queue_free")
 		return
 	life -= delta
+	timer += delta
 	
 	#Update last_pos
 	last_pos = transform.origin
 	
 	#Movement. To be improved later
 	if host:
-		transform.origin += transform.basis.z * delta * 750 #Multiplying by delta to prevent framerate-dependent shell speed
+		transform.origin += transform.basis.z * delta * shell_speed #Multiplying by delta to prevent framerate-dependent shell speed
 		var dot = Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector)#.normalized()
 		rotate(transform.basis.x, delta/25)
 		rotate(transform.basis.y, delta*dot/1000)
-		rset_unreliable("xform", transform)
+		if timer > 0.1:
+			rset_unreliable("xform", transform)
+			timer -= 0.1
 	elif not xform == null:
 		transform = xform
+		xform.origin += transform.basis.z * delta * shell_speed
 	#Multiplying by delta to prevent framerate-dependent shell speed
 	
 #	print(Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector.normalized()))

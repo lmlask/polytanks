@@ -24,7 +24,6 @@ func find_floor(tank, pos = Vector3.ZERO):
 #		else:
 #			tsf = tsf.rotated(tsf.basis.y,-PI/2)
 		tsf.origin = ray.get_collision_point()
-		print("setpos ",tsf.origin)
 		set_xform(tank,tsf)
 
 func set_xform(tank,tsf):

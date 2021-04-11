@@ -30,11 +30,14 @@ func _process(_delta):
 #		add_random_tank()
 		timer -= 0.1
 	if Input.is_action_just_pressed("reset_vehicle"):
-		vehicle.linear_velocity = Vector3()
-		vehicle.angular_velocity = Vector3()
+		reset_tank()
+
+func reset_tank():		
+	vehicle.linear_velocity = Vector3()
+	vehicle.angular_velocity = Vector3()
 #		vehicle.global_transform = vehicleStartTransform
-		vehicle.rotate_y(PI)
-		FloorFinder.find_floor(vehicle,vehicle.transform.origin)
+	FloorFinder.find_floor(vehicle,vehicle.transform.origin)
+	vehicle.rotate_y(PI)
 		
 
 func start():
