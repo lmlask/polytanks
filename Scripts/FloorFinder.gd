@@ -33,7 +33,6 @@ func set_xform(tank,tsf):
 		tankrays.force_raycast_update()
 		if tankrays.is_colliding():
 			set_xform(tank,tsf)
-	print("floor finder")
 	tank.next_transform(tsf)
 #	return tsf
 #		return [ray.get_collision_point(),ray.get_collision_normal()]
