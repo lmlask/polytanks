@@ -1,7 +1,11 @@
 extends Spatial
 
+onready var VM = $"../VehicleManager"
 var maps = {}
 var map = null
+var maptiles = []
+var prev_tile
+var tile_offset = [Vector3(1,0,0),Vector3(0,0,1),Vector3(-1,0,0),Vector3(0,0,-1),Vector3(1,0,1),Vector3(-1,0,1),Vector3(1,0,-1),Vector3(-1,0,-1)]
 
 func _ready():
 	maps[0] = preload("res://Objects/TestLevel.tscn")
@@ -9,7 +13,7 @@ func _ready():
 	maps[2] = preload("res://Objects/hills map.tscn")
 	load_map(0)
 	
-func load_map(i):
+func load_map(i): #Need to add a location
 	if not map == null:
 		map.queue_free()
 	map = maps[i].instance()
@@ -24,34 +28,46 @@ func load_map(i):
 				house.translation.z += 15 * i
 				house.translation.x += 15 * j
 				map.add_child(house)
+#	if i == 2: 
+#		var tile = maps[2].instance()
+#		tile.translation += Vector3(1000,0,0)
+#		add_child(tile)
+#		tile = maps[2].instance()
+#		tile.translation += Vector3(0,0,1000)
+#		add_child(tile)
+#		tile = maps[2].instance()
+#		tile.translation += Vector3(-1000,0,0)
+#		add_child(tile)
+#		tile = maps[2].instance()
+#		tile.translation += Vector3(0,0,-1000)
+#		add_child(tile)
+#		tile = maps[2].instance()
+#		tile.translation += Vector3(1000,0,1000)
+#		add_child(tile)
+#		tile = maps[2].instance()
+#		tile.translation += Vector3(-1000,0,1000)
+#		add_child(tile)
+#		tile = maps[2].instance()
+#		tile.translation += Vector3(1000,0,-1000)
+#		add_child(tile)
+#		tile = maps[2].instance()
+#		tile.translation += Vector3(-1000,0,-1000)
+#		add_child(tile)
 	
-	#testing tileing maps
-	if i == 2: 
-		var tile = maps[2].instance()
-		tile.translation += Vector3(1000,0,0)
-		add_child(tile)
-		tile = maps[2].instance()
-		tile.translation += Vector3(0,0,1000)
-		add_child(tile)
-		tile = maps[2].instance()
-		tile.translation += Vector3(-1000,0,0)
-		add_child(tile)
-		tile = maps[2].instance()
-		tile.translation += Vector3(0,0,-1000)
-		add_child(tile)
-		tile = maps[2].instance()
-		tile.translation += Vector3(1000,0,1000)
-		add_child(tile)
-		tile = maps[2].instance()
-		tile.translation += Vector3(-1000,0,1000)
-		add_child(tile)
-		tile = maps[2].instance()
-		tile.translation += Vector3(1000,0,-1000)
-		add_child(tile)
-		tile = maps[2].instance()
-		tile.translation += Vector3(-1000,0,-1000)
-		add_child(tile)
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	var cur_tile = (VM.vehicle.transform.origin/1000).snapped(Vector3(1,1,1))
+	if not cur_tile == prev_tile:
+		print("moved to new tile ", cur_tile)
+		prev_tile = cur_tile
+		check_area(cur_tile)
+	
+func check_area(center):
+	if not maptiles.has(center):
+		maptiles.append(center)
+	for i in tile_offset:
+		if not maptiles.has(center+i):
+			maptiles.append(center+i)
+			var tile = maps[2].instance()
+			tile.translation += (center+i)*1000
+			add_child(tile)

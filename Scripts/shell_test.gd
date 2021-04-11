@@ -24,7 +24,7 @@ func _process(delta):
 	#Movement. To be improved later
 	transform.origin += transform.basis.z * delta * 750 #Multiplying by delta to prevent framerate-dependent shell speed
 	var dot = Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector)#.normalized()
-	rotate(transform.basis.x, delta/10)
+	rotate(transform.basis.x, delta/25)
 	rotate(transform.basis.y, delta*dot/1000)
 	
 #	print(Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector.normalized()))
