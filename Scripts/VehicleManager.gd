@@ -33,7 +33,7 @@ func _process(_delta):
 		vehicle.linear_velocity = Vector3()
 		vehicle.angular_velocity = Vector3()
 #		vehicle.global_transform = vehicleStartTransform
-		
+		vehicle.rotate_y(PI)
 		FloorFinder.find_floor(vehicle,vehicle.transform.origin)
 		
 
@@ -46,7 +46,7 @@ func start():
 	vehicle.auto = false #set manual control
 	FloorFinder.find_floor(vehicle,start[GameState.tank])
 	
-	vehicle.transform.origin += vehicle.transform.basis.y
+	vehicle.transform.origin += vehicle.transform.basis.y #Fix a weird bug
 	vehicle.rotate_y(PI) #shouldnt be fixed
 	vehicle.next_transform(vehicle.transform)
 	players[get_tree().get_network_unique_id()] = vehicle
@@ -150,6 +150,6 @@ remote func set_pos(t): #needs a re-wrtie all this
 		get_parent().get_node(sid).next_transform(t)
 #	other_vehicle.transform = t
 	
-remote func fire(id):
-	get_parent().get_node(id).get_node("TurretController").fire()
+remote func fire(id,number):
+	get_parent().get_node(id).get_node("TurretController").fire(get_tree().get_rpc_sender_id(),number,false)
 

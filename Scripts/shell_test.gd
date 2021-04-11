@@ -5,6 +5,8 @@ var last_pos
 onready var mat = $Particles.process_material
 onready var view = $view
 onready var Explosion = preload("res://Scenes/Explosion.tscn")
+var host = false
+remote var xform = null
 
 func _ready():
 	view.hide()
@@ -16,16 +18,22 @@ func _process(delta):
 		explo.global_transform.origin = global_transform.origin
 		get_parent().add_child(explo)
 		call_deferred("queue_free")
+		return
 	life -= delta
 	
 	#Update last_pos
 	last_pos = transform.origin
 	
 	#Movement. To be improved later
-	transform.origin += transform.basis.z * delta * 750 #Multiplying by delta to prevent framerate-dependent shell speed
-	var dot = Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector)#.normalized()
-	rotate(transform.basis.x, delta/25)
-	rotate(transform.basis.y, delta*dot/1000)
+	if host:
+		transform.origin += transform.basis.z * delta * 750 #Multiplying by delta to prevent framerate-dependent shell speed
+		var dot = Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector)#.normalized()
+		rotate(transform.basis.x, delta/25)
+		rotate(transform.basis.y, delta*dot/1000)
+		rset_unreliable("xform", transform)
+	elif not xform == null:
+		transform = xform
+	#Multiplying by delta to prevent framerate-dependent shell speed
 	
 #	print(Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector.normalized()))
 #	transform.origin += Vector3(GameState.wind_vector.x,0,GameState.wind_vector.y)/100

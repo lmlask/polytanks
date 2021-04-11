@@ -1,5 +1,7 @@
 extends Node
+
 onready var turretCon = owner.owner.get_node("TurretController")
+var shell_number = 0
 
 func _ready():
 	pass
@@ -37,5 +39,6 @@ func _process(delta):
 		turretCon.eledir = turretCon.eledir/6
 
 	if Input.is_action_just_pressed("ui_select"):
-		turretCon.fire(true)
-		owner.owner.VehicleMan.rpc("fire", str(GameState.DriverID[GameState.tank]))
+		turretCon.fire(get_tree().get_network_unique_id(),shell_number,true)
+		owner.owner.VehicleMan.rpc("fire", str(GameState.DriverID[GameState.tank]), shell_number)
+		shell_number += 1

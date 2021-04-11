@@ -71,13 +71,15 @@ func toggleTraverseMode():
 	elif traverse_mode == "manual":
 		traverse_mode = "power"
 	
-func fire(view = false):
+func fire(id = 0, number = 0, host = false):
 	#spawning shell
 	var shell = shell_scene.instance()
+	shell.name = str(id,"-",number)
+	shell.host = host
 	shell.global_transform = turret.get_node("gun/gunMesh/barrel/projectile_spawner").global_transform
 #	shell.transform.origin += shell.transform.basis.z*100
 	add_child(shell)
-	if view:
+	if GameState.ShellCam and GameState.InGame and host:
 		shell.view.visible = GameState.ShellCam
 	shell.show()
 	shell.set_process(true)
