@@ -1,7 +1,10 @@
 extends Spatial
 
+onready var VM = $"../VehicleManager"
 var maps = {}
 var map = null
+var maptiles = {}
+var prev_tile
 
 func _ready():
 	maps[0] = preload("res://Objects/TestLevel.tscn")
@@ -24,8 +27,6 @@ func load_map(i):
 				house.translation.z += 15 * i
 				house.translation.x += 15 * j
 				map.add_child(house)
-	
-	#testing tileing maps
 	if i == 2: 
 		var tile = maps[2].instance()
 		tile.translation += Vector3(1000,0,0)
@@ -51,7 +52,11 @@ func load_map(i):
 		tile = maps[2].instance()
 		tile.translation += Vector3(-1000,0,-1000)
 		add_child(tile)
-
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	var cur_tile = (VM.vehicle.transform.origin/1000).snapped(Vector3(1,1,1))
+	if not cur_tile == prev_tile:
+		print("moved to new tile ", cur_tile)
+		prev_tile = cur_tile
+	
