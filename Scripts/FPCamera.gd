@@ -59,7 +59,6 @@ func _process(delta):
 	elif mode == "port":
 		$OuterGimbal/InnerGimbal.rotation.x = clamp($OuterGimbal/InnerGimbal.rotation.x, -0.15, 0.2)
 		$OuterGimbal.rotation.y = clamp($OuterGimbal.rotation.y, deg2rad(portmin), deg2rad(portmax))
-		print($OuterGimbal.rotation_degrees.y)
 	
 	#Apply zoom and sensivity
 	get_node("OuterGimbal/InnerGimbal/ClippedCamera").fov = lerp(get_node("OuterGimbal/InnerGimbal/ClippedCamera").fov, 70 * zoom, 4*delta)

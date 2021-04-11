@@ -2,6 +2,7 @@ extends Area
 
 var state = "closed"
 onready var hatch = get_parent().get_parent().get_parent().get_node("Visuals/Hull/DriverHatch")
+onready var camera = get_parent().get_parent().get_parent().get_node("Players/Driver/Camera")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -10,8 +11,10 @@ func _ready():
 
 func interact():
 	if state == "closed":
+		camera.tween(Vector3(0, 0.35, 0), 1.0, Tween.TRANS_CUBIC)
 		state = "opening"
 	elif state == "open":
+		camera.tween(Vector3(0, 0.0, 0), 1.0, Tween.TRANS_CUBIC)
 		state = "closing"
 	
 	

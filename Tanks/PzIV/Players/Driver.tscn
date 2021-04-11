@@ -16,3 +16,5 @@ script = ExtResource( 1 )
 script = ExtResource( 3 )
 role = ""
 max_movement = Vector2( 0.2, 0.15 )
+
+[node name="Tween" type="Tween" parent="."]
