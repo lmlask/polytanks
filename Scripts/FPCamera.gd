@@ -43,6 +43,10 @@ var interact_areas = []
 #modes
 var mode = "pan"
 
+#port clamping
+var portmax = 165
+var portmin = 105
+
 func _ready():
 	default_transform = global_transform
 
@@ -54,7 +58,8 @@ func _process(delta):
 		$OuterGimbal/InnerGimbal.rotation.x = clamp($OuterGimbal/InnerGimbal.rotation.x, -1, 1.4)
 	elif mode == "port":
 		$OuterGimbal/InnerGimbal.rotation.x = clamp($OuterGimbal/InnerGimbal.rotation.x, -0.15, 0.2)
-		$OuterGimbal.rotation.y = clamp($OuterGimbal.rotation.y, -0.5, 0.5)
+		$OuterGimbal.rotation.y = clamp($OuterGimbal.rotation.y, deg2rad(portmin), deg2rad(portmax))
+		print($OuterGimbal.rotation_degrees.y)
 	
 	#Apply zoom and sensivity
 	get_node("OuterGimbal/InnerGimbal/ClippedCamera").fov = lerp(get_node("OuterGimbal/InnerGimbal/ClippedCamera").fov, 70 * zoom, 4*delta)
@@ -84,7 +89,7 @@ func _input(event):
 		
 	if event is InputEventMouseMotion:
 		#camera movement
-		if Input.is_action_pressed("cam_move") and (mode == "pan"):
+		if Input.is_action_pressed("cam_move") and (mode != "port"):
 			if event.relative.x != 0:
 				var dir = 1 if invert_x else -1
 				target_offset_x = dir * -event.relative.x * default_sensivity * 0.1
@@ -92,7 +97,7 @@ func _input(event):
 				var dir = 1 if invert_y else -1
 				target_offset_y = dir * event.relative.y * default_sensivity * 0.1
 	
-		elif mode == "pan":
+		else:
 			if event.relative.x != 0:
 				var dir = 1 if invert_x else -1
 				$OuterGimbal.rotate_object_local(Vector3.UP, dir * event.relative.x * mouse_sensitivity)
@@ -122,20 +127,28 @@ func resetCamera():
 	mode = "pan" 
 	$OuterGimbal/InnerGimbal.rotation.x = 0
 	$OuterGimbal.rotation.y = 0
+	rotation_degrees.y = 0
 	transform.origin = Vector3.ZERO
 	$OuterGimbal/InnerGimbal/ClippedCamera.translation.z = 0
 	get_node("OuterGimbal/InnerGimbal/ClippedCamera").fov = 70
+	zoom = 1
 
-func togglePortMode(port, transY, rotY, rotX):
+func togglePortMode(port, transZ, rotY, rotX, clampmin, clampmax):
 	if mode == "pan":
 		mode = "port"
-		target = "port"
-		$OuterGimbal/InnerGimbal/ClippedCamera.translate(Vector3(0, 0, transY))
-		$OuterGimbal.rotation_degrees.y = rotY
+		target = port
+		$OuterGimbal/InnerGimbal/ClippedCamera.translate(Vector3(0, 0, transZ))
+		rotation_degrees.y = rotY
+		$OuterGimbal.rotation_degrees.y = 0
 		$OuterGimbal/InnerGimbal.rotation_degrees.x = rotX
 		true_offset = Vector2(0, 0)
+		portmin = clampmin
+		portmax = clampmax
 	elif mode == "port":
 		resetCamera()
+
+func toggleHatchMode(new_origin, new_max_mov_x, new_max_mov_y):
+	pass
 
 func lookatHandler():
 	if $OuterGimbal/InnerGimbal/ClippedCamera.current and (mode == "pan" or mode == "port") and interact_areas.has(ray.get_collider()):
