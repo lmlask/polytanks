@@ -3,6 +3,7 @@ extends CanvasLayer
 onready var Volume = $Panel/Volume
 onready var Wind = $Panel/Wind
 onready var Speed = $Panel/Speed
+onready var ShellCam = $Panel/ShellCam
 onready var Master = AudioServer.get_bus_index("Master")
 const SettingsFile = "user://Settings.dat"
 var data = {}
@@ -20,6 +21,7 @@ func _on_Save_pressed():
 	data["Vol"] = Volume.value
 	data["Wind"] = Wind.wind_vector
 	data["Speed"] = Speed.value
+	data["ShellCam"] = ShellCam.pressed
 	var settings = File.new()
 	settings.open(SettingsFile, File.WRITE)
 	settings.store_var(data)
@@ -50,9 +52,13 @@ func load_settings():
 	if data.has("Speed"):
 		Speed.value = data.Speed
 		GameState.speed = data.Speed
+	if data.has("ShellCam"):
+		ShellCam.pressed = data.ShellCam
+		GameState.ShellCam = data.ShellCam
 	settings.close()
-
-
 
 func _on_Speed_value_changed(value):
 	GameState.speed = value
+
+func _on_ShellCam_toggled(button_pressed):
+	GameState.ShellCam = button_pressed
