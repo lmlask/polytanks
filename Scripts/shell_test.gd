@@ -1,6 +1,6 @@
 extends Spatial
 
-var life:float = 20.0
+var life:float = 30.0
 var last_pos
 onready var mat = $Particles.process_material
 onready var view = $view
