@@ -27,12 +27,15 @@ func find_floor(tank, pos = Vector3.ZERO):
 		set_xform(tank,tsf)
 
 func set_xform(tank,tsf):
-	tsf.origin += tsf.basis.y/10
+#	tsf.origin += tsf.basis.y/5
 	tank.transform = tsf
 	for tankrays in tank.rayElements:
 		tankrays.force_raycast_update()
-		if tankrays.is_colliding():
-			set_xform(tank,tsf)
+		while tankrays.is_colliding():
+			tsf.origin += tsf.basis.y/5
+			tank.transform = tsf
+			tankrays.force_raycast_update()
+#	tank.transform = tsf
 	tank.next_transform(tsf)
 #	return tsf
 #		return [ray.get_collision_point(),ray.get_collision_normal()]

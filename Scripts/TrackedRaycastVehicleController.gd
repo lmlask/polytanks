@@ -34,7 +34,7 @@ func _process(delta):
 		if (transform.basis.y.y < 0 and transform.origin.y < 2) or translation.distance_to(Vector3.ZERO) > 500:
 			VehicleMan.reset_tank()
 #	elif GameState.role == GameState.Role.Gunner and GameState.roles.has(GameState.Role.Driver):
-	elif GameState.role == GameState.Role.Gunner or not name == str(GameState.tank):
+	elif (not GameState.role == GameState.Role.Driver and not GameState.DriverID[GameState.tank] == get_tree().get_network_unique_id()) or external_only:
 		weight_xform += delta * 1/0.1
 		transform = prev_xform.interpolate_with(next_xform, weight_xform)
 

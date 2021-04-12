@@ -26,8 +26,8 @@ func _ready():
 func _process(_delta):
 	timer += _delta
 	if timer > 0.1 and GameState.DriverID.has(GameState.tank): #not a good solution
-#		if GameState.DriverID[GameState.tank] == get_tree().get_network_unique_id():
-		if GameState.role == GameState.Role.Driver:
+		if GameState.DriverID[GameState.tank] == get_tree().get_network_unique_id():
+#		if GameState.role == GameState.Role.Driver:
 			rpc("set_pos", vehicle.transform, GameState.tank)
 		if GameState.role == GameState.Role.Gunner:
 			rpc("set_tur", vehicle.get_node("Visuals/turret").rotation,vehicle.get_node("Visuals/turret/gun").rotation, str(GameState.tank) )
@@ -94,6 +94,8 @@ remote func get_remote_tanks():
 
 remote func add_tank(t,tid):
 #	print("starting remote tank")
+	if get_parent().has_node(str(tid)): #Dont add tank if one exists
+		return
 	print(tid, GameState.tank)
 	if not tid == GameState.tank: #if adding tank is the current drivers tank do no add
 		var tank = vehicle_scene.instance()
@@ -102,13 +104,13 @@ remote func add_tank(t,tid):
 		tank.name = str(tid)
 		tank.auto = false
 		tank.mode = RigidBody.MODE_KINEMATIC
-		
+#		tank.VehicleMan = self
 #		tank.translation = t#start[NM.players.keys().find(get_tree().get_network_unique_id())] #not correct
 #		FloorFinder.find_floor(tank,start[GameState.tank])
 		
 #		tank.rotate_y(-PI/2) #shouldnt be fixed
 		tank.next_transform(tank.transform)
-#		tank.get_node("Players").queue_free()
+		tank.get_node("Players").queue_free()
 
 func load_intro_tanks():
 	for i in range(10):
