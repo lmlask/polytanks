@@ -46,6 +46,7 @@ func start():
 	for i in tanks:
 		i.queue_free() #delete intro tanks
 	GameState.setup_debug() #fix this, make it optional
+	vehicle.external_only = false
 	get_parent().add_child(vehicle)
 #	vehicle.translation = start[GameState.tank]
 	vehicle.auto = false #set manual control
@@ -102,7 +103,7 @@ remote func add_tank(t,tid):
 #		tank.get_node("Players").queue_free()
 
 func load_intro_tanks():
-	for i in range(5):
+	for i in range(10):
 		var tank = vehicle_scene.instance()
 		get_parent().add_child(tank)
 		tank.rotate_y(-PI/2)

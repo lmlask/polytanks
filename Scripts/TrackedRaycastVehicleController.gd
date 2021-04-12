@@ -5,14 +5,14 @@ export var engineSpeedScaleFac : float = 60.0
 # currently, raycast driver expects this array to exist in the controller script
 var rayElements : Array = []
 var drivePerRay : float = 100.0
-export var active = false
+#export var active = false
 
 var driveForce = 0
 var dir
 var turning_dir = null
 
 #references
-onready var role = $RoleController.role
+#onready var role = $RoleController.role #probably not needed
 onready var engine = $EngineController
 onready var brakeForce = engine.brakeForce
 
@@ -23,12 +23,13 @@ var VehicleMan = null
 var prev_xform:Transform
 var next_xform:Transform
 var weight_xform = 0.0
+var external_only = true
 
 #stats
 var speed = 0
 
 func _process(delta):
-	role = $RoleController.role
+#	role = $RoleController.role
 	if auto:
 		if (transform.basis.y.y < 0 and transform.origin.y < 2) or translation.distance_to(Vector3.ZERO) > 500:
 			VehicleMan.reset_tank()
@@ -76,6 +77,8 @@ func handleTankDrive(delta) -> void:
 
 
 func _ready() -> void:
+	if external_only:
+		$Interior.queue_free()
 	randomize()
 	rnd_power = rand_range(10,30)
 	rnd_turn = rand_range(-50,50)

@@ -16,9 +16,10 @@ var taken = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	if owner.active:
-		role = "driver"
-		changeRole(role)
+	pass
+#	if owner.active: #tank rle not used
+#		role = "driver"
+#		changeRole(role)
 	
 
 func changeRole(newrole):

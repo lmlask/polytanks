@@ -2,7 +2,7 @@ extends Node
 
 onready var engine_sfx = owner.get_node("Sfx/engine_sfx")
 onready var engine_sfx2 = owner.get_node("Sfx/engine_sfx2")
-onready var role = owner.get_node("RoleController").role
+#onready var role = owner.get_node("RoleController").role
 onready var startup_sfx = preload("res://Sfx/startup2.wav")
 onready var startupwarm_sfx = preload("res://Sfx/warm_startup.wav")
 onready var idle1_sfx = preload("res://Sfx/idle1.wav")
@@ -60,7 +60,7 @@ func _ready():
 		
 func _process(delta):
 	#Update player role
-	role = get_parent().get_node("RoleController").role
+#	role = get_parent().get_node("RoleController").role
 	
 	#Engine behavior
 	manageRPM(delta)
