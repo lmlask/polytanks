@@ -12,12 +12,17 @@ func _ready():
 	maps[1] = preload("res://Objects/CityLevel.tscn")
 	maps[2] = preload("res://Objects/hills map.tscn")
 	load_map(0,Vector3.ZERO)
-	
-func load_map(i,start_pos): #Need to add a location
+
+func clear_map():
 	for mt in maptiles:
 		maptiles[mt].queue_free()
+	map = null
+	maptiles.clear()	
+
+func load_map(i,start_pos): #Need to add a location
+	clear_map()
 	map = i
-	maptiles.clear()
+	
 	check_area((start_pos/1000).snapped(Vector3(1,1,1)))
 #	map.get_node("DirectionalLight").show()
 	

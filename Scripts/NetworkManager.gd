@@ -1,7 +1,7 @@
 extends Node
 
 var intro:Intro #intro?
-remotesync var players = {}
+#remotesync var players = {}
 
 var timer = 0.0 #for debug
 
@@ -19,7 +19,7 @@ func setup_host():
 	intro.set_status("Your are host")
 	intro.disable_options()
 	GameState.mode = GameState.Mode.Host
-	players[get_tree().get_network_unique_id()] = ""
+#	players[get_tree().get_network_unique_id()] = ""
 
 func join_host():
 	var peer = NetworkedMultiplayerENet.new()
@@ -30,8 +30,8 @@ func join_host():
 func _player_connected(id):
 	print("_player_connected-", id)
 	if get_tree().is_network_server():
-		players[id] = ""
-		rset("players", players)
+#		players[id] = ""
+#		rset("players", players)
 		GameState.rset("DriverID",GameState.DriverID)
 		print("send data to ", id)
 		GameState.send_game_data()
@@ -41,8 +41,7 @@ func _player_connected(id):
 	
 func _player_disconnected(id):
 	print("_player_disconnected-", id)
-	players.erase(id)
-	GameState.remove_role(id)
+	GameState.rpc("remove_role", id)
 	
 func _connected_ok():
 	print("_connected_ok")
@@ -57,9 +56,15 @@ func _connected_fail():
 func _server_disconnected():
 	print("_server_disconnected")
 	intro.set_status("You have been disconnected")
+	get_tree().quit()
 	GameState.mode = null
 	intro.enable_options()
 	get_tree().network_peer = null
+	get_tree().network_peer.disconnect_peer()
+	get_parent().get_node("Map").clear_map()
+	$"../DebugUI".queue_free()
+	GameState.role = GameState.Role.None
+	GameState.DriverID = {}
 	
 
 #func _process(delta):

@@ -57,7 +57,7 @@ func _process(delta):
 	turret.get_node("gun").rotate(Vector3(1, 0, 0), ele_speed*delta)
 	
 	#Clamp
-	turret.get_node("gun").rotation_degrees.x = clamp(turret.get_node("gun").rotation_degrees.x, -17, 10)
+	turret.get_node("gun").rotation_degrees.x = clamp(turret.get_node("gun").rotation_degrees.x, -17, 10) 
 	
 	if owner.auto:
 		timer += delta #for auto firing during intro

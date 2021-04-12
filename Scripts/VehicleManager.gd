@@ -37,7 +37,6 @@ func _process(_delta):
 		reset_tank()
 
 func reset_tank():		
-	print("reset tank")
 	vehicle.linear_velocity = Vector3()
 	vehicle.angular_velocity = Vector3()
 #		vehicle.global_transform = vehicleStartTransform

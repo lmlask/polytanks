@@ -22,7 +22,7 @@ var ShellCam = false
 var WindView = false
 
 func _ready() -> void:
-	pass
+		pass
 #	gameRoot.add_child(DebugUI) #make optional
 #	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 #	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -39,11 +39,33 @@ remotesync func set_roles(t,r,id):
 	if role == Role.Driver and not id == DriverID[tank]:
 		rpc_id(id, "update_roles", roles)
 	RoleSelect.setup_panel()
-	
+
+remote func disconnect_id(id):
+	print("disconnect id ", id)
+
 remote func remove_role(id):
-	for i in roles:
-		if roles[i] == id:
-			roles.erase(i)
+	for i in DriverID:
+		if DriverID[i] == id: #??? ehhhh what do i do from here....
+			DriverID.erase(i)
+		for j in roles:
+			if roles[j] == id:
+				roles.erase(j)
+#			for j in roles:
+#				rpc_id(j, "disconect_id", j)
+#			print("remove tank ", i)
+#			rpc("remove_tank", i)
+#			DriverID.erase(i)
+#	for i in roles:
+#		if roles[i] == id:
+#			roles.erase(i)
+			
+remotesync func remove_tank(rem_tank):
+	if rem_tank == tank:
+		get_tree().network_peer = null
+	print("deleting tank ", rem_tank)
+	gameRoot.get_node(str(rem_tank)).queue_free()
+	DriverID.erase(rem_tank)
+	
 
 master func send_game_data():
 	rset("hostInGame", hostInGame)
