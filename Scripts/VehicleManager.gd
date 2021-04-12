@@ -98,7 +98,7 @@ remote func get_remote_tanks():
 
 remote func add_tank(t,tid):
 #	print("starting remote tank")
-	if get_parent().has_node(str(tid)): #Dont add tank if one exists
+	if R.VTanks.has_node(str(tid)): #Dont add tank if one exists
 		return
 	print(tid, GameState.tank)
 	if not tid == GameState.tank: #if adding tank is the current drivers tank do no add
