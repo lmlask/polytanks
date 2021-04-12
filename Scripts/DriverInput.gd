@@ -9,6 +9,7 @@ onready var transmission_sfx = owner.owner.get_node("Sfx/transmission_sfx")
 onready var gear3_sfx = preload("res://Sfx/gear3.wav")
 onready var gear2_sfx = preload("res://Sfx/gear2.wav")
 onready var tank = owner.owner
+onready var gearShift = owner.owner.get_node("Interior/HullInterior/Dynamic/GearShift")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -77,20 +78,22 @@ func manageTransmission():
 	if Input.is_action_just_pressed("clutch"):
 		transmission_sfx.stream = gear3_sfx
 		transmission_sfx.play()
-		
 	if engine.clutch:
 		if Input.is_action_just_pressed("gear_up") and engine.gear < engine.forward_gears:
 			engine.gear += 1
 			transmission_sfx.stream = gear2_sfx
 			transmission_sfx.play()
+			gearShift.shift(engine.gear)
 		elif Input.is_action_just_pressed("gear_down") and engine.gear > -engine.reverse_gears:
 			engine.gear -= 1
 			transmission_sfx.stream = gear2_sfx
 			transmission_sfx.play()
+			gearShift.shift(engine.gear)
 		elif Input.is_action_just_pressed("gear_neutral"):
 			engine.gear = 0
 			transmission_sfx.stream = gear2_sfx
 			transmission_sfx.play()
+			gearShift.shift(engine.gear)
 
 func manageSteering():
 	if Input.is_action_pressed("ui_right") or Input.is_action_pressed("ui_left"):

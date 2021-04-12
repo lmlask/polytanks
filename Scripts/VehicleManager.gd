@@ -37,9 +37,9 @@ func _process(_delta):
 	if Input.is_action_just_pressed("reset_vehicle"):
 		reset_tank()
 
-func reset_tank():		
-	vehicle.linear_velocity = Vector3()
-	vehicle.angular_velocity = Vector3()
+func reset_tank():
+	vehicle.linear_velocity = Vector3.ZERO
+	vehicle.angular_velocity = Vector3.ZERO
 #		vehicle.global_transform = vehicleStartTransform
 	FloorFinder.find_floor(vehicle,vehicle.transform.origin)
 	vehicle.rotate_y(PI)

@@ -90,3 +90,7 @@ func fire(id = 0, number = 0, host = false):
 	
 	#sound
 	muzzleSound.play()
+	
+	#recoil physics
+	var point = owner.get_transform().xform_inv(barrel.get_node("projectile_spawner").global_transform.origin)
+	owner.apply_impulse(point, Vector3(0, -40, 0))

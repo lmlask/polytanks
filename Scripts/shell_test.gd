@@ -4,10 +4,11 @@ var life:float = 30.0
 var last_pos
 onready var view = $view
 onready var Explosion = preload("res://Scenes/Explosion.tscn")
+onready var models = [$Model/HEModel, $Model/APCModel, $Model/APCRModel, $Model/HEATModel]
 var host = false
 remote var xform = null
 var timer:float = 0.0
-var shell_speed = 750
+var shell_speed = 600
 
 func _ready():
 	view.hide()
@@ -36,7 +37,7 @@ func _physics_process(delta):
 		if GameState.ShellCam:
 			$view/Viewport/Camera.global_transform = global_transform
 			$view/Viewport/Camera.rotate(transform.basis.y, PI)
-			$view/Viewport/Camera.transform.origin -= transform.basis.z/5
+			$view/Viewport/Camera.transform.origin -= transform.basis.z/4
 			$view/Viewport/Camera.transform.origin += transform.basis.y/5
 		if timer > 0.1:
 			rset_unreliable("xform", transform)
@@ -50,6 +51,17 @@ func _physics_process(delta):
 	#Multiplying by delta to prevent framerate-dependent shell speed
 #	print(Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector.normalized()))
 #	transform.origin += Vector3(GameState.wind_vector.x,0,GameState.wind_vector.y)/100
+	
+	
+	#Rotate shell model
+	for i in models:
+		if i.visible:
+			i.rotation_degrees.y += 5
+			
+	#Tracer
+	if timer > 0.015:
+		$Tracer.visible = true
+	
 	#Despawn
 	if $RayCast.is_colliding():
 		var col = $RayCast.get_collider()

@@ -1,5 +1,6 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
+[ext_resource path="res://Projectiles/PanzerIV/tracer.tres" type="Material" id=1]
 [ext_resource path="res://Scripts/shell_test.gd" type="Script" id=2]
 [ext_resource path="res://Materials/Toon/Projectiles/PanzerIV/shell_green.material" type="Material" id=3]
 [ext_resource path="res://Materials/Toon/Projectiles/PanzerIV/bands_light.material" type="Material" id=4]
@@ -162,20 +163,25 @@ surfaces/2 = {
 "vertex_count": 24
 }
 
+[sub_resource type="CapsuleMesh" id=5]
+
 [node name="projectile" type="Spatial" groups=[
 "shell",
 ]]
 script = ExtResource( 2 )
 
-[node name="he_model" type="MeshInstance" parent="."]
-transform = Transform( 0.0362616, 0, 0, 0, -5.90776e-09, -0.0362616, 0, 0.0362616, -5.90776e-09, 0, 0, 0 )
+[node name="Model" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
+
+[node name="HEModel" type="MeshInstance" parent="Model"]
+transform = Transform( 0.0362616, 0, 0, 0, 0.0362616, 0, 0, 0, 0.0362616, 0, 0, 0 )
 mesh = SubResource( 1 )
 material/0 = ExtResource( 3 )
 material/1 = ExtResource( 4 )
 material/2 = ExtResource( 5 )
 
-[node name="apc_model" type="MeshInstance" parent="."]
-transform = Transform( 0.0362616, 0, 0, 0, -5.90776e-09, -0.0362616, 0, 0.0362616, -5.90776e-09, 0, 0, 0 )
+[node name="APCModel" type="MeshInstance" parent="Model"]
+transform = Transform( 0.0362616, 0, 0, 0, 0.0362616, 0, 0, 0, 0.0362616, 0, 0, 0 )
 visible = false
 mesh = SubResource( 2 )
 material/0 = ExtResource( 6 )
@@ -183,16 +189,16 @@ material/1 = ExtResource( 7 )
 material/2 = ExtResource( 8 )
 material/3 = ExtResource( 5 )
 
-[node name="apcr_model" type="MeshInstance" parent="."]
-transform = Transform( 0.0362616, 0, 0, 0, -5.90776e-09, -0.0362616, 0, 0.0362616, -5.90776e-09, 0, 0, 0 )
+[node name="APCRModel" type="MeshInstance" parent="Model"]
+transform = Transform( 0.0362616, 0, 0, 0, 0.0362616, 0, 0, 0, 0.0362616, 0, 0, 0 )
 visible = false
 mesh = SubResource( 3 )
 material/0 = ExtResource( 6 )
 material/1 = ExtResource( 8 )
 material/2 = ExtResource( 5 )
 
-[node name="hollow_model" type="MeshInstance" parent="."]
-transform = Transform( 0.0362616, 0, 0, 0, -5.90776e-09, -0.0362616, 0, 0.0362616, -5.90776e-09, 0, 0, 0 )
+[node name="HEATModel" type="MeshInstance" parent="Model"]
+transform = Transform( 0.0362616, 0, 0, 0, 0.0362616, 0, 0, 0, 0.0362616, 0, 0, 0 )
 visible = false
 mesh = SubResource( 4 )
 material/0 = ExtResource( 3 )
@@ -221,3 +227,10 @@ far = 10000.0
 enabled = true
 cast_to = Vector3( 0, 0, 15 )
 collide_with_areas = true
+
+[node name="Tracer" type="MeshInstance" parent="."]
+transform = Transform( 0.06, 0, 0, 0, 0.06, 0, 0, 0, 5, 0, 0, -7.5924 )
+visible = false
+cast_shadow = 0
+mesh = SubResource( 5 )
+material/0 = ExtResource( 1 )
