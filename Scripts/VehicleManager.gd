@@ -13,7 +13,10 @@ var timer:float = 0.0
 
 var start = [Vector3(20,0,-12), Vector3(-12,0,-12),Vector3(6,0,-16),Vector3(14,0,-16),Vector3(14,0,-8)] #simple solution
 
+var camrig #do everything to do with this differently
+
 func _ready():
+	camrig = get_parent().get_node("CameraRig")
 	randomize()
 	
 #	get_parent().call_deferred("add_child", vehicle)
@@ -48,6 +51,11 @@ func start():
 	GameState.setup_debug() #fix this, make it optional
 	vehicle.external_only = false
 	get_parent().add_child(vehicle)
+	
+	get_parent().remove_child(camrig) #fix it
+	vehicle.add_child(camrig)
+	camrig.canrotx = true
+	
 #	vehicle.translation = start[GameState.tank]
 	vehicle.auto = false #set manual control
 	if GameState.role == GameState.Role.Driver:
@@ -66,8 +74,8 @@ func start():
 	vehicle.name = str(GameState.tank)
 	
 	vehicleStartTransform = vehicle.global_transform
-	$"../CameraRig"._camTarget = vehicle #give cam target
-	$"../CameraRig".canrotx = true #make cam rotatable on x
+#	$"../CameraRig"._camTarget = vehicle #give cam target
+#	$"../CameraRig".canrotx = true #make cam rotatable on x
 	$"../DebugUI".enable()
 	#add additional vehicles for testing
 	rpc("get_remote_tanks") #get remote tanks
@@ -110,7 +118,7 @@ func load_intro_tanks():
 		tank.VehicleMan = self
 		tanks.append(tank)
 	
-	$"../CameraRig"._camTarget = tanks[rand_range(0,tanks.size())]
+#	$"../CameraRig"._camTarget = tanks[rand_range(0,tanks.size())]
 #	var data = FloorFinder.find_floor()
 #	tanks[0].transform.basis.y = data[1]
 #	tanks[0].transform = Transform.looking_at(-data[1],Vector3(0,1,0).rotated(Vector3(0,0,0),PI/2))

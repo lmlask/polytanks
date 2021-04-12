@@ -22,9 +22,9 @@ var canrotx = false
 func _ready() -> void:
 	# Setup node references
 #	_camTarget = get_node(target) #set by script
-	_cam = get_node("ClippedCamera")
-	rotate_y(-PI/2)
-	rotation.x = -PI/8
+	_cam = get_node("Target/ClippedCamera")
+	$Target.rotate_y(-PI/2)
+	$Target.rotation.x = -PI/8
 	
 	# Setup camera position in rig
 	_cam.translate(Vector3(0,camYOffset,maxZoom))
@@ -33,11 +33,11 @@ func _ready() -> void:
 func _input(event) -> void:
 	if event is InputEventMouseMotion:
 		# Rotate the rig around the target
-		rotate_y(-event.relative.x * horizontalSensitivity)
+		$Target.rotate_y(-event.relative.x * horizontalSensitivity)
 		if canrotx:
-			rotation.x = clamp(rotation.x - event.relative.y * verticalSensitivity, deg2rad(minPitch), deg2rad(maxPitch))
-		get_parent().GUI.set_compass(transform.basis)
-		orthonormalize()
+			$Target.rotation.x = clamp($Target.rotation.x - event.relative.y * verticalSensitivity, deg2rad(minPitch), deg2rad(maxPitch))
+		get_node("/root/gameRoot/ViewportContainer/View/GUI").set_compass($Target.transform.basis) #fix this camrig
+		$Target.orthonormalize()
 		
 		
 	if event is InputEventMouseButton:
@@ -51,7 +51,11 @@ func _input(event) -> void:
 				camYOffset += zoomYStep
 
 func _process(delta) -> void:
+#	return
 	# zoom the camera accordingly
+	global_transform.basis = Basis.IDENTITY
 	_cam.set_translation(_cam.translation.linear_interpolate(Vector3(0,camYOffset,_curZoom),delta * camLerpSpeed))
 	# set the position of the rig to follow the target
+
+	return
 	set_translation(_camTarget.global_transform.origin)
