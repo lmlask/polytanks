@@ -1,6 +1,5 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://Projectiles/PanzerIV/shell_particles.material" type="Material" id=1]
 [ext_resource path="res://Scripts/shell_test.gd" type="Script" id=2]
 [ext_resource path="res://Materials/Toon/Projectiles/PanzerIV/shell_green.material" type="Material" id=3]
 [ext_resource path="res://Materials/Toon/Projectiles/PanzerIV/bands_light.material" type="Material" id=4]
@@ -163,16 +162,6 @@ surfaces/2 = {
 "vertex_count": 24
 }
 
-[sub_resource type="SpatialMaterial" id=5]
-flags_transparent = true
-albedo_color = Color( 0.796078, 0.796078, 0.796078, 0.215686 )
-
-[sub_resource type="SphereMesh" id=6]
-radius = 0.03
-height = 0.061
-radial_segments = 6
-rings = 6
-
 [node name="projectile" type="Spatial" groups=[
 "shell",
 ]]
@@ -210,17 +199,6 @@ material/0 = ExtResource( 3 )
 material/1 = ExtResource( 4 )
 material/2 = ExtResource( 5 )
 
-[node name="Particles" type="Particles" parent="."]
-transform = Transform( 0.0362616, 0, 0, 0, -5.90775e-09, -0.0362616, 0, 0.0362616, -5.90775e-09, 0, 3.93501e-09, -0.024153 )
-material_override = SubResource( 5 )
-cast_shadow = 0
-amount = 500
-lifetime = 0.2
-visibility_aabb = AABB( -0.929575, -3.19099, -0.899413, 1.85915, 6.38199, 1.79883 )
-local_coords = false
-process_material = ExtResource( 1 )
-draw_pass_1 = SubResource( 6 )
-
 [node name="view" type="ViewportContainer" parent="."]
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -241,5 +219,5 @@ far = 10000.0
 
 [node name="RayCast" type="RayCast" parent="."]
 enabled = true
-cast_to = Vector3( 0, 0, 25 )
+cast_to = Vector3( 0, 0, 15 )
 collide_with_areas = true

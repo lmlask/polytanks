@@ -2,7 +2,6 @@ extends Spatial
 
 var life:float = 30.0
 var last_pos
-onready var mat = $Particles.process_material
 onready var view = $view
 onready var Explosion = preload("res://Scenes/Explosion.tscn")
 var host = false
@@ -20,25 +19,17 @@ remotesync func explode(pos):
 	get_parent().add_child(explo) #owner of shell should say where the explosion is
 	call_deferred("queue_free")
 
-func _process(delta):
+func _physics_process(delta):
 	if (life < 0.0 or translation.y < -100) and host:
 		rpc("explode", transform.origin)
 		return
 	#Update last_pos
 	last_pos = global_transform.origin
-	#Particle emission extents
-	#Put particle box halfway between the last shell position and the current one
-	$Particles.global_transform.origin = ((last_pos + global_transform.origin)/2)
-	#Set box boundaries to be from curr pos to last pos
-	var dist = global_transform.origin.distance_to(last_pos)
-	#for some reason the dist is too small? multiplying it by 10 makes good trails, so be it
-	mat.emission_box_extents = Vector3(1, dist*10, 1)
-	#Movement. To be improved later
 	
 	if host:
 		life -= delta
 		timer += delta
-		transform.origin += transform.basis.z * delta * shell_speed #Multiplying by delta to prevent framerate-dependent shell speed
+		transform.origin += transform.basis.z * delta * shell_speed
 		var dot = Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector)#.normalized()
 		rotate(transform.basis.x, delta/25)
 		rotate(transform.basis.y, delta*dot/1000)
