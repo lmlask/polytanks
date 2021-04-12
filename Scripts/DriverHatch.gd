@@ -11,10 +11,10 @@ func _ready():
 
 func interact():
 	if state == "closed":
-		camera.tween(Vector3(0, 0.35, 0), 1.0, Tween.TRANS_CUBIC)
+		camera.tween(Vector3(0, 0.35, 0.10), 1.0, Tween.TRANS_CUBIC)
 		state = "opening"
 	elif state == "open":
-		camera.tween(Vector3(0, 0.0, 0), 1.0, Tween.TRANS_CUBIC)
+		camera.tween(Vector3.ZERO, 1.0, Tween.TRANS_CUBIC)
 		state = "closing"
 	
 	

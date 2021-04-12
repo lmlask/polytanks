@@ -212,6 +212,7 @@ material/2 = ExtResource( 5 )
 
 [node name="Particles" type="Particles" parent="."]
 transform = Transform( 0.0362616, 0, 0, 0, -5.90775e-09, -0.0362616, 0, 0.0362616, -5.90775e-09, 0, 3.93501e-09, -0.024153 )
+visible = false
 material_override = SubResource( 5 )
 cast_shadow = 0
 amount = 500
