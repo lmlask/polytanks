@@ -56,7 +56,6 @@ func _connected_fail():
 func _server_disconnected():
 	print("_server_disconnected")
 	intro.set_status("You have been disconnected")
-	get_tree().quit()
 	GameState.mode = null
 	intro.enable_options()
 	get_tree().network_peer = null

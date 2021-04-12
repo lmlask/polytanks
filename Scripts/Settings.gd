@@ -67,4 +67,7 @@ func _on_ShellCam_toggled(button_pressed):
 
 func _on_WindView_toggled(button_pressed):
 	GameState.WindView = button_pressed
-	
+
+func _on_Restart_pressed():
+	GameState.restart()
+	$Panel.hide()

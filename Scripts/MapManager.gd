@@ -62,6 +62,8 @@ func load_map(i,start_pos): #Need to add a location
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if map == null or not VM.vehicle is Node:
+		return
 	var cur_tile = (VM.vehicle.transform.origin/1000).snapped(Vector3(1,1,1))
 	if not cur_tile == prev_tile:
 		prev_tile = cur_tile

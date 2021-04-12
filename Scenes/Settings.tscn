@@ -88,6 +88,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Restart" type="Button" parent="Panel"]
+margin_left = 199.0
+margin_top = 466.0
+margin_right = 407.0
+margin_bottom = 521.0
+custom_fonts/font = ExtResource( 2 )
+text = "Restart"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Wind" type="Panel" parent="Panel"]
 margin_left = 592.0
 margin_top = 247.0
@@ -124,6 +135,7 @@ __meta__ = {
 [connection signal="value_changed" from="Panel/Volume" to="." method="_on_Volume_value_changed"]
 [connection signal="value_changed" from="Panel/Speed" to="." method="_on_Speed_value_changed"]
 [connection signal="pressed" from="Panel/Save" to="." method="_on_Save_pressed"]
+[connection signal="pressed" from="Panel/Restart" to="." method="_on_Restart_pressed"]
 [connection signal="gui_input" from="Panel/Wind" to="Panel/Wind" method="_on_Wind_gui_input"]
 [connection signal="mouse_entered" from="Panel/Wind" to="Panel/Wind" method="_on_Wind_mouse_entered"]
 [connection signal="mouse_exited" from="Panel/Wind" to="Panel/Wind" method="_on_Wind_mouse_exited"]

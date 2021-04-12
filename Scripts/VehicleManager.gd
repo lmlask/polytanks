@@ -45,8 +45,11 @@ func reset_tank():
 		
 
 func start():
-	for i in tanks:
-		i.queue_free() #delete intro tanks
+	vehicle = vehicle_scene.instance()
+	if tanks.size() > 0:
+		for i in tanks:
+			i.queue_free() #delete intro tanks
+		tanks.clear()
 	GameState.setup_debug() #fix this, make it optional
 	vehicle.external_only = false
 	get_parent().add_child(vehicle)

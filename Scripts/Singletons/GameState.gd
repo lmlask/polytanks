@@ -42,6 +42,7 @@ remotesync func set_roles(t,r,id):
 
 remote func disconnect_id(id):
 	print("disconnect id ", id)
+	get_tree().network_peer.disconnect_peer(id)
 
 remote func remove_role(id):
 	for i in DriverID:
@@ -65,7 +66,24 @@ remotesync func remove_tank(rem_tank):
 	print("deleting tank ", rem_tank)
 	gameRoot.get_node(str(rem_tank)).queue_free()
 	DriverID.erase(rem_tank)
-	
+
+remote func restart():
+	print("restart")
+	role = Role.None
+	roles = {}
+	InGame = false
+#	rpc_id(1, "disconnect_id", get_tree().get_network_unique_id())
+#	get_tree().network_peer = null
+	for i in DriverID:
+		gameRoot.get_node(str(i)).queue_free() #fix all this stuff
+	gameRoot.get_node("DebugUI").queue_free()
+	gameRoot.get_node("Map").clear_map()
+	gameRoot.get_node("Map").load_map(0, Vector3.ZERO)
+	GameState.role = GameState.Role.None
+	GameState.DriverID = {}
+	gameRoot.get_node("Lobby/Panel").show()
+#	gameRoot.VehicleManager.load_intro_tanks()
+	pass
 
 master func send_game_data():
 	rset("hostInGame", hostInGame)
@@ -83,6 +101,7 @@ func change_roles(i):
 	rpc("set_roles",tank,i,get_tree().get_network_unique_id())
 	role = i
 	gameRoot.get_node("Lobby").Grid.rpc("disable_role", true)
+	
 
 remote func update_roles(r):
 	roles = r
