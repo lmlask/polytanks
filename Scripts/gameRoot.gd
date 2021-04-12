@@ -11,7 +11,8 @@ var timer = 0.0 #User for debug
 func _ready():
 	$Lobby.gameRoot = self
 	$NetworkManager.intro = $Lobby
-	VehicleManager.load_intro_tanks()
+	R.Map.load_map(0,Vector3.ZERO)
+	R.ManVehicle.load_intro_tanks()
 	
 
 

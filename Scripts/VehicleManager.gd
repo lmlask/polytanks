@@ -1,10 +1,11 @@
 extends Node
+class_name ManagerVehicle
 
 export(NodePath) var vehiclePath
-onready var vehicle_scene = load("res://Tanks/PzIV/PanzerIV.tscn") #Should be dynamic
+#onready var vehicle_scene = load("res://Tanks/PzIV/PanzerIV.tscn") #Should be dynamic
 onready var FloorFinder = $FloorFinder
 onready var NM = get_node("../NetworkManager")
-onready var vehicle : RigidBody = vehicle_scene.instance()
+onready var vehicle : RigidBody# = vehicle_scene.instance()
 #onready var other_vehicle : RigidBody = vehicle_scene.instance()
 var vehicleStartTransform : Transform
 var tanks = []
@@ -13,10 +14,10 @@ var timer:float = 0.0
 
 var start = [Vector3(20,0,-12), Vector3(-12,0,-12),Vector3(6,0,-16),Vector3(14,0,-16),Vector3(14,0,-8)] #simple solution
 
-var camrig #do everything to do with this differently
+#var camrig #do everything to do with this differently
 
 func _ready():
-	camrig = get_parent().get_node("CameraRig")
+#	camrig = get_parent().get_node("CameraRig")
 	randomize()
 	
 #	get_parent().call_deferred("add_child", vehicle)
@@ -45,18 +46,19 @@ func reset_tank():
 		
 
 func start():
-	vehicle = vehicle_scene.instance()
+	vehicle = R.VTPzIV.instance()
 	if tanks.size() > 0:
 		for i in tanks:
 			i.queue_free() #delete intro tanks
 		tanks.clear()
 	GameState.setup_debug() #fix this, make it optional
 	vehicle.external_only = false
-	get_parent().add_child(vehicle)
+	R.VTanks.add_child(vehicle)
 	
-	get_parent().remove_child(camrig) #fix it
-	vehicle.add_child(camrig)
-	camrig.canrotx = true
+#	get_parent().remove_child(camrig) #fix it
+	var cam = R.CamExt.instance()
+	vehicle.add_child(cam)
+	cam.canrotx = true
 	
 #	vehicle.translation = start[GameState.tank]
 	vehicle.auto = false #set manual control
@@ -100,8 +102,8 @@ remote func add_tank(t,tid):
 		return
 	print(tid, GameState.tank)
 	if not tid == GameState.tank: #if adding tank is the current drivers tank do no add
-		var tank = vehicle_scene.instance()
-		get_parent().add_child(tank)
+		var tank = R.VTPzIV.instance()
+		R.VTanks.add_child(tank)
 #		tank.name = str(get_tree().get_rpc_sender_id())
 		tank.name = str(tid)
 		tank.auto = false
@@ -116,62 +118,41 @@ remote func add_tank(t,tid):
 
 func load_intro_tanks():
 	for i in range(10):
-		var tank = vehicle_scene.instance()
-		get_parent().add_child(tank)
-		tank.rotate_y(-PI/2)
-		tank.VehicleMan = self
-		tanks.append(tank)
+		add_intro_tank()
 	
 #	$"../CameraRig"._camTarget = tanks[rand_range(0,tanks.size())]
-#	var data = FloorFinder.find_floor()
-#	tanks[0].transform.basis.y = data[1]
-#	tanks[0].transform = Transform.looking_at(-data[1],Vector3(0,1,0).rotated(Vector3(0,0,0),PI/2))
-#	var tsf = Transform.looking_at(-data[1],Vector3(0,1,0))
-#	tsf = tsf.rotated(tsf.basis.x,PI/2)
+	var cam = R.CamExt.instance()
+	tanks[rand_range(0,tanks.size())].add_child(cam)
+	cam.canrotx = true
 	
-#	tanks[0].transform = FloorFinder.find_floor(tanks[0])
-	for t in tanks:
-		FloorFinder.find_floor(t)
-#	tanks[0].transform.origin = data[0] + tsf.basis.y/10
-#	tanks[0].next_transform(tanks[0].transform)
-#	tanks[1].translation = Vector3(6,0.5,-12)
-#	tanks[2].translation = Vector3(14,0.5,-12)
-#
-#	tanks[3].translation = Vector3(-10,0.5,-16)
-#	tanks[4].translation = Vector3(-2,0.5,-16)
-#	tanks[5].translation = Vector3(6,0.5,-16)
-#	tanks[6].translation = Vector3(14,0.5,-16)
-#
-#	tanks[7].translation = Vector3(-10,0.5,-8)
-#	tanks[8].translation = Vector3(-2,0.5,-8)
-#	tanks[9].translation = Vector3(6,0.5,-8)
-#	tanks[10].translation = Vector3(14,0.5,-8)
-	
-func add_random_tank():
-	if tanks.size() > 0 and tanks.size() < 20: #only add tanks when tanks exists, ie game has started
-		var tank = vehicle_scene.instance()
-		get_parent().add_child(tank)
-		tank.rotate_y(rand_range(-3,3))
+func add_intro_tank():
+	if tanks.size() < 20: #only add tanks when tanks exists, ie game has started
+		var tank = R.VTPzIV.instance()
+		R.VTanks.add_child(tank)
+		tank.rotate_y(-PI/2)
 		tank.VehicleMan = self
-		tank.translation = Vector3(rand_range(-100,100),1,rand_range(-100,100))
+		FloorFinder.find_floor(tank)
 		tanks.append(tank)
 
 func delete_tank(t):
 	t.queue_free()
 	tanks.erase(t)
 
+#Thinking I should have all vehicles in the some folder with a prefix
+#Re-write it later once different things are added
+
 remote func set_tur(tr,te,id): #set turrent rotation, change to work like tank transform
-	if get_parent().has_node(id):
-		get_parent().get_node(id).get_node("Visuals/turret").rotation = tr
-		get_parent().get_node(id).get_node("Visuals/turret/gun").rotation = te
+	if R.VTanks.has_node(id):
+		R.VTanks.get_node(id).get_node("Visuals/turret").rotation = tr
+		R.VTanks.get_node(id).get_node("Visuals/turret/gun").rotation = te
 
 remote func set_pos(t,id): #needs a re-wrtie all this
 #	var sid = str(get_tree().get_rpc_sender_id())
 #	sid = str(GameState.tank)
-	if get_parent().has_node(str(id)):
-		get_parent().get_node(str(id)).next_transform(t)
+	if R.VTanks.has_node(str(id)):
+		R.VTanks.get_node(str(id)).next_transform(t)
 #	other_vehicle.transform = t
 	
 remote func fire(id,number):
-	get_parent().get_node(id).get_node("TurretController").fire(get_tree().get_rpc_sender_id(),number,false)
+	R.VTanks.get_node(id).get_node("TurretController").fire(get_tree().get_rpc_sender_id(),number,false)
 

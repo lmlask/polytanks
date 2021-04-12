@@ -1,4 +1,5 @@
 extends Spatial
+class_name MapMain
 
 onready var VM = $"../VehicleManager"
 var maps = {}

@@ -3,7 +3,7 @@ extends Node
 # global vars
 var mouseHidden : bool = false
 var debugMode : bool = false
-var DebugUI = load("res://Scenes/DebugUI.tscn").instance()
+var debugui
 onready var gameRoot = get_node("/root/gameRoot")
 onready var RoleSelect = gameRoot.get_node("Roles")
 enum Mode {Host, Client}
@@ -77,8 +77,8 @@ remote func restart():
 	for i in DriverID:
 		gameRoot.get_node(str(i)).queue_free() #fix all this stuff
 	gameRoot.get_node("DebugUI").queue_free()
-	gameRoot.get_node("Map").clear_map()
-	gameRoot.get_node("Map").load_map(0, Vector3.ZERO)
+	R.Map.load_map(0, Vector3.ZERO)
+	R.ManVehicle.load_intro_tanks()
 	GameState.role = GameState.Role.None
 	GameState.DriverID = {}
 	gameRoot.get_node("Lobby/Panel").show()
@@ -121,7 +121,8 @@ remotesync func set_driver_id(tank, id):
 #	print(DriverID)
 
 func setup_debug():
-	gameRoot.add_child(DebugUI) #make optional
+	debugui = R.DebugUI.instance()
+	R.Root.add_child(debugui) #make optional
 
 func _input(event) -> void:
 	if event.is_action_pressed("ui_cancel"):

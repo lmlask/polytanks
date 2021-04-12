@@ -25,6 +25,16 @@ _global_script_classes=[ {
 "path": "res://Scripts/Intro.gd"
 }, {
 "base": "Node",
+"class": "ManagerVehicle",
+"language": "GDScript",
+"path": "res://Scripts/VehicleManager.gd"
+}, {
+"base": "Spatial",
+"class": "MapMain",
+"language": "GDScript",
+"path": "res://Scripts/MapManager.gd"
+}, {
+"base": "Node",
 "class": "gameRoot",
 "language": "GDScript",
 "path": "res://Scripts/gameRoot.gd"
@@ -33,6 +43,8 @@ _global_script_class_icons={
 "HTerrainDataLoader": "",
 "HTerrainDataSaver": "",
 "Intro": "",
+"ManagerVehicle": "",
+"MapMain": "",
 "gameRoot": ""
 }
 
@@ -46,6 +58,7 @@ config/icon="res://icon.png"
 
 GameState="*res://Scripts/Singletons/GameState.gd"
 DrawLine3D="*res://Scripts/Singletons/DrawLine3D.gd"
+R="*res://Scripts/Singletons/res.gd"
 
 [display]
 
