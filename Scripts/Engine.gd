@@ -32,18 +32,6 @@ export var gearTopSpeeds : Dictionary = {
 	6 : 42
 }
 
-#Gear strength modifiers for fine adjustment.
-#export var gearModifiers : Dictionary = {
-#	-1 : 1,
-#	0 : 0.3,
-#	1 : 1,
-#	2 : 0.9,
-#	3 : 0.8,
-#	4 : 0.7,
-#	5 : 0.6,
-#	6 : 0.5
-#}
-
 var RPM = 0.25
 var maxRPM = 1.0
 var gear = 0
