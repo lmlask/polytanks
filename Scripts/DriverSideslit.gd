@@ -1,6 +1,6 @@
 extends Area
 
-onready var driver_camera = get_parent().get_parent().get_parent().get_node("Players/Driver/Camera")
+onready var driver_camera = owner.get_node("Players/Driver/Camera")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

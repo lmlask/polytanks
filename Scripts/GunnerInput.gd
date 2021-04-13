@@ -6,9 +6,11 @@ var shell_number = 0
 func _ready():
 	pass
 
-func _process(delta):
+func _process(delta):	
 	if not GameState.role == GameState.Role.Gunner:
 		return
+		
+	manageCamera()
 	#Traverse mode
 	if Input.is_action_just_pressed("traverse_manual"):
 		if turretCon.traverse_mode == "power":
@@ -42,3 +44,14 @@ func _process(delta):
 		turretCon.fire(get_tree().get_network_unique_id(),shell_number,true)
 		owner.owner.VehicleMan.rpc("fire", str(GameState.tank), shell_number)
 		shell_number += 1
+
+func manageCamera():
+	if Input.is_action_just_pressed("external_cam"):
+		if get_parent().get_node("Camera/OuterGimbal/InnerGimbal/ClippedCamera").current:
+#			get_tree().get_root().get_node("gameRoot/CameraRig/ClippedCamera").current = true
+			owner.owner.get_node("CameraRig/Target/ClippedCamera").current = true #FIX node references
+		else:
+			get_parent().get_node("Camera").set_current()
+			get_parent().get_node("Camera").resetCamera()
+	if Input.is_action_just_pressed("action") and get_parent().get_node("Camera/OuterGimbal/InnerGimbal/ClippedCamera").current and get_parent().get_node("Camera").aimedObject:
+		get_parent().get_node("Camera").aimedObject.interact()

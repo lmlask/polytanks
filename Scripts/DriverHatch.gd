@@ -3,7 +3,7 @@ extends Area
 var state = "closed"
 onready var hatch = owner.get_node("Visuals/Hull/DriverHatch")
 onready var camera = owner.get_node("Players/Driver/Camera")
-onready var tween = get_parent().get_parent().get_node("Tween")
+onready var tween = owner.get_node("Interior/Tween")
 
 
 # Called when the node enters the scene tree for the first time.

@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scripts/GunnerInput.gd" type="Script" id=1]
+[ext_resource path="res://Objects/FPCamera.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Objects/GunnerCamera.gd" type="Script" id=3]
 
 [node name="Gunner" type="Spatial"]
 __meta__ = {
@@ -12,3 +14,7 @@ script = ExtResource( 1 )
 __meta__ = {
 "_editor_description_": "TODO"
 }
+
+[node name="Camera" parent="." instance=ExtResource( 2 )]
+script = ExtResource( 3 )
+role = ""

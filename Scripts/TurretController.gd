@@ -6,7 +6,7 @@ extends Node
 # var b = "text"
 
 onready var turret = owner.get_node("Visuals/turret")
-onready var turret_int = owner.get_node("Interior/turret_interior") #Fix this should reference the other way
+onready var turret_int = owner.get_node("Interior/TurretInterior") #Fix this should reference the other way
 onready var barrel = owner.get_node("Visuals/turret/gun/gunMesh/barrel")
 onready var muzzleSound = owner.get_node("Visuals/turret/gun/gunMesh/barrel/gunSoundExterior")
 #onready var roleController = owner.get_node("RoleController")

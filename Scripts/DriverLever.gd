@@ -1,10 +1,10 @@
 extends Area
 
 var state = "closed"
-onready var lever = get_parent().get_parent().get_node("HullInterior/Dynamic/LeverDriver")
+onready var lever = owner.get_node("Interior/HullInterior/Dynamic/LeverDriver")
 onready var shape = $CollisionShape
-onready var sideport = get_parent().get_parent().get_parent().get_node("Visuals/Hull/HullSideportDriver")
-onready var tween = get_parent().get_parent().get_node("Tween")
+onready var sideport = owner.get_node("Visuals/Hull/HullSideportDriver")
+onready var tween = owner.get_node("Interior/Tween")
 
 
 # Called when the node enters the scene tree for the first time.

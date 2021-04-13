@@ -1,7 +1,7 @@
 extends Area
 
-onready var object = get_parent().get_parent().get_node("HullInterior/Dynamic/DriverPanel")
-onready var light = get_parent().get_parent().get_node("HullInterior/Dynamic/DriverPanelLight")
+onready var object = owner.get_node("Interior/HullInterior/Dynamic/DriverPanel")
+onready var light = owner.get_node("Interior/HullInterior/Dynamic/DriverPanelLight")
 var on = false
 
 # Called when the node enters the scene tree for the first time.
