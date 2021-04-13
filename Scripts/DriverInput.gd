@@ -20,8 +20,7 @@ func _process(delta):
 		return
 	manageCamera()
 	manageIgnition()
-	manageThrottle(delta)
-	manageBrake(delta)
+	manageThrottleAndBrake(delta)
 	manageTransmission()
 	manageSteering()
 
@@ -39,28 +38,27 @@ func manageCamera():
 func _physics_process(delta):
 	manageSteeringPhysics()
 			
-func manageThrottle(delta):
+func manageThrottleAndBrake(delta):
 	# Manage throttle
 	if Input.is_action_pressed("ui_up"):
 		engine.throttle = lerp(engine.throttle, 1.0, delta*2)
-		engine.throttle = clamp(engine.throttle, 0.0,1.0)
-#		if engine.throttle > 0.99:
-#			engine.throttle = 1
-#		elif engine.throttle < 0.01:
-#			engine.throttle = 0
-	else:
-		engine.throttle = lerp(engine.throttle, 0.0, delta*1.5)
-		
-func manageBrake(delta):
-	if Input.is_action_pressed("brake"):
-		engine.brake = lerp(engine.brake, 1.0, delta*3)
+		engine.brake = lerp(engine.brake, 0.0, delta*2)
+#		engine.throttle = clamp(engine.throttle, 0.0, 1.0)
+		if engine.throttle > 0.99:
+			engine.throttle = 1
+		elif engine.throttle < 0.01:
+			engine.throttle = 0
+	elif Input.is_action_pressed("brake"):
+		engine.brake = lerp(engine.brake, 1.0, delta*2)
+		engine.throttle = lerp(engine.throttle, 0.0, delta*2)
 		if engine.brake > 0.99:
 			engine.brake = 1
 		elif engine.brake < 0.01:
 			engine.brake = 0
 	else:
 		engine.brake = lerp(engine.brake, 0.0, delta*2)
-			
+		engine.throttle = lerp(engine.throttle, 0.0, delta*2)
+		
 func manageIgnition():
 	#Startup and shutdown
 	if Input.is_action_just_pressed("ignition"):

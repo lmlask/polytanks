@@ -71,20 +71,23 @@ func _physics_process(delta) -> void:
 		var ZVelocity = global_transform.basis.xform_inv(instantLinearVelocity).z
 		
 		#Gear torque/slide
-		var gearMod
+		var gearTorqueMod
 		var gearSlideMod
 		
-		
 		if engine.clutch:
-			gearMod = gearTorqueMods[0]
+			gearTorqueMod = gearTorqueMods[0]
 			gearSlideMod = gearSlideMods[0]
 		else:
-			gearMod = gearTorqueMods[engine.gear]
+			gearTorqueMod = gearTorqueMods[engine.gear]
 			gearSlideMod = gearSlideMods[engine.gear]
-			
+		
+		#brake
+		gearTorqueMod += ((1-gearTorqueMod) * engine.brake)
+		gearSlideMod += ((1-gearSlideMod) * engine.brake)
+		
 		# axis deceleration forces
 		var XForce = -global_transform.basis.x * XVelocity * (parentBody.weight * parentBody.gravity_scale)/parentBody.rayElements.size() * Xtraction * delta
-		var ZForce = -global_transform.basis.z * ZVelocity * (parentBody.weight * parentBody.gravity_scale)/parentBody.rayElements.size() * Ztraction * delta * gearMod
+		var ZForce = -global_transform.basis.z * ZVelocity * (parentBody.weight * parentBody.gravity_scale)/parentBody.rayElements.size() * Ztraction * delta * gearTorqueMod
 		
 		# counter sliding by negating off axis suspension impulse
 		XForce.x -= suspensionImpulse.x * parentBody.global_transform.basis.y.dot(Vector3.UP) * gearSlideMod
