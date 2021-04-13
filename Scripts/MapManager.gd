@@ -5,26 +5,27 @@ onready var VM = $"../VehicleManager"
 var maps = {}
 var map = null
 var maptiles = {}
-var prev_tile
+var prev_tile = Vector3.INF
 var tile_offset = [Vector3(0,0,0),Vector3(1,0,0),Vector3(0,0,1),Vector3(-1,0,0),Vector3(0,0,-1),Vector3(1,0,1),Vector3(-1,0,1),Vector3(1,0,-1),Vector3(-1,0,-1)]
 
 func _ready():
 	maps[0] = preload("res://Objects/TestLevel.tscn")
 	maps[1] = preload("res://Objects/CityLevel.tscn")
 	maps[2] = preload("res://Objects/hills map.tscn")
-	load_map(0,Vector3.ZERO)
+#	load_map(0,Vector3.ZERO)
 
 func clear_map():
 	for mt in maptiles:
 		maptiles[mt].queue_free()
 	map = null
+	prev_tile = Vector3.INF
 	maptiles.clear()	
 
 func load_map(i,start_pos): #Need to add a location
 	clear_map()
 	map = i
 	
-	check_area((start_pos/1000).snapped(Vector3(1,1,1)))
+	check_area(start_pos)
 #	map.get_node("DirectionalLight").show()
 	
 	#Dont expand on this. the map itself should do this
@@ -70,7 +71,12 @@ func _process(delta):
 		prev_tile = cur_tile
 		check_area(cur_tile)
 	
-func check_area(center):
+func check_area(pos):
+	var center = (pos/1000).snapped(Vector3(1,1,1))
+	if center == prev_tile:
+		return
+	prev_tile = center
+	
 #	if not maptiles.has(center):
 #		maptiles.append(center)
 	for i in tile_offset:
