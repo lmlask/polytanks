@@ -35,17 +35,17 @@ func _process(_delta):
 #		add_random_tank()
 		timer -= 0.1
 	if Input.is_action_just_pressed("reset_vehicle"):
-		reset_tank()
+		reset_tank(vehicle)
 
-func reset_tank():
-	vehicle.linear_velocity = Vector3.ZERO
-	vehicle.angular_velocity = Vector3.ZERO
-#		vehicle.global_transform = vehicleStartTransform
-	FloorFinder.find_floor(vehicle,vehicle.transform.origin)
-	vehicle.rotate_y(PI)
+func reset_tank(v):
+	v.linear_velocity = Vector3.ZERO
+	v.angular_velocity = Vector3.ZERO
+	FloorFinder.find_floor(v,v.transform.origin)
+	v.rotate_y(PI)
 		
 
 func start():
+	R.Map.load_map(GameState.map,Vector3.ZERO)
 	vehicle = R.VTPzIV.instance()
 	if tanks.size() > 0:
 		for i in tanks:

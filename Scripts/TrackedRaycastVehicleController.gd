@@ -32,7 +32,7 @@ func _process(delta):
 #	role = $RoleController.role
 	if auto:
 		if (transform.basis.y.y < 0 and transform.origin.y < 2) or translation.distance_to(Vector3.ZERO) > 500:
-			VehicleMan.reset_tank()
+			VehicleMan.reset_tank(self)
 #	elif GameState.role == GameState.Role.Gunner and GameState.roles.has(GameState.Role.Driver):
 	elif (not GameState.role == GameState.Role.Driver and not GameState.DriverID[GameState.tank] == get_tree().get_network_unique_id()) or external_only:
 		weight_xform += delta * 1/0.1
