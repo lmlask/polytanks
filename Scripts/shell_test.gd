@@ -1,7 +1,6 @@
 extends Spatial
 
 var life:float = 30.0
-var last_pos
 onready var view = $view
 onready var Explosion = preload("res://Scenes/Explosion.tscn")
 onready var models = [$Model/HEModel, $Model/APCModel, $Model/APCRModel, $Model/HEATModel]
@@ -24,8 +23,6 @@ func _physics_process(delta):
 	if (life < 0.0 or translation.y < -100) and host:
 		rpc("explode", transform.origin)
 		return
-	#Update last_pos
-	last_pos = global_transform.origin
 	
 	if host:
 		life -= delta
@@ -53,28 +50,26 @@ func _physics_process(delta):
 #	transform.origin += Vector3(GameState.wind_vector.x,0,GameState.wind_vector.y)/100
 	
 	
-	#Rotate shell model
+	#Spin shell model
 	for i in models:
 		if i.visible:
 			i.rotation_degrees.y += 5
-			
+
 	#Tracer
 	$Tracer.visible = (timer > 0.01)
 	
 	#Despawn
 	if $RayCast.is_colliding():
 		var col = $RayCast.get_collider()
-		if not col == null:
+		if col:
 			col = col.owner
-			if not col == null:
+			if col:
 				if col.has_method("hit"):
 					print("hit")
 					col.hit(self)
-			life = -1				
+			life = -1
 	
 	
-	
-
 
 
 func _on_Area_area_entered(area):
