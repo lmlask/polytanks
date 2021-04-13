@@ -31,5 +31,5 @@ func recoil():
 		$projectile_spawner/Smoke.restart()
 		$projectile_spawner/Smoke.emitting = true
 		$projectile_spawner/OmniLight.visible = true
-		$projectile_spawner/OmniLight.light_energy = 16
+		$projectile_spawner/OmniLight.light_energy = 8
 		state = "back"

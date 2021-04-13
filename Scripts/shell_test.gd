@@ -59,8 +59,7 @@ func _physics_process(delta):
 			i.rotation_degrees.y += 5
 			
 	#Tracer
-	if timer > 0.015:
-		$Tracer.visible = true
+	$Tracer.visible = (timer > 0.01)
 	
 	#Despawn
 	if $RayCast.is_colliding():
