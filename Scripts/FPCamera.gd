@@ -88,7 +88,7 @@ func _input(event):
 		
 	if event is InputEventMouseMotion:
 		#camera movement
-		if Input.is_action_pressed("cam_move") and (mode != "port"):
+		if Input.is_action_pressed("cam_move") and (mode == "pan"):
 			if event.relative.x != 0:
 				var dir = 1 if invert_x else -1
 				target_offset_x = dir * -event.relative.x * default_sensivity * 0.1
@@ -150,7 +150,7 @@ func toggleHatchMode(new_origin, new_max_mov_x, new_max_mov_y):
 	pass
 
 func lookatHandler():
-	if $OuterGimbal/InnerGimbal/ClippedCamera.current and (mode == "pan" or mode == "port") and interact_areas.has(ray.get_collider()):
+	if $OuterGimbal/InnerGimbal/ClippedCamera.current and interact_areas.has(ray.get_collider()):
 		aimedObject = ray.get_collider()
 	else:
 		aimedObject = null

@@ -33,15 +33,15 @@ func shift(nextGear):
 	var trans = Tween.TRANS_QUAD
 	
 	#Put in neutral rotation
-	tween.interpolate_property(self, "rotation_degrees", rotation_degrees, Vector3(0, 0, 0), 0.3, trans, Tween.EASE_IN)
+	tween.interpolate_property(self, "rotation_degrees", rotation_degrees, Vector3(0, 0, 0), 0.3, trans, Tween.EASE_IN_OUT)
 	tween.start()
 	
 	#Put in correct translation
-	tween.interpolate_property(self, "translation", translation, Vector3(transl, -0.374, 1.016), 0.3, trans, Tween.EASE_IN)
+	tween.interpolate_property(self, "translation", translation, Vector3(transl, -0.374, 1.016), 0.3, trans, Tween.EASE_IN_OUT)
 	tween.start()
 	
 	#Put in correct rotation
-	tween.interpolate_property(self, "rotation_degrees", rotation_degrees, Vector3(rot, 0, 0), 0.3, trans, Tween.EASE_IN)
+	tween.interpolate_property(self, "rotation_degrees", rotation_degrees, Vector3(rot, 0, 0), 0.3, trans, Tween.EASE_IN_OUT)
 	tween.start()
 	
 

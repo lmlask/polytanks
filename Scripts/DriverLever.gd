@@ -4,6 +4,8 @@ var state = "closed"
 onready var lever = get_parent().get_parent().get_node("HullInterior/Dynamic/LeverDriver")
 onready var shape = $CollisionShape
 onready var sideport = get_parent().get_parent().get_parent().get_node("Visuals/Hull/HullSideportDriver")
+onready var tween = get_parent().get_parent().get_node("Tween")
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -12,29 +14,12 @@ func _ready():
 
 func interact():
 	if state == "closed":
-		state = "opening"
+		tween.interpolate_property(lever, "rotation_degrees", lever.rotation_degrees, Vector3(0, -12.391, 60), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+		tween.interpolate_property(sideport, "rotation_degrees", sideport.rotation_degrees, Vector3(0, -12.696, 70), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+		tween.start()
+		state = "open"
 	elif state == "open":
-		state = "closing"
-	
-	
-func _process(delta):
-	if state == "opening":
-		if lever.rotation_degrees.z >= 59.9:
-			lever.rotation_degrees.z = 60
-			shape.rotation_degrees.z = 60
-			sideport.rotation_degrees.z = 75
-			state = "open"
-		else:
-			lever.rotation_degrees.z = lerp(lever.rotation_degrees.z, 60, delta*6)
-			shape.rotation_degrees.z = lerp(shape.rotation_degrees.z, 60, delta*6)
-			sideport.rotation_degrees.z = lerp(sideport.rotation_degrees.z, 75, delta*6)
-	elif state == "closing":
-		if lever.rotation_degrees.z <= 0.01:
-			lever.rotation_degrees.z = 0
-			shape.rotation_degrees.z = 0
-			sideport.rotation_degrees.z = 0
-			state = "closed"
-		else:
-			lever.rotation_degrees.z = lerp(lever.rotation_degrees.z, 0, delta*6)
-			shape.rotation_degrees.z = lerp(shape.rotation_degrees.z, 0, delta*6)
-			sideport.rotation_degrees.z = lerp(sideport.rotation_degrees.z, 0, delta*6)
+		tween.interpolate_property(lever, "rotation_degrees", lever.rotation_degrees, Vector3(0, -12.391, 0), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+		tween.interpolate_property(sideport, "rotation_degrees", sideport.rotation_degrees, Vector3(0, -12.696, 0), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+		tween.start()
+		state = "closed"
