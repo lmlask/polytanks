@@ -1,7 +1,7 @@
 extends Spatial
 
 var life:float = 30.0
-onready var view = $view
+#onready var view = $view
 onready var Explosion = preload("res://Scenes/Explosion.tscn")
 onready var models = [$Model/HEModel, $Model/APCModel, $Model/APCRModel, $Model/HEATModel]
 var host = false
@@ -10,8 +10,9 @@ var timer:float = 0.0
 var shell_speed = 600
 
 func _ready():
-	view.hide()
-	set_process(false)
+	pass
+#	view.hide()
+#	set_process(false)
 
 remotesync func explode(pos):
 	var explo = Explosion.instance()
@@ -31,11 +32,11 @@ func _physics_process(delta):
 		var dot = Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector)#.normalized()
 		rotate(transform.basis.x, delta/25)
 		rotate(transform.basis.y, delta*dot/1000)
-		if GameState.ShellCam:
-			$view/Viewport/Camera.global_transform = global_transform
-			$view/Viewport/Camera.rotate(transform.basis.y, PI)
-			$view/Viewport/Camera.transform.origin -= transform.basis.z/4
-			$view/Viewport/Camera.transform.origin += transform.basis.y/5
+#		if GameState.ShellCam:
+#			$view/Viewport/Camera.global_transform = global_transform
+#			$view/Viewport/Camera.rotate(transform.basis.y, PI)
+#			$view/Viewport/Camera.transform.origin -= transform.basis.z/4
+#			$view/Viewport/Camera.transform.origin += transform.basis.y/5
 		if timer > 0.1:
 			rset_unreliable("xform", transform)
 			timer -= 0.1
@@ -69,8 +70,12 @@ func _physics_process(delta):
 					col.hit(self)
 			life = -1
 	
+func shellcam(i):
+	$view.visible = i
+	$view/Viewport/Camera.visible = i
+	$RemoteTransform.update_position = i
+	$RemoteTransform.update_rotation = i
 	
-
 
 func _on_Area_area_entered(area):
 	if life > 0:
