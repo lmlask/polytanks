@@ -2,12 +2,12 @@ extends Node
 
 onready var engine_sfx = owner.get_node("Sfx/engine_sfx")
 onready var engine_sfx2 = owner.get_node("Sfx/engine_sfx2")
-#onready var role = owner.get_node("RoleController").role
 onready var startup_sfx = preload("res://Sfx/startup2.wav")
 onready var startupwarm_sfx = preload("res://Sfx/warm_startup.wav")
 onready var idle1_sfx = preload("res://Sfx/idle1.wav")
 onready var shutdown_sfx = preload("res://Sfx/shutdown.wav")
 onready var rev2 = preload("res://Sfx/rev2.wav")
+onready var exhaust_particles = owner.get_node("Visuals/Hull/ExhaustParticles")
 var gear_sounds
 
 var enginePower = 0
@@ -54,6 +54,7 @@ func _process(delta):
 	manageRPM(delta)
 	manageEngineSound()
 	manageEnginePower(delta)
+	manageExhaust()
 	
 func engineStartUp():
 	if state == "OFF":
@@ -70,6 +71,7 @@ func engineStartUp():
 		t.queue_free()
 		
 		state = "REVVING"
+		exhaust_particles.emitting = true
 		
 		t = Timer.new()
 		t.set_wait_time(2.5)
@@ -97,6 +99,7 @@ func engineStartUp():
 		t.queue_free()
 		
 		state = "REVVING"
+		exhaust_particles.emitting = true
 		
 		t = Timer.new()
 		t.set_wait_time(1.5)
@@ -123,6 +126,7 @@ func engineShutdown():
 	yield(t, "timeout")
 	
 	state = "OFF WARM"
+	exhaust_particles.emitting = false
 	
 	t.queue_free()
 
@@ -195,3 +199,6 @@ func manageEnginePower(delta):
 func manageEngineSound():
 	if state == "ON":
 		engine_sfx.pitch_scale = 0.9 + RPM - minRPM
+
+func manageExhaust():
+	exhaust_particles.get_process_material().initial_velocity = 0.8 + (0.4*RPM)

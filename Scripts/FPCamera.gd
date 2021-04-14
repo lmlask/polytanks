@@ -18,10 +18,6 @@ export (bool) var invert_x = false
 
 export (float) var max_zoom = 1.3
 export (float) var min_zoom = 0.3
-export (float) var max_zoom_gun = 1.3
-export (float) var min_zoom_gun = 0.3
-export (float) var max_zoom_mg = 1.3
-export (float) var min_zoom_mg = 0.3
 export (float, 0.05, 1.0) var zoom_speed = 0.09
 
 # movement properties

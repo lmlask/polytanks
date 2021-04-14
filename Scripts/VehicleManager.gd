@@ -31,7 +31,7 @@ func _process(_delta):
 #		if GameState.role == GameState.Role.Driver:
 			rpc("set_pos", vehicle.transform, GameState.tank)
 		if GameState.role == GameState.Role.Gunner:
-			rpc("set_tur", vehicle.get_node("Visuals/turret").rotation,vehicle.get_node("Visuals/turret/gun").rotation, str(GameState.tank) )
+			rpc("set_tur", vehicle.get_node("Visuals/Turret").rotation,vehicle.get_node("Visuals/Turret/gun").rotation, str(GameState.tank) )
 #		add_random_tank()
 		timer -= 0.1
 	if Input.is_action_just_pressed("reset_vehicle"):

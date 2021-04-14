@@ -5,10 +5,10 @@ extends Node
 # var a = 2
 # var b = "text"
 
-onready var turret = owner.get_node("Visuals/turret")
+onready var turret = owner.get_node("Visuals/Turret")
 onready var turret_int = owner.get_node("Interior/TurretInterior") #Fix this should reference the other way
-onready var barrel = owner.get_node("Visuals/turret/gun/gunMesh/barrel")
-onready var muzzleSound = owner.get_node("Visuals/turret/gun/gunMesh/barrel/gunSoundExterior")
+onready var barrel = owner.get_node("Visuals/Turret/gun/gunMesh/barrel")
+onready var muzzleSound = owner.get_node("Visuals/Turret/gun/gunMesh/barrel/gunSoundExterior")
 #onready var roleController = owner.get_node("RoleController")
 onready var crankslow = preload("res://Sfx/crank_slow.wav")
 onready var crankfast = preload("res://Sfx/crank_fast.wav")
