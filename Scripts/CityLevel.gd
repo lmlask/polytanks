@@ -14,3 +14,5 @@ func _ready():
 			house.translation.z += 15 * i
 			house.translation.x += 15 * j
 			add_child(house)
+	
+

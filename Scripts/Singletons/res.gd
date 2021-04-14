@@ -7,6 +7,7 @@ onready var ManVehicle:ManagerVehicle = Root.get_node("VehicleManager")
 onready var ManNetwork = Root.get_node("NetworkManager")
 onready var GUI = Root.get_node("ViewportContainer/View/GUI")
 onready var VTanks = Root.get_node("Vehicles/Tanks") #V for Vehciels ??? maybe N for Node NVTanks
+onready var NoiseTexture = Map.get_node("NoiseTexture")
 
 #Scenes
 onready var CamExt = preload("res://Objects/ExternalCamera.tscn")

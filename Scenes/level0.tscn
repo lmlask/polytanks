@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scenes/Lobby.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/MapManager.gd" type="Script" id=2]
@@ -10,6 +10,17 @@
 [ext_resource path="res://Scenes/GUI.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Scripts/gameRoot.gd" type="Script" id=13]
 [ext_resource path="res://Scripts/NetworkManager.gd" type="Script" id=15]
+
+[sub_resource type="OpenSimplexNoise" id=3]
+octaves = 2
+period = 256.0
+persistence = 0.1
+
+[sub_resource type="NoiseTexture" id=4]
+width = 1000
+height = 1000
+seamless = true
+noise = SubResource( 3 )
 
 [sub_resource type="Environment" id=1]
 ambient_light_color = Color( 1, 1, 1, 1 )
@@ -51,6 +62,16 @@ transform = Transform( 0.794415, -0.242945, -0.55667, 0.604023, 0.219846, 0.7660
 light_indirect_energy = 0.33
 light_cull_mask = 4294967293
 shadow_enabled = true
+
+[node name="NoiseTexture" type="TextureRect" parent="Map"]
+margin_left = -1055.62
+margin_top = -44.4471
+margin_right = -55.6216
+margin_bottom = 955.553
+texture = SubResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
 anchor_left = 1.0

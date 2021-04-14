@@ -24,7 +24,7 @@ func clear_map():
 func load_map(i,pos): #Need to add a location
 	clear_map()
 	map = i
-	check_area(pos,true)
+	check_area(pos)
 #	map.get_node("DirectionalLight").show()
 	
 	#Dont expand on this. the map itself should do this
@@ -78,8 +78,8 @@ func check_area(pos,large = false):
 		return
 	prev_tile = center
 	if large:
-		for i in tile_offset:
-			add_tiles(center+i*3)
+#		for i in tile_offset: #too much for the moment
+		add_tiles(center)
 	else:
 		add_tiles(center)
 
