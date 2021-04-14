@@ -2,18 +2,14 @@
 
 [ext_resource path="res://Objects/hill_mesh.tres" type="ArrayMesh" id=1]
 [ext_resource path="res://Objects/TestLevel.gd" type="Script" id=2]
-
-[sub_resource type="SpatialMaterial" id=1]
-albedo_color = Color( 0.52, 0.4836, 0.338, 1 )
-normal_enabled = true
-normal_scale = 1.0
+[ext_resource path="res://Objects/hills map.tres" type="Material" id=3]
 
 [node name="hills map" type="Spatial"]
 script = ExtResource( 2 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 mesh = ExtResource( 1 )
-material/0 = SubResource( 1 )
+material/0 = ExtResource( 3 )
 
 [node name="StaticBody" type="StaticBody" parent="MeshInstance"]
 collision_layer = 524289

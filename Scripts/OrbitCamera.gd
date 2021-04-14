@@ -14,7 +14,7 @@ export var camLerpSpeed : float = 16.0
 export(NodePath) var target
 
 # Private variables
-onready var _camTarget : Spatial = $"../Map"
+#onready var _camTarget : Spatial = $"../Map"
 var _cam : ClippedCamera
 var _curZoom : float = 0.0
 var canrotx = false
@@ -58,4 +58,4 @@ func _process(delta) -> void:
 	# set the position of the rig to follow the target
 
 	return
-	set_translation(_camTarget.global_transform.origin)
+#	set_translation(_camTarget.global_transform.origin)

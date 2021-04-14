@@ -7,12 +7,37 @@ var map = null
 var maptiles = {}
 var prev_tile = Vector3.INF
 var tile_offset = [Vector3(0,0,0),Vector3(1,0,0),Vector3(0,0,1),Vector3(-1,0,0),Vector3(0,0,-1),Vector3(1,0,1),Vector3(-1,0,1),Vector3(1,0,-1),Vector3(-1,0,-1)]
+var mesh10:ArrayMesh = ArrayMesh.new()
+var mesh25:ArrayMesh = ArrayMesh.new()
 
 func _ready():
 	maps[0] = preload("res://Objects/TestLevel.tscn")
 	maps[1] = preload("res://Objects/CityLevel.tscn")
 	maps[2] = preload("res://Objects/hills map.tscn")
 #	load_map(0,Vector3.ZERO)
+	
+	#Create a plane used for terrain
+	mesh10 = create_mesh(10)
+	mesh25 = create_mesh(25)
+	print(mesh25)
+func create_mesh(size)->ArrayMesh:
+	var vertices = PoolVector3Array()
+	for x in range(0,1000,size):
+		for z in range(0,1000,size):
+			vertices.push_back(Vector3(x, 0, z))
+			vertices.push_back(Vector3(x+size, 0, z))
+			vertices.push_back(Vector3(x, 0, z+size))
+			vertices.push_back(Vector3(x+size, 0, z))
+			vertices.push_back(Vector3(x+size, 0, z+size))
+			vertices.push_back(Vector3(x, 0, z+size))
+	# Initialize the ArrayMesh.
+	var mesh = ArrayMesh.new()
+	var arrays = []
+	arrays.resize(ArrayMesh.ARRAY_MAX)
+	arrays[ArrayMesh.ARRAY_VERTEX] = vertices
+	# Create the Mesh.
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+	return mesh
 
 func clear_map():
 	for mt in maptiles:

@@ -4,34 +4,26 @@ extends Spatial
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-
+var mat:Material = preload("res://Objects/hills map.tres")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var mesh = $MeshInstance.mesh.duplicate()
-	var mat = $MeshInstance.get_surface_material(0)
-#	print(mat)
+#	var mesh = $MeshInstance.mesh.duplicate()
+#	var mat = $MeshInstance.get_surface_material(0) #need a serface material
 	var noise = R.NoiseTexture.texture.noise
-
-	# Configure
-#	noise.seed = randi()
-#	noise.octaves = 4
-#	noise.period = 20.0
-#	noise.persistence = 0.8
-
-	# Sample
-		
+	
+	var mesh = R.Map.mesh25.duplicate()
 	var mdt = MeshDataTool.new()
-#	var mat2 = mdt.get_material()
 	mdt.create_from_surface(mesh, 0)
-	print(mdt.get_vertex(6538))
-	print(mdt.get_vertex_normal(6538))
+	print(mdt.get_vertex(mdt.get_face_vertex(1,0)))
+	print(mdt.get_vertex(mdt.get_face_vertex(1,1)))
+	print(mdt.get_vertex(mdt.get_face_vertex(1,2)))
+	
 	for i in range(mdt.get_vertex_count()):
 		var vertex = mdt.get_vertex(i)
 		vertex.y = noise.get_noise_2d(vertex.x+translation.x, vertex.z+translation.z)*25
+		vertex.y += noise.get_noise_2d((vertex.x+translation.x)/10, (vertex.z+translation.z)/10)*250
 		mdt.set_vertex(i, vertex)
-#		mdt.set_vertex_normal(i,vertex)
-
 
 	for i in range(mdt.get_face_count()):
 		# Get the index in the vertex array.
@@ -55,13 +47,9 @@ func _ready():
 	for i in range(mdt.get_vertex_count()):
 		var v = mdt.get_vertex_normal(i).normalized()
 		mdt.set_vertex_normal(i, v)
-#		mdt.set_vertex_color(i, Color(v.x, v.y, v.z))
-#		mdt.set_vertex_color(i, Color(1,1,1))
-
 
 	mesh.surface_remove(0)
 	mdt.commit_to_surface(mesh)
-#	mdt.set_material(mat)
 	$MeshInstance/StaticBody/CollisionShape.shape = mesh.create_trimesh_shape()
 	$MeshInstance.mesh = mesh
 	$MeshInstance.set_surface_material(0, mat)
