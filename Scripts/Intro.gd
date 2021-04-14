@@ -43,7 +43,7 @@ func setup_game():
 	GameState.InGame = true
 	if get_tree().is_network_server():
 		GameState.send_game_data()
-	gameRoot.Map.load_map(GameState.map, gameRoot.VehicleManager.start[GameState.tank])
+#	gameRoot.Map.load_map(GameState.map, gameRoot.VehicleManager.start[GameState.tank]) #load map in vehicle manager
 	gameRoot.VehicleManager.start()
 	
 

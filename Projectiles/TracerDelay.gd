@@ -1,4 +1,4 @@
-extends MeshInstance
+extends Spatial
 
 var timer:float = 0.0
 

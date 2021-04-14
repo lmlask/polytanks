@@ -45,7 +45,7 @@ func reset_tank(v):
 		
 
 func start():
-	R.Map.load_map(GameState.map,Vector3.ZERO)
+	R.Map.load_map(GameState.map,start[GameState.tank])
 	vehicle = R.VTPzIV.instance()
 	if tanks.size() > 0:
 		for i in tanks:
@@ -123,7 +123,7 @@ func load_intro_tanks():
 #	$"../CameraRig"._camTarget = tanks[rand_range(0,tanks.size())]
 	var cam = R.CamExt.instance()
 	tanks[rand_range(0,tanks.size())].add_child(cam)
-	cam.canrotx = true
+	cam.canrotx = false
 	
 func add_intro_tank():
 	if tanks.size() < 20: #only add tanks when tanks exists, ie game has started

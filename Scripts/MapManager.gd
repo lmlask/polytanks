@@ -21,11 +21,10 @@ func clear_map():
 	prev_tile = Vector3.INF
 	maptiles.clear()	
 
-func load_map(i,start_pos): #Need to add a location
+func load_map(i,pos): #Need to add a location
 	clear_map()
 	map = i
-	
-	check_area(start_pos)
+	check_area(pos,true)
 #	map.get_node("DirectionalLight").show()
 	
 	#Dont expand on this. the map itself should do this
@@ -64,6 +63,7 @@ func load_map(i,start_pos): #Need to add a location
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	return #updated by camera
 	if map == null or not VM.vehicle is Node:
 		return
 	var cur_tile = (VM.vehicle.transform.origin/1000).snapped(Vector3(1,1,1))
@@ -71,17 +71,23 @@ func _process(delta):
 		prev_tile = cur_tile
 		check_area(cur_tile)
 	
-func check_area(pos):
-	var center = (pos/1000).snapped(Vector3(1,1,1))
+func check_area(pos,large = false):
+	pos.y = 0
+	var center = (pos/1000).snapped(Vector3(1,10,1))
 	if center == prev_tile:
 		return
 	prev_tile = center
-	
-#	if not maptiles.has(center):
-#		maptiles.append(center)
+	if large:
+		for i in tile_offset:
+			add_tiles(center+i*3)
+	else:
+		add_tiles(center)
+
+func add_tiles(pos):
 	for i in tile_offset:
-		if not maptiles.has(center+i):
+		if not maptiles.has(pos+i):
 			var tile = maps[map].instance()
-			maptiles[center+i] = tile
-			tile.translation += (center+i)*1000
+			maptiles[pos+i] = tile
+			tile.translation += (pos+i)*1000
 			add_child(tile)
+			
