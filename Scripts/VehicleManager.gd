@@ -5,7 +5,7 @@ export(NodePath) var vehiclePath
 #onready var vehicle_scene = load("res://Tanks/PzIV/PanzerIV.tscn") #Should be dynamic
 onready var FloorFinder = $FloorFinder
 onready var NM = get_node("../NetworkManager")
-onready var vehicle : RigidBody# = vehicle_scene.instance()
+onready var vehicle:PanzerIV# = vehicle_scene.instance()
 #onready var other_vehicle : RigidBody = vehicle_scene.instance()
 var vehicleStartTransform : Transform
 var tanks = []
@@ -31,17 +31,18 @@ func _process(_delta):
 #		if GameState.role == GameState.Role.Driver:
 			rpc("set_pos", vehicle.transform, GameState.tank)
 		if GameState.role == GameState.Role.Gunner:
-			rpc("set_tur", vehicle.get_node("Visuals/Turret").rotation,vehicle.get_node("Visuals/Turret/gun").rotation, str(GameState.tank) )
+			rpc("set_tur", vehicle.Turret.rotation,vehicle.Gun.rotation, str(GameState.tank) )
 #		add_random_tank()
 		timer -= 0.1
 	if Input.is_action_just_pressed("reset_vehicle"):
 		reset_tank(vehicle)
 
-func reset_tank(v):
+func reset_tank(v): #should be part of the vehicle
 	v.linear_velocity = Vector3.ZERO
 	v.angular_velocity = Vector3.ZERO
 	FloorFinder.find_floor(v,v.transform.origin)
 	v.rotate_y(PI)
+	v.transform.origin += v.transform.basis.y
 		
 
 func start():
@@ -66,7 +67,7 @@ func start():
 		FloorFinder.find_floor(vehicle,start[GameState.tank])
 #	else:
 #		vehicle.mode = RigidBody.MODE_KINEMATIC
-	vehicle.transform.origin += vehicle.transform.basis.y #Fix a weird bug
+	vehicle.transform.origin += vehicle.transform.basis.y #Fix a weird bug and/or normals are not calcuated correctly
 	vehicle.rotate_y(PI) #shouldnt be fixed
 	vehicle.next_transform(vehicle.transform)
 #	players[get_tree().get_network_unique_id()] = vehicle #dont think this is used???
@@ -129,7 +130,7 @@ func add_intro_tank():
 	if tanks.size() < 20: #only add tanks when tanks exists, ie game has started
 		var tank = R.VTPzIV.instance()
 		R.VTanks.add_child(tank)
-		tank.rotate_y(-PI/2)
+#		tank.rotate_y(-PI/2)
 		tank.VehicleMan = self
 		FloorFinder.find_floor(tank)
 		tanks.append(tank)
@@ -143,8 +144,8 @@ func delete_tank(t):
 
 remote func set_tur(tr,te,id): #set turrent rotation, change to work like tank transform
 	if R.VTanks.has_node(id):
-		R.VTanks.get_node(id).get_node("Visuals/turret").rotation = tr
-		R.VTanks.get_node(id).get_node("Visuals/turret/gun").rotation = te
+		R.VTanks.get_node(id).Turret.rotation = tr
+		R.VTanks.get_node(id).Gun.rotation = te
 
 remote func set_pos(t,id): #needs a re-wrtie all this
 #	var sid = str(get_tree().get_rpc_sender_id())

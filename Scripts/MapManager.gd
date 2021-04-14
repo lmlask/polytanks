@@ -19,7 +19,7 @@ func _ready():
 	#Create a plane used for terrain
 	mesh10 = create_mesh(10)
 	mesh25 = create_mesh(25)
-	print(mesh25)
+	
 func create_mesh(size)->ArrayMesh:
 	var vertices = PoolVector3Array()
 	for x in range(0,1000,size):
@@ -60,41 +60,17 @@ func load_map(i,pos): #Need to add a location
 				house.translation.z += 15 * i
 				house.translation.x += 15 * j
 				map.add_child(house)
-#	if i == 2: 
-#		var tile = maps[2].instance()
-#		tile.translation += Vector3(1000,0,0)
-#		add_child(tile)
-#		tile = maps[2].instance()
-#		tile.translation += Vector3(0,0,1000)
-#		add_child(tile)
-#		tile = maps[2].instance()
-#		tile.translation += Vector3(-1000,0,0)
-#		add_child(tile)
-#		tile = maps[2].instance()
-#		tile.translation += Vector3(0,0,-1000)
-#		add_child(tile)
-#		tile = maps[2].instance()
-#		tile.translation += Vector3(1000,0,1000)
-#		add_child(tile)
-#		tile = maps[2].instance()
-#		tile.translation += Vector3(-1000,0,1000)
-#		add_child(tile)
-#		tile = maps[2].instance()
-#		tile.translation += Vector3(1000,0,-1000)
-#		add_child(tile)
-#		tile = maps[2].instance()
-#		tile.translation += Vector3(-1000,0,-1000)
-#		add_child(tile)
+
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	return #updated by camera
-	if map == null or not VM.vehicle is Node:
-		return
-	var cur_tile = (VM.vehicle.transform.origin/1000).snapped(Vector3(1,1,1))
-	if not cur_tile == prev_tile:
-		prev_tile = cur_tile
-		check_area(cur_tile)
+#	if map == null or not VM.vehicle is Node:
+#		return
+#	var cur_tile = (VM.vehicle.transform.origin/1000).snapped(Vector3(1,1,1))
+#	if not cur_tile == prev_tile:
+#		prev_tile = cur_tile
+#		check_area(cur_tile)
 	
 func check_area(pos,large = false):
 	pos.y = 0
@@ -103,8 +79,8 @@ func check_area(pos,large = false):
 		return
 	prev_tile = center
 	if large:
-#		for i in tile_offset: #too much for the moment
-		add_tiles(center)
+		for i in tile_offset: #too much for the moment
+			add_tiles(center)
 	else:
 		add_tiles(center)
 
@@ -113,6 +89,6 @@ func add_tiles(pos):
 		if not maptiles.has(pos+i):
 			var tile = maps[map].instance()
 			maptiles[pos+i] = tile
-			tile.translation += (pos+i)*1000
+			tile.translation += (pos+i)*1000-Vector3(500,0,500)
 			add_child(tile)
 			
