@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Projectiles/PanzerIV/tracer.tres" type="Material" id=1]
 [ext_resource path="res://Scripts/shell_test.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Materials/Toon/Projectiles/PanzerIV/shell.tres" type="Material" id=6]
 [ext_resource path="res://Materials/Toon/Projectiles/PanzerIV/cap.tres" type="Material" id=7]
 [ext_resource path="res://Materials/Toon/Projectiles/PanzerIV/bands.tres" type="Material" id=8]
+[ext_resource path="res://Projectiles/TracerDelay.gd" type="Script" id=9]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "shell"
@@ -236,6 +237,7 @@ visible = false
 cast_shadow = 0
 mesh = SubResource( 5 )
 material/0 = ExtResource( 1 )
+script = ExtResource( 9 )
 
 [node name="RemoteTransform" type="RemoteTransform" parent="."]
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0.312334, -0.445385 )
