@@ -9,6 +9,7 @@ var prev_tile = Vector3.INF
 var tile_offset = [Vector3(0,0,0),Vector3(1,0,0),Vector3(0,0,1),Vector3(-1,0,0),Vector3(0,0,-1),Vector3(1,0,1),Vector3(-1,0,1),Vector3(1,0,-1),Vector3(-1,0,-1)]
 var mesh10:ArrayMesh = ArrayMesh.new()
 var mesh25:ArrayMesh = ArrayMesh.new()
+var MapNode = null
 
 func _ready():
 	maps[0] = preload("res://Objects/TestLevel.tscn")
@@ -22,8 +23,8 @@ func _ready():
 	
 func create_mesh(size)->ArrayMesh:
 	var vertices = PoolVector3Array()
-	for x in range(0,1000,size):
-		for z in range(0,1000,size):
+	for x in range(-500,500,size):
+		for z in range(-500,500,size):
 			vertices.push_back(Vector3(x, 0, z))
 			vertices.push_back(Vector3(x+size, 0, z))
 			vertices.push_back(Vector3(x, 0, z+size))
@@ -40,15 +41,17 @@ func create_mesh(size)->ArrayMesh:
 	return mesh
 
 func clear_map():
-	for mt in maptiles:
-		maptiles[mt].queue_free()
+	if MapNode:
+		MapNode.queue_free()
 	map = null
 	prev_tile = Vector3.INF
 	maptiles.clear()	
 
 func load_map(i,pos): #Need to add a location
 	clear_map()
-	map = i
+	map = 2
+	MapNode = maps[map].instance()
+	add_child(MapNode)
 	check_area(pos)
 #	map.get_node("DirectionalLight").show()
 	
@@ -87,8 +90,5 @@ func check_area(pos,large = false):
 func add_tiles(pos):
 	for i in tile_offset:
 		if not maptiles.has(pos+i):
-			var tile = maps[map].instance()
-			maptiles[pos+i] = tile
-			tile.translation += (pos+i)*1000-Vector3(500,0,500)
-			add_child(tile)
+			maptiles[pos+i] = MapNode.add_tile(pos+i)
 			

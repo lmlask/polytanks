@@ -13,8 +13,6 @@ func _ready():
 	$NetworkManager.intro = $Lobby
 	R.Map.load_map(0,Vector3.ZERO)
 	R.ManVehicle.load_intro_tanks()
-	
-
 
 #Used for debug, comment out if needed
 func _process(delta):

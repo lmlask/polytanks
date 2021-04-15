@@ -7,11 +7,12 @@
 [node name="hills map" type="Spatial"]
 script = ExtResource( 2 )
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
+[node name="Tile" type="MeshInstance" parent="."]
+visible = false
 mesh = ExtResource( 1 )
 material/0 = ExtResource( 3 )
 
-[node name="StaticBody" type="StaticBody" parent="MeshInstance"]
+[node name="StaticBody" type="StaticBody" parent="Tile"]
 collision_layer = 524289
 
-[node name="CollisionShape" type="CollisionShape" parent="MeshInstance/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="Tile/StaticBody"]
