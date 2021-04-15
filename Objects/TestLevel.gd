@@ -7,24 +7,28 @@ var mat:Material = preload("res://Objects/hills map.tres")
 var noise = R.NoiseTex.texture.noise
 var flat = false
 var tile_pos:Vector3 = Vector3.INF
-
+var height_factor = 25
 var flats = [Vector3(0,0,0),Vector3(1,0,1),Vector3(1,0,0),Vector3(1,0,2),Vector3(1,0,3)] #define some flat areas
 
-var houses = [Vector3(0,0,0)]
+#building key in array locations
+var site1 = {R.MHouse:[Vector3(10,0,0), Vector3(30,0,0),Vector3(10,0,20),Vector3(-10,0,10),Vector3(-20,0,-20),Vector3(10,0,-20)]}
+
+#location of towns global locations
+var site_locations = {Vector3(0,0,0):site1,Vector3(100,0,0):site1,Vector3(250,0,0):site1,Vector3(750,0,0):site1,Vector3(1000,0,0):site1}
+var site_added = []
 
 # Called when the node enters the scene tree for the first time.
 
 func add_tile(tile_pos):
 	var tile = $Tile.duplicate()
-	tile.translation = (tile_pos)*1000
+	tile.translation = (tile_pos)*1000-Vector3(500,0,500)
 	var tile_mesh = create_tile_mesh(tile,tile_pos)
 	tile.mesh = tile_mesh
 	tile.get_node("StaticBody/CollisionShape").shape = tile_mesh.create_trimesh_shape()
 	tile.set_surface_material(0, mat)
 	add_child(tile)
 	tile.show()
-	yield(get_tree(),"idle_frame")
-	add_buildings(tile,tile_pos)
+	
 	return tile
 
 func create_tile_mesh(tile, tile_pos):
@@ -70,26 +74,37 @@ func create_tile_mesh(tile, tile_pos):
 	mesh.surface_remove(0)
 	mdt.commit_to_surface(mesh)
 	return mesh
-	
-func add_buildings(tile, tile_pos):
-#	tile_pos = (tile.translation/1000).snapped(Vector3(1,10,1))
-	for i in houses:
-		var house = R.MHouse.instance()
-		R.FloorFinder.find_floor2(house,(i+tile.translation))
-		tile.add_child(house)
-		print(house.translation)
-		house.translation -= tile.translation
-		print(house.translation)
+
+#should be called on check that map is loaded for site
+func add_sites(tile_pos):
+	for pos in site_locations:
+		if not site_added.has(tile_pos):
+			if (pos/1000).snapped(Vector3(1,10,1)) == tile_pos:
+				for building in site_locations[pos]:
+					for bpos in site_locations[pos][building]:
+						add_buildings(pos,building,bpos)
+	site_added.append(tile_pos)
 		
+
+func add_buildings(pos, Buidling, bpos):
+	yield(get_tree(),"idle_frame")
+	print("check buildings")
+	var building = Buidling.instance()
+	R.FloorFinder.find_floor2(building,pos+bpos,false)
+	var grid = (pos/1000).snapped(Vector3(1,10,1))
+	R.Map.maptiles[grid].add_child(building)
+	building.translation += Vector3(500,0,500)-grid*1000
+	building.scale *= 2
+
 func get_noise(tile, vec2,flat=false):
 	var vec_offset = Vector2(tile.translation.x,tile.translation.z)
 	if not flat:
-		return noise.get_noise_2dv(vec2+vec_offset)*25
+		return noise.get_noise_2dv(vec2+vec_offset)*height_factor
 	else:
 		var dist:float = vec2.distance_to(Vector2(0,0))
 		if  dist > 499:
-			return noise.get_noise_2dv(vec2+vec_offset)*25
+			return noise.get_noise_2dv(vec2+vec_offset)*height_factor
 		elif dist < 350:
 			return 0.5
 		else:
-			return noise.get_noise_2dv(vec2+vec_offset)*25*(dist-350)/150+0.5
+			return noise.get_noise_2dv(vec2+vec_offset)*((dist-350)/150+0.5)*25

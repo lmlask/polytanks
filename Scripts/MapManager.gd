@@ -11,6 +11,8 @@ var mesh10:ArrayMesh = ArrayMesh.new()
 var mesh25:ArrayMesh = ArrayMesh.new()
 var MapNode = null
 
+var buildings_added = false #change this
+
 func _ready():
 	maps[0] = preload("res://Objects/TestLevel.tscn")
 	maps[1] = preload("res://Objects/CityLevel.tscn")
@@ -86,9 +88,12 @@ func check_area(pos,large = false):
 			add_tiles(center)
 	else:
 		add_tiles(center)
+	for i in tile_offset: #too much for the moment
+		MapNode.add_sites(center+i)
+	
 
 func add_tiles(pos):
 	for i in tile_offset:
 		if not maptiles.has(pos+i):
 			maptiles[pos+i] = MapNode.add_tile(pos+i)
-			
+		

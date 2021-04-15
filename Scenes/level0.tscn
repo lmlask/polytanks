@@ -11,22 +11,22 @@
 [ext_resource path="res://Scripts/gameRoot.gd" type="Script" id=13]
 [ext_resource path="res://Scripts/NetworkManager.gd" type="Script" id=15]
 
-[sub_resource type="OpenSimplexNoise" id=3]
+[sub_resource type="OpenSimplexNoise" id=1]
 octaves = 2
 period = 256.0
 persistence = 0.1
 
-[sub_resource type="NoiseTexture" id=4]
+[sub_resource type="NoiseTexture" id=2]
 width = 1000
 height = 1000
 seamless = true
-noise = SubResource( 3 )
+noise = SubResource( 1 )
 
-[sub_resource type="Environment" id=1]
+[sub_resource type="Environment" id=3]
 ambient_light_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="World" id=2]
-environment = SubResource( 1 )
+[sub_resource type="World" id=4]
+environment = SubResource( 3 )
 
 [node name="gameRoot" type="Node"]
 script = ExtResource( 13 )
@@ -68,7 +68,7 @@ margin_left = -1055.62
 margin_top = -44.4471
 margin_right = -55.6216
 margin_bottom = 955.553
-texture = SubResource( 4 )
+texture = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -85,7 +85,7 @@ __meta__ = {
 [node name="View" type="Viewport" parent="ViewportContainer"]
 size = Vector2( 200, 200 )
 own_world = true
-world = SubResource( 2 )
+world = SubResource( 4 )
 transparent_bg = true
 handle_input_locally = false
 render_target_update_mode = 3

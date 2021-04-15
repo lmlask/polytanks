@@ -9,7 +9,7 @@ func _ready():
 func find_floor(tank, pos = Vector3.ZERO):
 	ray.enabled = true
 	if pos == Vector3.ZERO:
-		ray.translation = Vector3(rand_range(450,550),500,rand_range(450,550))
+		ray.translation = Vector3(rand_range(-50,50),500,rand_range(-50,50))
 	else:
 		ray.translation = pos + Vector3(0,500,0)
 #	ray.translation = Vector3(rand_range(-54,-54),500,rand_range(83,83))
@@ -27,13 +27,14 @@ func find_floor(tank, pos = Vector3.ZERO):
 		tsf.origin = ray.get_collision_point()
 		set_xform(tank,tsf)
 
-func find_floor2(building, pos):
+func find_floor2(building, pos, rot = true):
 	ray.translation = pos + Vector3(0,500,0)
 	ray.force_raycast_update()
 	if ray.is_colliding():
 		var tsf = Transform.looking_at(ray.get_collision_normal(),Vector3(1,0,0))
 		tsf = tsf.rotated(tsf.basis.x,-PI/2)
-		tsf = tsf.rotated(tsf.basis.y,randf()*TAU)
+		if rot:
+			tsf = tsf.rotated(tsf.basis.y,randf()*TAU)
 		tsf.origin = ray.get_collision_point()
 		building.transform = tsf
 

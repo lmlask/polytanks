@@ -118,7 +118,7 @@ remote func add_tank(t,tid):
 		tank.get_node("Players").queue_free()
 
 func load_intro_tanks():
-	for i in range(10):
+	for i in range(5):
 		add_intro_tank()
 	
 #	$"../CameraRig"._camTarget = tanks[rand_range(0,tanks.size())]
