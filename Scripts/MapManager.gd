@@ -25,8 +25,8 @@ func _ready():
 	
 func create_mesh(size)->ArrayMesh:
 	var vertices = PoolVector3Array()
-	for x in range(-500,500,size):
-		for z in range(-500,500,size):
+	for x in range(0,1000,size):
+		for z in range(0,1000,size):
 			vertices.push_back(Vector3(x, 0, z))
 			vertices.push_back(Vector3(x+size, 0, z))
 			vertices.push_back(Vector3(x, 0, z+size))
@@ -88,6 +88,8 @@ func check_area(pos,large = false):
 			add_tiles(center)
 	else:
 		add_tiles(center)
+	
+	yield(get_tree(),"idle_frame")
 	for i in tile_offset: #too much for the moment
 		MapNode.add_sites(center+i)
 	

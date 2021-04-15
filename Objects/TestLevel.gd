@@ -8,8 +8,13 @@ var noise = R.NoiseTex.texture.noise
 var flat = false
 var tile_pos:Vector3 = Vector3.INF
 var height_factor = 25
-var flats = [Vector3(0,0,0),Vector3(1,0,1),Vector3(1,0,0),Vector3(1,0,2),Vector3(1,0,3)] #define some flat areas
+var height = false #heightmap
+#var flats = [Vector3(0,0,0),Vector3(1,0,1),Vector3(1,0,0),Vector3(1,0,2),Vector3(1,0,3)] #define some flat areas
 
+var alphagrepmap = "res://Textures/greyalpha.png"
+var polytankmap = "res://Textures/polytank.png"
+var image = Image.new()
+var imgdata
 #building key in array locations
 var site1 = {R.MHouse:[Vector3(10,0,0), Vector3(30,0,0),Vector3(10,0,20),Vector3(-10,0,10),Vector3(-20,0,-20),Vector3(10,0,-20)]}
 
@@ -17,7 +22,16 @@ var site1 = {R.MHouse:[Vector3(10,0,0), Vector3(30,0,0),Vector3(10,0,20),Vector3
 var site_locations = {Vector3(0,0,0):site1,Vector3(100,0,0):site1,Vector3(250,0,0):site1,Vector3(750,0,0):site1,Vector3(1000,0,0):site1}
 var site_added = []
 
+#var height_map = {Vector3(0,0,0):alphagrepmap,Vector3(1,0,1):polytankmap}
+var height_map = {}
+
 # Called when the node enters the scene tree for the first time.
+
+func _ready():
+	pass
+	
+#	var imageTex = ImageTexture.new()
+#	imageTex.create_from_image(image,0)
 
 func add_tile(tile_pos):
 	var tile = $Tile.duplicate()
@@ -33,18 +47,23 @@ func add_tile(tile_pos):
 
 func create_tile_mesh(tile, tile_pos):
 #	tile_pos = (tile.translation/1000).snapped(Vector3(1,10,1))
-	for i in flats:
-		if tile_pos == i and R.Map.map == 2:
-			flat = true
+#	for i in flats:
+#		if tile_pos == i and R.Map.map == 2:
+#			flat = true
 #	var mesh = $MeshInstance.mesh.duplicate()
 #	var mat = $MeshInstance.get_surface_material(0) #need a serface material
-	
+	height = false
+	if height_map.has(tile_pos):
+		image.load(height_map[tile_pos])
+		imgdata = image.get_data()
+		height = true
+		
 	var mesh = R.Map.mesh25.duplicate()
 	var mdt = MeshDataTool.new()
 	mdt.create_from_surface(mesh, 0)
 	for i in range(mdt.get_vertex_count()):
 		var vertex = mdt.get_vertex(i)
-		vertex.y = get_noise(tile, Vector2(vertex.x, vertex.z),false)
+		vertex.y = get_noise(tile, Vector2(vertex.x, vertex.z))
 #		vertex.y += noise.get_noise_2d((vertex.x+translation.x)/20, (vertex.z+translation.z)/20)*250
 		mdt.set_vertex(i, vertex)
 
@@ -87,8 +106,6 @@ func add_sites(tile_pos):
 		
 
 func add_buildings(pos, Buidling, bpos):
-	yield(get_tree(),"idle_frame")
-	print("check buildings")
 	var building = Buidling.instance()
 	R.FloorFinder.find_floor2(building,pos+bpos,false)
 	var grid = (pos/1000).snapped(Vector3(1,10,1))
@@ -98,13 +115,10 @@ func add_buildings(pos, Buidling, bpos):
 
 func get_noise(tile, vec2,flat=false):
 	var vec_offset = Vector2(tile.translation.x,tile.translation.z)
-	if not flat:
-		return noise.get_noise_2dv(vec2+vec_offset)*height_factor
-	else:
-		var dist:float = vec2.distance_to(Vector2(0,0))
-		if  dist > 499:
-			return noise.get_noise_2dv(vec2+vec_offset)*height_factor
-		elif dist < 350:
-			return 0.5
-		else:
-			return noise.get_noise_2dv(vec2+vec_offset)*((dist-350)/150+0.5)*25
+	var n = noise.get_noise_2dv(vec2+vec_offset)
+	if height:
+		image.lock()
+		var col = image.get_pixelv(vec2)
+		n = n*(1-col.a)+col.r*col.a
+		print(n,"-",col.r,"-",col.a)
+	return n*height_factor
