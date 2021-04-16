@@ -106,6 +106,7 @@ func create_tile_mesh(tile, tile_pos,meshx):
 
 #should be called on check that map is loaded for site
 func add_sites(tile_pos):
+	yield(get_tree(),"idle_frame")
 	for pos in site_locations:
 		if not site_added.has(tile_pos):
 			if (pos/1000).snapped(Vector3(1,10,1)) == tile_pos:
