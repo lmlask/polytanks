@@ -15,7 +15,7 @@ var tilemesh = {}
 var MapNode = null
 var thread_update = Thread.new()
 var mutex = Mutex.new()
-var fine_size = 3
+var fine_size = 10
 
 var buildings_added = false #change this
 #signal flat_terrain_completed
@@ -108,6 +108,13 @@ func check_area(pos,large = false):
 	
 #	return
 	for i in tile_offset:
+		if not maptiles.has(center+i):
+			mutex.lock()
+			maptiles_size[center+i] = 100
+			maptiles[center+i] =  MapNode.add_tile(center+i,tilemesh[100])
+			mutex.unlock()
+			prev_tile = Vector3.INF
+			break
 		if not maptiles_size[center+i] == size:
 			if not thread_update.is_active() and GameState.InGame:
 				thread_update.start(self, "update_tile", [center+i, size])
@@ -140,8 +147,8 @@ func add_tiles(pos,size = 100):
 			mutex.unlock()
 		
 func generate_map(mesh):
-	for x in range(-5,5):
-		for y in range(-5,5):
+	for x in range(-1,1):
+		for y in range(-1,1):
 			var pos = Vector3(x,0,y)
 			mutex.lock()
 			maptiles_size[pos] = 100
