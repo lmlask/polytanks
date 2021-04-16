@@ -22,10 +22,11 @@ var site1 = {R.MHouse:[Vector3(10,0,0), Vector3(30,0,0),Vector3(10,0,20),Vector3
 var site_locations = {Vector3(0,0,0):site1,Vector3(100,0,0):site1,Vector3(250,0,0):site1,Vector3(750,0,0):site1,Vector3(1000,0,0):site1}
 var site_added = []
 
-#var height_map = {Vector3(0,0,0):alphagrepmap,Vector3(1,0,1):polytankmap}
-var height_map = {}
+var height_map = {Vector3(-1,0,0):alphagrepmap,Vector3(-1,0,-1):polytankmap}
+#var height_map = {}
 
 var mutex = Mutex.new()
+var inprogress = false
 # Called when the node enters the scene tree for the first time.
 
 func _ready():
@@ -38,10 +39,12 @@ func add_tile(tile_pos,mesh):
 	var tile = $Tile.duplicate()
 	tile.translation = (tile_pos)*1000-Vector3(500,0,500)
 	var tile_mesh = create_tile_mesh(tile,tile_pos,mesh)
+	tile_mesh.surface_set_material(0, mat)
 	mutex.lock()
 	tile.mesh = tile_mesh
+	inprogress = true
 	tile.get_node("StaticBody/CollisionShape").shape = tile_mesh.create_trimesh_shape()
-	tile.mesh.surface_set_material(0, mat)
+	inprogress = false
 	mutex.unlock()
 	add_child(tile)
 	tile.show()
@@ -49,9 +52,11 @@ func add_tile(tile_pos,mesh):
 
 func update_tile(tile_pos,mesh,tile_node):
 	var tile_mesh = create_tile_mesh(tile_node,tile_pos,mesh)
-	mutex.lock()
 	tile_mesh.surface_set_material(0, mat)
+	mutex.lock()
 	tile_node.mesh = tile_mesh
+	while inprogress:
+		yield(get_tree().create_timer(1),"timeout")
 	tile_node.get_node("StaticBody/CollisionShape").shape = tile_mesh.create_trimesh_shape()
 	mutex.unlock()
 	
@@ -64,6 +69,7 @@ func create_tile_mesh(tile, tile_pos,meshx):
 #	var mat = $MeshInstance.get_surface_material(0) #need a serface material
 	height = false
 	if height_map.has(tile_pos):
+		print("height map")
 		image.load(height_map[tile_pos])
 		imgdata = image.get_data()
 		height = true
@@ -76,7 +82,7 @@ func create_tile_mesh(tile, tile_pos,meshx):
 		vertex.y = get_noise(tile, Vector2(vertex.x, vertex.z))
 #		vertex.y += noise.get_noise_2d((vertex.x+translation.x)/20, (vertex.z+translation.z)/20)*250
 		mdt.set_vertex(i, vertex)
-
+	
 	for i in range(mdt.get_face_count()):
 		# Get the index in the vertex array.
 		var a = mdt.get_face_vertex(i, 0)
@@ -130,6 +136,7 @@ func get_noise(tile, vec2,flat=false):
 	if height:
 		image.lock()
 		var col = image.get_pixelv(vec2)
+		image.unlock()
 		n = n*(1-col.a)+col.r*col.a
-		print(n,"-",col.r,"-",col.a)
+#		print(n,"-",col.r,"-",col.a)
 	return n*height_factor

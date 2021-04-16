@@ -11,14 +11,18 @@ var tile_offset = [Vector3(0,0,0),Vector3(1,0,0),Vector3(0,0,1),Vector3(-1,0,0),
 var mesh10:ArrayMesh = ArrayMesh.new()
 var mesh25:ArrayMesh = ArrayMesh.new()
 var mesh100:ArrayMesh = ArrayMesh.new()
-var tilemesh = {}
 var MapNode = null
 var thread_update = Thread.new()
 var mutex = Mutex.new()
 var fine_size = 10
+var tilemesh = {}
 
 var buildings_added = false #change this
 #signal flat_terrain_completed
+
+
+var time_of_day:float = 1.0
+onready var env:Environment = $WorldEnvironment.environment
 
 func _ready():
 #	connect("flat_terrain_completed", self, "update_tiles")
@@ -86,13 +90,13 @@ func load_map(i,pos): #Need to add a location
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	return #updated by camera
-#	if map == null or not VM.vehicle is Node:
-#		return
-#	var cur_tile = (VM.vehicle.transform.origin/1000).snapped(Vector3(1,1,1))
-#	if not cur_tile == prev_tile:
-#		prev_tile = cur_tile
-#		check_area(cur_tile)
+	time_of_day += delta / 10
+	time_of_day = wrapf(time_of_day,0.0,PI+0.5)
+	env.background_energy = max(0.1,sin(time_of_day))
+	env.ambient_light_energy = max(0,sin(time_of_day))
+	$DirectionalLight.rotation.x = -time_of_day
+	$DirectionalLight.light_energy = max(0,sin(time_of_day))
+	
 	
 func check_area(pos,large = false):
 	var size = fine_size
@@ -115,12 +119,12 @@ func check_area(pos,large = false):
 			mutex.unlock()
 			prev_tile = Vector3.INF
 			break
-		if not maptiles_size[center+i] == size:
+		if maptiles_size[center+i] == 100:
 			if not thread_update.is_active() and GameState.InGame:
 				thread_update.start(self, "update_tile", [center+i, size])
 			else:
 				prev_tile = Vector3.INF
-#				print("thread running")
+				print("thread running")
 
 func update_tile(data):
 	var pos = data[0]
@@ -142,8 +146,8 @@ func add_tiles(pos,size = 100):
 	for i in tile_offset:
 		if not maptiles.has(pos+i):
 			mutex.lock()
-			maptiles_size[pos+i] = size
 			maptiles[pos+i] =  MapNode.add_tile(pos+i,tilemesh[size])
+			maptiles_size[pos+i] = size
 			mutex.unlock()
 		
 func generate_map(mesh):
@@ -151,8 +155,8 @@ func generate_map(mesh):
 		for y in range(-1,1):
 			var pos = Vector3(x,0,y)
 			mutex.lock()
-			maptiles_size[pos] = 100
 			maptiles[pos] = MapNode.add_tile(pos,mesh)
+			maptiles_size[pos] = 100
 			mutex.unlock()
 
 func _exit_tree():
