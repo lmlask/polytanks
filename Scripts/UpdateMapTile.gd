@@ -1,6 +1,6 @@
 extends Spatial
 
-var delay:float = 0.1
+var delay:float = 0.25
 var timer:float = 0.0
 
 func _ready():

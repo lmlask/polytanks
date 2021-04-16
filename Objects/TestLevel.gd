@@ -25,6 +25,7 @@ var site_added = []
 #var height_map = {Vector3(0,0,0):alphagrepmap,Vector3(1,0,1):polytankmap}
 var height_map = {}
 
+var mutex = Mutex.new()
 # Called when the node enters the scene tree for the first time.
 
 func _ready():
@@ -33,23 +34,28 @@ func _ready():
 #	var imageTex = ImageTexture.new()
 #	imageTex.create_from_image(image,0)
 
-func add_tile(tile_pos):
+func add_tile(tile_pos,mesh):
 	var tile = $Tile.duplicate()
 	tile.translation = (tile_pos)*1000-Vector3(500,0,500)
-	var tile_mesh = create_tile_mesh(tile,tile_pos)
+	var tile_mesh = create_tile_mesh(tile,tile_pos,mesh)
+	mutex.lock()
 	tile.mesh = tile_mesh
 	tile.get_node("StaticBody/CollisionShape").shape = tile_mesh.create_trimesh_shape()
-	tile.set_surface_material(0, mat)
+	tile.mesh.surface_set_material(0, mat)
+	mutex.unlock()
 	add_child(tile)
 	tile.show()
-	
 	return tile
 
-func shader():
-	pass
+func update_tile(tile_pos,mesh,tile_node):
+	var tile_mesh = create_tile_mesh(tile_node,tile_pos,mesh)
+	mutex.lock()
+	tile_mesh.surface_set_material(0, mat)
+	tile_node.mesh = tile_mesh
+	tile_node.get_node("StaticBody/CollisionShape").shape = tile_mesh.create_trimesh_shape()
+	mutex.unlock()
 	
-
-func create_tile_mesh(tile, tile_pos):
+func create_tile_mesh(tile, tile_pos,meshx):
 #	tile_pos = (tile.translation/1000).snapped(Vector3(1,10,1))
 #	for i in flats:
 #		if tile_pos == i and R.Map.map == 2:
@@ -62,7 +68,7 @@ func create_tile_mesh(tile, tile_pos):
 		imgdata = image.get_data()
 		height = true
 		
-	var mesh = R.Map.mesh100.duplicate()
+	var mesh = meshx.duplicate()
 	var mdt = MeshDataTool.new()
 	mdt.create_from_surface(mesh, 0)
 	for i in range(mdt.get_vertex_count()):
