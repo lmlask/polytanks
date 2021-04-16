@@ -45,6 +45,10 @@ func add_tile(tile_pos):
 	
 	return tile
 
+func shader():
+	pass
+	
+
 func create_tile_mesh(tile, tile_pos):
 #	tile_pos = (tile.translation/1000).snapped(Vector3(1,10,1))
 #	for i in flats:
@@ -58,7 +62,7 @@ func create_tile_mesh(tile, tile_pos):
 		imgdata = image.get_data()
 		height = true
 		
-	var mesh = R.Map.mesh25.duplicate()
+	var mesh = R.Map.mesh100.duplicate()
 	var mdt = MeshDataTool.new()
 	mdt.create_from_surface(mesh, 0)
 	for i in range(mdt.get_vertex_count()):

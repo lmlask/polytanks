@@ -1,6 +1,4 @@
 [gd_resource type="SpatialMaterial" format=2]
 
 [resource]
-albedo_color = Color( 0.52, 0.4836, 0.338, 1 )
-normal_enabled = true
-normal_scale = 1.0
+albedo_color = Color( 0.521569, 0.482353, 0.337255, 1 )

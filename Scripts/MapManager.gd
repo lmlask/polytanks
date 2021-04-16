@@ -9,6 +9,7 @@ var prev_tile = Vector3.INF
 var tile_offset = [Vector3(0,0,0),Vector3(1,0,0),Vector3(0,0,1),Vector3(-1,0,0),Vector3(0,0,-1),Vector3(1,0,1),Vector3(-1,0,1),Vector3(1,0,-1),Vector3(-1,0,-1)]
 var mesh10:ArrayMesh = ArrayMesh.new()
 var mesh25:ArrayMesh = ArrayMesh.new()
+var mesh100:ArrayMesh = ArrayMesh.new()
 var MapNode = null
 
 var buildings_added = false #change this
@@ -21,7 +22,8 @@ func _ready():
 	
 	#Create a plane used for terrain
 	mesh10 = create_mesh(10)
-	mesh25 = create_mesh(25)
+#	mesh25 = create_mesh(25)
+	mesh100 = create_mesh(100)
 	
 func create_mesh(size)->ArrayMesh:
 	var vertices = PoolVector3Array()
@@ -85,7 +87,7 @@ func check_area(pos,large = false):
 	prev_tile = center
 	if large:
 		for i in tile_offset: #too much for the moment
-			add_tiles(center)
+			add_tiles(center+i*2)
 	else:
 		add_tiles(center)
 	

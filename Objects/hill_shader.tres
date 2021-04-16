@@ -1,0 +1,23 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type spatial;
+uniform vec2 offset;
+float height(vec2 pos) {
+  //float h = wave(position);
+  return cos((pos.x+offset.y)*0.01) * sin((pos.y+offset.y)*0.01)*25.0;
+}
+void vertex() {
+	VERTEX.y += cos((VERTEX.x+offset.y)*0.01) * sin((VERTEX.z+offset.y)*0.01)*25.0;
+	vec2 pos = VERTEX.xz;
+	float k = height(vec2(VERTEX.x,VERTEX.z));
+	NORMAL = normalize(vec3(k - height(pos + vec2(0.1, 0.0)), 0.1, k - height(pos + vec2(0.0, 0.1))));
+}
+
+void fragment() {
+	ALBEDO = vec3(0.42, 0.38, 0.24);
+}"
+
+[resource]
+shader = SubResource( 1 )
+shader_param/offset = 0.0
