@@ -16,10 +16,15 @@ var polytankmap = "res://Textures/polytank.png"
 var image = Image.new()
 var imgdata
 #building key in array locations
-var site1 = {R.MHouse:[Vector3(10,0,0), Vector3(30,0,0),Vector3(10,0,20),Vector3(-10,0,10),Vector3(-20,0,-20),Vector3(10,0,-20)]}
+var site1 = {R.MHouse:[Vector3(10,0,0),Vector3(10,0,-20)],
+	R.VWKWagen:[Vector3(10,0,5),Vector3(0,0,5),Vector3(-10,0,5)],
+	R.BerHouseS1:[Vector3(30,0,0)],
+	R.BerHouseT2:[Vector3(10,0,20)],
+	R.BerHouseT3:[Vector3(-10,0,10)],
+	R.BerHouseT4:[Vector3(-20,0,-20)]}
 
 #location of towns global locations
-var site_locations = {Vector3(0,0,0):site1,Vector3(100,0,0):site1,Vector3(250,0,0):site1,Vector3(750,0,0):site1,Vector3(1000,0,0):site1}
+var site_locations = {Vector3(0,0,0):site1,Vector3(200,0,200):site1,Vector3(250,0,-2500):site1,Vector3(750,0,300):site1,Vector3(550,0,-200):site1}
 var site_added = []
 
 var height_map = {Vector3(-1,0,0):alphagrepmap,Vector3(-1,0,-1):polytankmap}

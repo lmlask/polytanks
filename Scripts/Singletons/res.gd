@@ -13,5 +13,10 @@ onready var NoiseTex = Map.get_node("NoiseTexture")
 #Scenes
 onready var CamExt = preload("res://Objects/ExternalCamera.tscn")
 onready var VTPzIV = preload("res://Tanks/PzIV/PanzerIV.tscn") #Name/sort it better. Put in a dictionary dictionary, Scene Vehicle Tank ?
+onready var VWKWagen = preload("res://models/Kubelwagen.tscn")
 onready var MHouse = preload("res://models/house.tscn") #Model House
+onready var BerHouseS1 = preload("res://models/Berberhouse_small01.tscn")
+onready var BerHouseT2 = preload("res://models/BerberHouse02_temp.tscn")
+onready var BerHouseT3 = preload("res://models/BerberHouse03_temp.tscn")
+onready var BerHouseT4 = preload("res://models/BerberHouse04_temp.tscn")
 onready var DebugUI = preload("res://Scenes/DebugUI.tscn")
