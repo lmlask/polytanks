@@ -124,7 +124,6 @@ func check_area(pos,large = false):
 				thread_update.start(self, "update_tile", [center+i, size])
 			else:
 				prev_tile = Vector3.INF
-				print("thread running")
 
 func update_tile(data):
 	var pos = data[0]
