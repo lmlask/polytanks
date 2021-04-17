@@ -18,7 +18,7 @@ var fine_size = 5
 var tilemesh = {}
 
 var buildings_added = false #change this
-#signal flat_terrain_completed
+signal terrain_completed
 
 
 var time_of_day:float = 1.0
@@ -30,7 +30,7 @@ func _ready():
 	$DirectionalLight.rotation.x = -0.5
 	$DirectionalLight.light_energy = 1
 
-#	connect("flat_terrain_completed", self, "update_tiles")
+	connect("terrain_completed", self, "terrain_complete")
 	maps[0] = preload("res://Objects/TestLevel.tscn")
 	maps[1] = preload("res://Objects/CityLevel.tscn")
 	maps[2] = preload("res://Objects/hills map.tscn")
@@ -114,8 +114,8 @@ func check_area(pos,large = false):
 	if center == prev_tile:
 		return
 	prev_tile = center
-	for i in tile_offset:
-		MapNode.add_sites(center+i)
+	for j in tile_offset:
+		MapNode.add_sites(center+j)
 	
 #	return
 	for i in tile_offset:
@@ -136,7 +136,7 @@ func check_area(pos,large = false):
 func update_tile(data):
 	var pos = data[0]
 	var size = data[1]
-	print("update", pos, "-", size)
+#	print("update", pos, "-", size)
 	if not tilemesh.has(size):
 		print("tile mesh not ready")
 		prev_tile = Vector3.INF
@@ -146,8 +146,20 @@ func update_tile(data):
 	maptiles_size[pos] = size
 	mutex.unlock()
 	MapNode.update_tile(pos,tilemesh[size],maptiles[pos])
+	emit_signal("terrain_completed",pos)
 	thread_update.call_deferred("wait_to_finish")
 	
+func terrain_complete(data):
+#	print("terrain complete", data)
+	var pos = R.ManVehicle.vehicle.global_transform.origin
+	var grid = (pos/1000).snapped(Vector3(1,10,1))
+	if data == grid:
+		print("resetting vehicle")
+		R.ManVehicle.reset_tank(R.ManVehicle.vehicle) #reset tank should be in a base class for all tanks
+	for i in maptiles[data].get_children():
+		if i.is_in_group("item"): #Fix this up, sort buildings/items or group them something better then "item"
+			R.FloorFinder.find_floor2(i,false)
+		
 
 func add_tiles(pos,size = 100):
 	for i in tile_offset:

@@ -111,7 +111,9 @@ surfaces/0 = {
 "vertex_count": 606
 }
 
-[node name="Kubelwagen_v1" type="Spatial"]
+[node name="Kubelwagen_v1" type="Spatial" groups=[
+"item",
+]]
 
 [node name="back_low" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0 )
