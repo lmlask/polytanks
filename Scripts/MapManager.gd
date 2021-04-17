@@ -14,7 +14,7 @@ var mesh100:ArrayMesh = ArrayMesh.new()
 var MapNode = null
 var thread_update = Thread.new()
 var mutex = Mutex.new()
-var fine_size = 10
+var fine_size = 5
 var tilemesh = {}
 
 var buildings_added = false #change this
@@ -158,8 +158,8 @@ func add_tiles(pos,size = 100):
 			mutex.unlock()
 		
 func generate_map(mesh):
-	for x in range(-1,1):
-		for y in range(-1,1):
+	for x in range(-5,5):
+		for y in range(-5,5):
 			var pos = Vector3(x,0,y)
 			mutex.lock()
 			maptiles[pos] = MapNode.add_tile(pos,mesh)

@@ -7,40 +7,48 @@ var mat:Material = preload("res://Objects/hills map.tres")
 var noise = R.NoiseTex.texture.noise
 var flat = false
 var tile_pos:Vector3 = Vector3.INF
-var height_factor = 25
-var height = false #heightmap
+var height_factor = 255
+#var height = true #heightmap
 #var flats = [Vector3(0,0,0),Vector3(1,0,1),Vector3(1,0,0),Vector3(1,0,2),Vector3(1,0,3)] #define some flat areas
 
-var alphagrepmap = "res://Textures/greyalpha.png"
-var polytankmap = "res://Textures/polytank.png"
+var alphagrepmap = "res://Textures/greyalpha.exr"
+#var polytankmap = "res://Textures/polytank.png"
 var image = Image.new()
 var imgdata
 #building key in array locations
-var site1 = {R.MHouse:[Vector3(10,0,0),Vector3(10,0,-20)],
+var site1 = {R.MHouse:[Vector3(10,0,0),],
 	R.VWKWagen:[Vector3(10,0,5),Vector3(0,0,5),Vector3(-10,0,5)],
 	R.BerHouseS1:[Vector3(30,0,0)],
 	R.BerHouseT2:[Vector3(10,0,20)],
-	R.BerHouseT3:[Vector3(-10,0,10)],
-	R.BerHouseT4:[Vector3(-20,0,-20)]}
+	R.BerHouseT3:[Vector3(-40,0,10)],
+	R.BerHouseT4:[Vector3(-20,0,-20)],
+	R.BerHouseT3v2:[Vector3(10,0,-20),Vector3(20,0,-20),Vector3(-10,0,-20),Vector3(10,0,40)]}
 
 #location of towns global locations
-var site_locations = {Vector3(0,0,0):site1,Vector3(200,0,200):site1,Vector3(250,0,-2500):site1,Vector3(750,0,300):site1,Vector3(550,0,-200):site1}
+var site_locations = {Vector3(50,0,0):site1,Vector3(200,0,200):site1,Vector3(250,0,-2500):site1,Vector3(750,0,300):site1,Vector3(550,0,-200):site1}
 var site_added = []
 
-var height_map = {Vector3(-1,0,0):alphagrepmap,Vector3(-1,0,-1):polytankmap}
-#var height_map = {}
+#var height_map = {Vector3(-1,0,0):alphagrepmap,Vector3(-1,0,-1):polytankmap} #Should be one image for the entire map
+var height_map = alphagrepmap
 
 var mutex = Mutex.new()
 var inprogress = false
 # Called when the node enters the scene tree for the first time.
 
 func _ready():
-	pass
+	if height_map:
+		image.load(height_map) 
+		imgdata = image.get_data()
+		image.lock()
+		for i in range(100):
+			print(image.get_pixelv(Vector2(i,0)))
+		image.unlock()
+		print(image.get_format())
 	
 #	var imageTex = ImageTexture.new()
 #	imageTex.create_from_image(image,0)
 
-func add_tile(tile_pos,mesh):
+func add_tile(tile_pos,mesh): 
 	var tile = $Tile.duplicate()
 	tile.translation = (tile_pos)*1000-Vector3(500,0,500)
 	var tile_mesh = create_tile_mesh(tile,tile_pos,mesh)
@@ -72,18 +80,14 @@ func create_tile_mesh(tile, tile_pos,meshx):
 #			flat = true
 #	var mesh = $MeshInstance.mesh.duplicate()
 #	var mat = $MeshInstance.get_surface_material(0) #need a serface material
-	height = false
-	if height_map.has(tile_pos):
-		print("height map")
-		image.load(height_map[tile_pos])
-		imgdata = image.get_data()
-		height = true
 		
 	var mesh = meshx.duplicate()
 	var mdt = MeshDataTool.new()
 	mdt.create_from_surface(mesh, 0)
 	for i in range(mdt.get_vertex_count()):
 		var vertex = mdt.get_vertex(i)
+#		if i < 3:
+#			print(vertex)
 		vertex.y = get_noise(tile, Vector2(vertex.x, vertex.z))
 #		vertex.y += noise.get_noise_2d((vertex.x+translation.x)/20, (vertex.z+translation.z)/20)*250
 		mdt.set_vertex(i, vertex)
@@ -131,18 +135,20 @@ func add_buildings(pos, Buidling, bpos):
 	var building = Buidling.instance()
 	R.FloorFinder.find_floor2(building,pos+bpos,false)
 	var grid = (pos/1000).snapped(Vector3(1,10,1))
-	print("add building at ",grid)
+#	print("add building at ",grid)
 	R.Map.maptiles[grid].add_child(building)
 	building.translation += Vector3(500,0,500)-grid*1000
 	building.scale *= 2
 
-func get_noise(tile, vec2,flat=false):
+func get_noise(tile, vec2):
 	var vec_offset = Vector2(tile.translation.x,tile.translation.z)
-	var n = noise.get_noise_2dv(vec2+vec_offset)
-	if height:
-		image.lock()
-		var col = image.get_pixelv(vec2)
-		image.unlock()
-		n = n*(1-col.a)+col.r*col.a
+	var n = noise.get_noise_2dv(vec2+vec_offset)/10.0+0.05
+	vec2 = (vec2+vec_offset)/R.Map.fine_size+Vector2(1024,1024)
+	vec2 = Vector2(clamp(vec2.x,0,2048),clamp(vec2.y,0,2048))
+	image.lock()
+	var col = image.get_pixelv(vec2)
+	image.unlock()
+	n = n*(1-col.a)+col.r*col.a
 #		print(n,"-",col.r,"-",col.a)
+	
 	return n*height_factor
