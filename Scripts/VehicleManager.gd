@@ -41,8 +41,8 @@ func reset_tank(v): #should be part of the vehicle
 	v.linear_velocity = Vector3.ZERO
 	v.angular_velocity = Vector3.ZERO
 	FloorFinder.find_floor(v,v.transform.origin)
-	v.rotate_y(PI)
-	v.transform.origin += v.transform.basis.y
+#	v.rotate_y(PI)
+#	v.transform.origin += v.transform.basis.y
 		
 
 func start():
