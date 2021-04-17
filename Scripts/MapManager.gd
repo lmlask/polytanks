@@ -25,6 +25,11 @@ var time_of_day:float = 1.0
 onready var env:Environment = $WorldEnvironment.environment
 
 func _ready():
+	env.background_energy = 1
+	env.ambient_light_energy = 1
+	$DirectionalLight.rotation.x = -0.5
+	$DirectionalLight.light_energy = 1
+
 #	connect("flat_terrain_completed", self, "update_tiles")
 	maps[0] = preload("res://Objects/TestLevel.tscn")
 	maps[1] = preload("res://Objects/CityLevel.tscn")
@@ -90,12 +95,14 @@ func load_map(i,pos): #Need to add a location
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	time_of_day += delta / 10
-	time_of_day = wrapf(time_of_day,0.0,PI+0.5)
-	env.background_energy = max(0.1,sin(time_of_day))
-	env.ambient_light_energy = max(0,sin(time_of_day))
-	$DirectionalLight.rotation.x = -time_of_day
-	$DirectionalLight.light_energy = max(0,sin(time_of_day))
+	if GameState.EnvCycle:
+		time_of_day += delta / 10
+		time_of_day = wrapf(time_of_day,0.0,PI+0.5)
+		env.background_energy = max(0.1,sin(time_of_day))
+		env.ambient_light_energy = max(0,sin(time_of_day))
+		$DirectionalLight.rotation.x = -time_of_day
+		$DirectionalLight.light_energy = max(0,sin(time_of_day))
+
 	
 	
 func check_area(pos,large = false):
@@ -124,7 +131,7 @@ func check_area(pos,large = false):
 				thread_update.start(self, "update_tile", [center+i, size])
 			else:
 				prev_tile = Vector3.INF
-				print("thread running")
+#				print("thread running")
 
 func update_tile(data):
 	var pos = data[0]

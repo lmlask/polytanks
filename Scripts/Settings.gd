@@ -4,6 +4,7 @@ onready var Volume = $Panel/Volume
 onready var Wind = $Panel/Wind
 onready var Speed = $Panel/Speed
 onready var ShellCam = $Panel/ShellCam
+onready var EnvCycle = $Panel/Env
 onready var WindView = $Panel/WindView
 onready var Master = AudioServer.get_bus_index("Master")
 const SettingsFile = "user://Settings.dat"
@@ -20,6 +21,7 @@ func _on_Save_pressed():
 	data["Speed"] = Speed.value
 	data["ShellCam"] = ShellCam.pressed
 	data["WindView"] = WindView.pressed
+	data["EnvCycle"] = EnvCycle.pressed
 	var settings = File.new()
 	settings.open(SettingsFile, File.WRITE)
 	settings.store_var(data)
@@ -52,6 +54,9 @@ func load_settings():
 	if data.has("ShellCam"):
 		ShellCam.pressed = data.ShellCam
 		_on_ShellCam_toggled(data.ShellCam)
+	if data.has("EnvCycle"):
+		EnvCycle.pressed = data.EnvCycle
+		_on_ShellCam_toggled(data.EnvCycle)
 	if data.has("WindView"):
 		WindView.pressed = data.WindView
 	settings.close()
@@ -71,3 +76,7 @@ func _on_WindView_toggled(button_pressed):
 func _on_Restart_pressed():
 	GameState.restart()
 	$Panel.hide()
+
+
+func _on_Env_toggled(button_pressed):
+	GameState.EnvCycle = button_pressed

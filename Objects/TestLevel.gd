@@ -131,6 +131,7 @@ func add_buildings(pos, Buidling, bpos):
 	var building = Buidling.instance()
 	R.FloorFinder.find_floor2(building,pos+bpos,false)
 	var grid = (pos/1000).snapped(Vector3(1,10,1))
+	print("add building at ",grid)
 	R.Map.maptiles[grid].add_child(building)
 	building.translation += Vector3(500,0,500)-grid*1000
 	building.scale *= 2

@@ -20,6 +20,7 @@ remote var wind_vector = Vector2.ZERO
 var speed:float = 1
 var ShellCam = false
 var WindView = false
+var EnvCycle = false
 
 func _ready() -> void:
 		pass
