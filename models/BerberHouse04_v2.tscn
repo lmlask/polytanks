@@ -1,17 +1,17 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://models/BerberHouse02.obj" type="ArrayMesh" id=1]
-[ext_resource path="res://models/Berberhouse02_Default_color.png" type="Texture" id=2]
+[ext_resource path="res://models/BerberHouse04.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://models/Berberhouse04_Default_color.png" type="Texture" id=2]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_texture = ExtResource( 2 )
 
-[node name="BerberHouse02_v2" type="Spatial"]
+[node name="BerberHouse04_v2" type="Spatial"]
 
 [node name="MeshInstance" type="MeshInstance" parent="." groups=[
 "item",
 ]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.95862, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.98298, 0 )
 material_override = SubResource( 1 )
 mesh = ExtResource( 1 )
 material/0 = null
