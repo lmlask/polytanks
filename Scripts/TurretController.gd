@@ -6,10 +6,9 @@ extends Node
 # var b = "text"
 
 onready var turret = owner.get_node("Visuals/Turret")
-onready var turret_int = owner.get_node("Interior/TurretInterior") #Fix this should reference the other way
 onready var barrel = owner.get_node("Visuals/Turret/gun/gunMesh/barrel")
 onready var muzzleSound = owner.get_node("Visuals/Turret/gun/gunMesh/barrel/gunSoundExterior")
-#onready var roleController = owner.get_node("RoleController")
+onready var gun_rig_interior = owner.get_node("Interior/TurretInterior/Dynamic/GunRig")
 onready var crankslow = preload("res://Sfx/crank_slow.wav")
 onready var crankfast = preload("res://Sfx/crank_fast.wav")
 
@@ -48,8 +47,6 @@ func _process(delta):
 	turn_speed_tgt = traverse_multiplier * dir * 0.1
 	turn_speed = lerp(turn_speed, turn_speed_tgt, (accel_speed*0.1))
 	turret.rotate(Vector3(0, 1, 0), turn_speed*delta)
-	if not owner.external_only: #shouldn't need to do this
-		turret_int.rotate(Vector3(0, 1, 0), turn_speed*delta) #fix this
 	
 	#Elevate
 	ele_speed_tgt = eledir * elevation_multiplier * 0.05
@@ -57,7 +54,7 @@ func _process(delta):
 	turret.get_node("gun").rotate(Vector3(1, 0, 0), ele_speed*delta)
 	
 	#Clamp
-	turret.get_node("gun").rotation_degrees.x = clamp(turret.get_node("gun").rotation_degrees.x, -17, 10) 
+	turret.get_node("gun").rotation_degrees.x = clamp(turret.get_node("gun").rotation_degrees.x, -17, 8) 
 	
 	if owner.auto:
 		timer += delta #for auto firing during intro
