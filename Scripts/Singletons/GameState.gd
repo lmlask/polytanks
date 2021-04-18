@@ -21,6 +21,7 @@ var speed:float = 1
 var ShellCam = false
 var WindView = false
 var EnvCycle = false
+var CamActive = null
 
 func _ready() -> void:
 		pass

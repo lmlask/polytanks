@@ -59,6 +59,7 @@ func start():
 #	get_parent().remove_child(camrig) #fix it
 	var cam = R.CamExt.instance()
 	vehicle.add_child(cam)
+	GameState.CamActive = cam
 	cam.canrotx = true
 	
 #	vehicle.translation = start[GameState.tank]
