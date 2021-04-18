@@ -142,8 +142,6 @@ func togglePortMode(port, transZ, rotY, rotX, clampmin, clampmax):
 	elif mode == "port":
 		resetCamera()
 
-func toggleHatchMode(new_origin, new_max_mov_x, new_max_mov_y):
-	pass
 
 func lookatHandler():
 	if $OuterGimbal/InnerGimbal/ClippedCamera.current and interact_areas.has(ray.get_collider()):

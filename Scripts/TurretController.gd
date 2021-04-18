@@ -8,7 +8,6 @@ extends Node
 onready var turret = owner.get_node("Visuals/Turret")
 onready var barrel = owner.get_node("Visuals/Turret/gun/gunMesh/barrel")
 onready var muzzleSound = owner.get_node("Visuals/Turret/gun/gunMesh/barrel/gunSoundExterior")
-onready var gun_rig_interior = owner.get_node("Interior/TurretInterior/Dynamic/GunRig")
 onready var crankslow = preload("res://Sfx/crank_slow.wav")
 onready var crankfast = preload("res://Sfx/crank_fast.wav")
 

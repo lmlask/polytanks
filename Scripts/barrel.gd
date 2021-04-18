@@ -33,3 +33,5 @@ func recoil():
 		$projectile_spawner/OmniLight.visible = true
 		$projectile_spawner/OmniLight.light_energy = 8
 		state = "back"
+		if (owner.get_node("Interior/TurretInterior/Dynamic/GunRig")):
+			owner.get_node("Interior/TurretInterior/Dynamic/GunRig").recoil()
