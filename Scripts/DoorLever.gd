@@ -19,3 +19,5 @@ func interact():
 			tween.interpolate_property(sideport, "rotation_degrees", sideport.rotation_degrees, Vector3(0, 0, 0), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 			tween.start()
 			state = "closed"
+	elif get_parent().get_node("GunnerDoors").state == "open":
+		get_parent().get_node("GunnerDoors").state = "closing"
