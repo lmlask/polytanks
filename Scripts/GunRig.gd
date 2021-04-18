@@ -9,7 +9,7 @@ func _process(delta):
 	rotation.x = gunControl.rotation.x
 	
 	#Recoil code
-	print(state)
+#	print(state)
 	if state == "back":
 		$Breech.translation.z = -0.103
 		state = "return"

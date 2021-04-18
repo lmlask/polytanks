@@ -18,9 +18,11 @@ func _ready():
 func _process(delta):
 	if not GameState.role == GameState.Role.Driver:
 		return
+
+#func _input(event): #_input, these functions should be called under input
 	manageCamera()
 	manageIgnition()
-	manageThrottleAndBrake(delta)
+	manageThrottleAndBrake(delta) #Do this another way
 	manageTransmission()
 	manageSteering()
 
@@ -36,7 +38,7 @@ func manageCamera():
 		get_parent().get_node("Camera").aimedObject.interact()
 	
 func _physics_process(delta):
-	manageSteeringPhysics()
+	manageSteeringPhysics() #To be fixed
 			
 func manageThrottleAndBrake(delta):
 	# Manage throttle

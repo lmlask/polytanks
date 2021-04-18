@@ -76,8 +76,8 @@ func clear_map():
 
 func load_map(i,pos): #Need to add a location
 	clear_map()
-	map = 2
-	MapNode = maps[map].instance()
+	map = i
+	MapNode = maps[2].instance() #only have the one map
 	add_child(MapNode)
 	generate_map(tilemesh[100])
 	check_area(pos)

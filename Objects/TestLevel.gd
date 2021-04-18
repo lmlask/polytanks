@@ -12,10 +12,14 @@ var height_factor = 255
 #var flats = [Vector3(0,0,0),Vector3(1,0,1),Vector3(1,0,0),Vector3(1,0,2),Vector3(1,0,3)] #define some flat areas
 
 var alphagrepmap = "res://Textures/greyalpha.exr"
-#var polytankmap = "res://Textures/polytank.png"
+var flatmap = "res://Textures/flat.exr"
+var height_map = [alphagrepmap,flatmap]
+
 var image = Image.new()
 var imgdata
+
 #building key in array locations
+#all this needs to be in a file selectable by the map
 var site1 = {R.MHouse:[Vector3(10,0,0),],
 	R.VWKWagen:[Vector3(10,0,5),Vector3(0,0,5),Vector3(-10,0,5)],
 	R.BerHouseS1:[Vector3(30,0,0)],
@@ -28,7 +32,6 @@ var site_locations = {Vector3(50,0,0):site1,Vector3(200,0,200):site1,Vector3(250
 var site_added = []
 
 #var height_map = {Vector3(-1,0,0):alphagrepmap,Vector3(-1,0,-1):polytankmap} #Should be one image for the entire map
-var height_map = alphagrepmap
 
 var mutex = Mutex.new()
 var inprogress = false
@@ -36,9 +39,8 @@ var inprogress = false
 
 func _ready():
 	if height_map:
-		image.load(height_map) 
+		image.load(height_map[R.Map.map]) 
 		imgdata = image.get_data()
-	
 #	var imageTex = ImageTexture.new()
 #	imageTex.create_from_image(image,0)
 
