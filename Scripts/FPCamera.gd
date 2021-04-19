@@ -50,7 +50,7 @@ var interact_areas = []
 
 #modes
 var mode = "pan"
-onready var tween = owner.get_node("Interior/Tween")
+onready var tween = owner.owner.get_node("Interior/Tween")
 
 #port clamping
 var portmax = 165

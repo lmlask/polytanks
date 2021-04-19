@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
+[ext_resource path="res://Scripts/DriverInput.gd" type="Script" id=1]
 [ext_resource path="res://Objects/FPCamera.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scripts/DriverCamera.gd" type="Script" id=3]
 
@@ -7,6 +8,9 @@
 __meta__ = {
 "_editor_description_": "Dinamically loaded driver player node. Must be spatial to transmit location information to child nodes, such as a camera."
 }
+
+[node name="DriverInput" type="Node" parent="."]
+script = ExtResource( 1 )
 
 [node name="Camera" parent="." instance=ExtResource( 2 )]
 script = ExtResource( 3 )
