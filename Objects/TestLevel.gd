@@ -7,13 +7,14 @@ var mat:Material = preload("res://Objects/hills map.tres")
 var noise = R.NoiseTex.texture.noise
 var flat = false
 var tile_pos:Vector3 = Vector3.INF
-var height_factor = 255
+
 #var height = true #heightmap
 #var flats = [Vector3(0,0,0),Vector3(1,0,1),Vector3(1,0,0),Vector3(1,0,2),Vector3(1,0,3)] #define some flat areas
 
-var alphagrepmap = "res://Textures/greyalpha.exr"
+var alphagrepmap = "res://Textures/greyalpha-16bit.exr"
 var flatmap = "res://Textures/flat.exr"
 var height_map = [alphagrepmap,flatmap]
+var height_factor = 255
 
 var image = Image.new()
 var imgdata
