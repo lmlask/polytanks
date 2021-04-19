@@ -39,6 +39,7 @@ var inprogress = false
 # Called when the node enters the scene tree for the first time.
 
 func _ready():
+	
 	if height_map:
 		image.load(height_map[R.Map.map]) 
 		imgdata = image.get_data()

@@ -11,7 +11,7 @@ size = Vector2( 100000, 100000 )
 subdivide_width = 100
 subdivide_depth = 100
 
-[node name="hills map" type="Spatial"]
+[node name="terrain" type="Spatial"]
 script = ExtResource( 2 )
 
 [node name="Tile" type="MeshInstance" parent="."]

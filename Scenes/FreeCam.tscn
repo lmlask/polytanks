@@ -1,9 +1,139 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/FreeCam.gd" type="Script" id=1]
+[ext_resource path="res://Fonts/default-font.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Scripts/EditorSites.gd" type="Script" id=3]
+[ext_resource path="res://Fonts/PanelStyle.tres" type="StyleBox" id=4]
+[ext_resource path="res://Scripts/EditorMenu.gd" type="Script" id=5]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
 
 [node name="FreeCam" type="Spatial"]
 script = ExtResource( 1 )
 
 [node name="Camera" type="Camera" parent="."]
 far = 10000.0
+
+[node name="Editor" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="Editor"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 0.890869
+margin_right = 0.890869
+custom_styles/panel = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Editor/Panel"]
+margin_left = 110.532
+margin_top = 162.369
+margin_right = 238.532
+margin_bottom = 211.369
+custom_fonts/font = ExtResource( 2 )
+text = "Sites"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button2" type="Button" parent="Editor/Panel/Label"]
+margin_left = 149.159
+margin_top = -1.90869
+margin_right = 270.159
+margin_bottom = 53.0913
+custom_fonts/font = ExtResource( 2 )
+text = "Add"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Editor/Panel/Label"]
+margin_left = -65.0
+margin_top = 67.0
+margin_right = 364.0
+margin_bottom = 396.0
+custom_styles/bg = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Editor/Panel/Label/ScrollContainer"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 2.0
+margin_bottom = 2.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SiteButton" type="Button" parent="Editor/Panel/Label/ScrollContainer/VBoxContainer"]
+visible = false
+margin_right = 50.0
+margin_bottom = 20.0
+custom_fonts/font = ExtResource( 2 )
+text = "Name"
+script = ExtResource( 3 )
+
+[node name="Save" type="Button" parent="Editor/Panel"]
+margin_left = 441.886
+margin_top = 62.3629
+margin_right = 482.886
+margin_bottom = 82.3629
+custom_fonts/font = ExtResource( 2 )
+text = "Save"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menu" type="PanelContainer" parent="Editor"]
+visible = false
+margin_right = 78.0
+margin_bottom = 58.0
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Editor/Menu"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 71.0
+margin_bottom = 51.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Rename" type="Button" parent="Editor/Menu/VBoxContainer"]
+margin_right = 64.0
+margin_bottom = 20.0
+custom_fonts/font = ExtResource( 2 )
+text = "Rename"
+
+[node name="Name" type="LineEdit" parent="Editor/Menu/VBoxContainer"]
+visible = false
+margin_right = 58.0
+margin_bottom = 24.0
+custom_fonts/font = ExtResource( 2 )
+
+[node name="Delete" type="Button" parent="Editor/Menu/VBoxContainer"]
+margin_top = 24.0
+margin_right = 64.0
+margin_bottom = 44.0
+custom_fonts/font = ExtResource( 2 )
+text = "Delete"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="Editor/Panel/Label/Button2" to="." method="_on_Button2_pressed"]
+[connection signal="gui_input" from="Editor/Panel/Label/ScrollContainer/VBoxContainer/SiteButton" to="Editor/Panel/Label/ScrollContainer/VBoxContainer/SiteButton" method="_on_Button_gui_input"]
+[connection signal="pressed" from="Editor/Panel/Save" to="." method="_on_Save_pressed"]
+[connection signal="pressed" from="Editor/Menu/VBoxContainer/Rename" to="Editor/Menu" method="_on_Rename_pressed"]
+[connection signal="text_entered" from="Editor/Menu/VBoxContainer/Name" to="Editor/Menu" method="_on_Name_text_entered"]
+[connection signal="pressed" from="Editor/Menu/VBoxContainer/Delete" to="Editor/Menu" method="_on_Delete_pressed"]

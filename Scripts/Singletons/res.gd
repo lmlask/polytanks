@@ -10,7 +10,9 @@ onready var GUI = Root.get_node("ViewportContainer/View/GUI")
 onready var VTanks = Root.get_node("Vehicles/Tanks") #V for Vehciels ??? maybe N for Node NVTanks
 onready var NoiseTex = Map.get_node("NoiseTexture")
 
+var sitesfile = "res://MapData/Sites.dat"
 #Scenes
+onready var terrain = preload("res://Objects/terrain.tscn")
 onready var CamExt = preload("res://Objects/ExternalCamera.tscn")
 onready var VTPzIV = preload("res://Tanks/PzIV/PanzerIV.tscn") #Name/sort it better. Put in a dictionary dictionary, Scene Vehicle Tank ?
 onready var VWKWagen = preload("res://models/Kubelwagen.tscn")
@@ -19,4 +21,5 @@ onready var BerHouseS1 = preload("res://models/Berberhouse_small01.tscn")
 onready var BerHouseT2 = preload("res://models/BerberHouse02_v2.tscn")
 onready var BerHouseT3 = preload("res://models/BerberHouse03_v2.tscn")
 onready var BerHouseT4 = preload("res://models/BerberHouse04_v2.tscn")
+onready var SiteCentre = preload("res://models/SiteCenter.tscn")
 onready var DebugUI = preload("res://Scenes/DebugUI.tscn")

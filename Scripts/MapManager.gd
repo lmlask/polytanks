@@ -2,7 +2,7 @@ extends Spatial
 class_name MapMain
 
 onready var VM = $"../VehicleManager"
-var maps = {}
+#var maps = {}
 var map = null
 var maptiles = {}
 var maptiles_size = {}
@@ -16,7 +16,8 @@ var thread_update = Thread.new()
 var mutex = Mutex.new()
 var fine_size = 5
 var tilemesh = {}
-
+var sites:Dictionary
+onready var SitesNode = $Sites
 var buildings_added = false #change this
 signal terrain_completed
 
@@ -31,15 +32,21 @@ func _ready():
 	$DirectionalLight.light_energy = 1
 
 	connect("terrain_completed", self, "terrain_complete")
-	maps[0] = preload("res://Objects/TestLevel.tscn")
-	maps[1] = preload("res://Objects/CityLevel.tscn")
-	maps[2] = preload("res://Objects/hills map.tscn")
+#	maps[0] = preload("res://Objects/TestLevel.tscn")
+#	maps[1] = preload("res://Objects/CityLevel.tscn")
+#	maps[2] = preload("res://Objects/hills map.tscn")
 #	load_map(0,Vector3.ZERO)
 	
 	#Create a plane used for terrain
 	var map_thread = Thread.new()
 	map_thread.start(self,"create_mesh", fine_size)
 	create_mesh(100)
+	var file = File.new()
+	if not file.file_exists(R.sitesfile):
+		return
+	file.open(R.sitesfile, File.READ)
+	sites = file.get_var()
+
 	
 func create_mesh(size)->ArrayMesh:
 	var vertices = PoolVector3Array()
@@ -72,12 +79,13 @@ func clear_map():
 	maptiles.clear()
 	maptiles_size.clear()
 	mutex.unlock()
-	
+	for i in SitesNode.get_children():
+		i.queue_free()
 
 func load_map(i,pos): #Need to add a location
 	clear_map()
 	map = i
-	MapNode = maps[2].instance() #only have the one map
+	MapNode = R.terrain.instance() #only have the one map
 	add_child(MapNode)
 	generate_map(tilemesh[100])
 	check_area(pos)
@@ -158,7 +166,8 @@ func terrain_complete(data):
 	for i in maptiles[data].get_children():
 		if i.is_in_group("item"): #Fix this up, sort buildings/items or group them something better then "item"
 			R.FloorFinder.find_floor2(i,true)
-		
+	for i in SitesNode.get_children():
+		R.FloorFinder.find_floor2(i,false)
 
 func add_tiles(pos,size = 100):
 	for i in tile_offset:
@@ -179,3 +188,23 @@ func generate_map(mesh):
 
 func _exit_tree():
 	thread_update.wait_to_finish()
+
+func add_sites():
+	for i in sites:
+		add_site(i)
+		
+func add_site(i):
+	var sc = R.SiteCentre.instance()
+	sc.transform = sites[i]
+	SitesNode.add_child(sc)
+	sc.name = i
+	R.FloorFinder.find_floor2(sc, false)
+
+func remove_sites():
+	for i in SitesNode.get_children():
+		i.queue_free()
+		
+func update_sites():
+	for i in SitesNode.get_children():
+		sites[i.name] = i.transform
+		

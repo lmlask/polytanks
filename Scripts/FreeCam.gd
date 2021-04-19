@@ -1,5 +1,9 @@
 extends Spatial
 
+onready var panel = $Editor/Panel
+onready var menu = $Editor/Menu
+onready var site_button = $Editor/Panel/Label/ScrollContainer/VBoxContainer/SiteButton
+
 var enabled = false
 var move_fwd = 0.0
 var move_side = 0.0
@@ -7,24 +11,42 @@ var move_elev = 0.0
 var move:Vector3 = Vector3.ZERO
 var selected:Spatial = null
 
+var site = null
+
 var move_speed = 25.0
 var rot_speed = 250.0
 
 var timer = 0.0
 var delay = 0.25
 
+#var sites = {} #to be loaded from a file
+
+
 func _ready():
+	panel.hide()
 	set_process(false)
 	set_process_input(false)
+	
+#	var file = File.new()
+#	if not file.file_exists(R.sitesfile):
+#		return
+#	file.open(R.sitesfile, File.READ)
+#	sites = file.get_var()
+	for i in R.Map.sites:
+		site_button.add(i)
 
 func _input(event):
-	if not event.is_action_pressed("ui_cancel"): #only exists to not handle showing mouse so you can exit game
+	if not event.is_action_pressed("ui_cancel") and not panel.visible: #only exists to not handle showing mouse so you can exit game
 		get_tree().set_input_as_handled()
-	if event.is_action_pressed("F3") and not event.echo and enabled:
+	if Input.is_action_just_pressed("F4"):
+		panel.visible = !panel.visible
+		R.Map.update_sites()
+	if Input.is_action_just_pressed("F3"):
 		enabled = false
 		set_process(enabled)
 		set_process_input(enabled)
 		GameState.CamActive._cam.current = true #would imply _cam is consistant for all cams
+		R.Map.remove_sites()
 		return
 	if event is InputEventMouseMotion:
 		if GameState.mouseHidden:
@@ -48,14 +70,14 @@ func _input(event):
 			move_speed = min(move_speed * 1.5, 500.0)
 		if event.is_action_pressed("cam_zoom_out"):
 			move_speed = max(move_speed / 1.5, 10.0)
-		if event.is_action_pressed("action"):
+		if event.is_action_pressed("action") and not panel.visible:
 			var position = event.position
 			var from = $Camera.project_ray_origin(position)
 			var to = from + $Camera.project_ray_normal(position) * 1000
 			var space_state = get_world().direct_space_state
 			var result = space_state.intersect_ray(from,to)
 			selected = result.collider.owner
-			print(selected)
+			print(selected.name)
 
 func _process(delta):
 	if GameState.mouseHidden:
@@ -72,7 +94,6 @@ func _process(delta):
 		timer -= delay
 		R.Map.check_area(global_transform.origin,true)
 
-	
 
 func _unhandled_key_input(event): #Trying something different
 	if event.is_action_pressed("F3") and not event.echo and not enabled:
@@ -83,3 +104,24 @@ func _unhandled_key_input(event): #Trying something different
 		GameState.hide_mouse()
 		$Camera.current = true
 		global_transform = GameState.CamActive._cam.global_transform #ehhhh _cam?
+		panel.hide()
+		R.Map.add_sites()
+
+func _on_Button2_pressed():
+	site_button.add("New")
+	var t = Transform.IDENTITY
+	t.origin = transform.origin - transform.basis.z * 25
+	R.Map.sites["New"] = t
+	R.Map.add_site("New")
+
+func renamesite(old,new):
+	var i = R.Map.sites[old]
+	R.Map.sites.erase(old)
+	R.Map.sites[new] = i
+	
+
+func _on_Save_pressed():
+	var file = File.new()
+	file.open(R.sitesfile, File.WRITE)
+	file.store_var(R.Map.sites)
+	file.close()

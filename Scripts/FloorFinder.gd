@@ -39,6 +39,7 @@ func find_floor2(building:Spatial, rot = true):
 		tsf = tsf.rotated(tsf.basis.x,-PI/2)
 		if rot:
 			building.get_child(0).rotation.y = randf()*TAU #dont use get_child(0)
+		building.get_child(0).rotation.y = wrapf(building.get_child(0).rotation.y,0,TAU)
 		building.transform.basis = tsf.basis
 		building.transform.origin.y = ray.get_collision_point().y
 #		building.scale *= 2 #Should not need to double the size

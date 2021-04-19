@@ -117,44 +117,46 @@ points = PoolVector3Array( -0.8985, -0.408245, 1.26895, -0.8985, -0.375516, 1.23
 "item",
 ]]
 
-[node name="back_low" type="MeshInstance" parent="."]
+[node name="Spatial" type="Spatial" parent="."]
+
+[node name="back_low" type="MeshInstance" parent="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0 )
 mesh = SubResource( 2 )
 material/0 = ExtResource( 1 )
 
-[node name="middle_low" type="MeshInstance" parent="."]
+[node name="middle_low" type="MeshInstance" parent="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0 )
 mesh = SubResource( 3 )
 material/0 = ExtResource( 1 )
 
-[node name="frontBits_low" type="MeshInstance" parent="."]
+[node name="frontBits_low" type="MeshInstance" parent="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0 )
 mesh = SubResource( 4 )
 material/0 = ExtResource( 1 )
 
-[node name="front_low" type="MeshInstance" parent="."]
+[node name="front_low" type="MeshInstance" parent="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0 )
 mesh = SubResource( 5 )
 material/0 = ExtResource( 1 )
 
-[node name="chassis_low" type="MeshInstance" parent="."]
+[node name="chassis_low" type="MeshInstance" parent="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0 )
 mesh = SubResource( 6 )
 material/0 = ExtResource( 1 )
 
-[node name="spatbord_low" type="MeshInstance" parent="."]
+[node name="spatbord_low" type="MeshInstance" parent="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0 )
 mesh = SubResource( 7 )
 material/0 = ExtResource( 1 )
 
-[node name="wheel_low" type="MeshInstance" parent="." groups=[
+[node name="wheel_low" type="MeshInstance" parent="Spatial" groups=[
 "item",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0 )
 mesh = SubResource( 8 )
 material/0 = ExtResource( 1 )
 
-[node name="StaticBody" type="StaticBody" parent="wheel_low"]
+[node name="StaticBody" type="StaticBody" parent="Spatial/wheel_low"]
 
-[node name="CollisionShape" type="CollisionShape" parent="wheel_low/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="Spatial/wheel_low/StaticBody"]
 shape = SubResource( 9 )
