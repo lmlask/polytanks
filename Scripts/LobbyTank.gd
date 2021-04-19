@@ -32,4 +32,21 @@ remotesync func disable_role(tank,role):
 				$Driver.disabled = true
 			GameState.Role.Gunner:
 				$Gunner.disabled = true
-	
+			GameState.Role.Commander:
+				$Commander.disabled = true
+			GameState.Role.Loader:
+				$Loader.disabled = true
+			GameState.Role.Radioman:
+				$Radioman.disabled = true
+
+
+func _on_Commander_pressed():
+	rpc("select", Tank, GameState.Role.Commander)
+
+
+func _on_Loader_pressed():
+	rpc("select", Tank, GameState.Role.Loader)
+
+
+func _on_Radioman_pressed():
+	rpc("select", Tank, GameState.Role.Radioman)

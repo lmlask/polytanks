@@ -96,7 +96,7 @@ __meta__ = {
 [node name="LobbyGrid" type="GridContainer" parent="Panel/VBoxContainer"]
 margin_top = 116.0
 margin_right = 888.0
-margin_bottom = 283.0
+margin_bottom = 460.0
 grow_horizontal = 2
 columns = 5
 script = ExtResource( 3 )
@@ -106,22 +106,23 @@ __meta__ = {
 }
 
 [node name="Tank1" type="VBoxContainer" parent="Panel/VBoxContainer/LobbyGrid"]
-margin_right = 211.0
-margin_bottom = 167.0
+margin_right = 328.0
+margin_bottom = 344.0
 script = ExtResource( 4 )
 
 [node name="Label" type="Label" parent="Panel/VBoxContainer/LobbyGrid/Tank1"]
-margin_right = 211.0
+margin_right = 328.0
 margin_bottom = 49.0
 custom_fonts/font = ExtResource( 2 )
 text = "Tank 1"
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Driver" type="Button" parent="Panel/VBoxContainer/LobbyGrid/Tank1"]
 margin_top = 53.0
-margin_right = 211.0
+margin_right = 328.0
 margin_bottom = 108.0
 custom_fonts/font = ExtResource( 2 )
 text = "Driver"
@@ -131,7 +132,7 @@ __meta__ = {
 
 [node name="Gunner" type="Button" parent="Panel/VBoxContainer/LobbyGrid/Tank1"]
 margin_top = 112.0
-margin_right = 211.0
+margin_right = 328.0
 margin_bottom = 167.0
 custom_fonts/font = ExtResource( 2 )
 text = "Gunner"
@@ -139,10 +140,40 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Commander" type="Button" parent="Panel/VBoxContainer/LobbyGrid/Tank1"]
+margin_top = 171.0
+margin_right = 328.0
+margin_bottom = 226.0
+custom_fonts/font = ExtResource( 2 )
+text = "Commander"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Loader" type="Button" parent="Panel/VBoxContainer/LobbyGrid/Tank1"]
+margin_top = 230.0
+margin_right = 328.0
+margin_bottom = 285.0
+custom_fonts/font = ExtResource( 2 )
+text = "Loader"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Radioman" type="Button" parent="Panel/VBoxContainer/LobbyGrid/Tank1"]
+margin_top = 289.0
+margin_right = 328.0
+margin_bottom = 344.0
+custom_fonts/font = ExtResource( 2 )
+text = "Radioman"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Map" type="OptionButton" parent="Panel/VBoxContainer"]
-margin_top = 287.0
+margin_top = 464.0
 margin_right = 888.0
-margin_bottom = 342.0
+margin_bottom = 519.0
 custom_fonts/font = ExtResource( 2 )
 text = "Hills"
 items = [ "Hills", null, false, 0, null, "Flat", null, false, 1, null, "N/A", null, true, 2, null ]
@@ -152,3 +183,6 @@ selected = 0
 [connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/Start" to="." method="_on_Start_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/LobbyGrid/Tank1/Driver" to="Panel/VBoxContainer/LobbyGrid/Tank1" method="_on_Driver_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/LobbyGrid/Tank1/Gunner" to="Panel/VBoxContainer/LobbyGrid/Tank1" method="_on_Gunner_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/LobbyGrid/Tank1/Commander" to="Panel/VBoxContainer/LobbyGrid/Tank1" method="_on_Commander_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/LobbyGrid/Tank1/Loader" to="Panel/VBoxContainer/LobbyGrid/Tank1" method="_on_Loader_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/LobbyGrid/Tank1/Radioman" to="Panel/VBoxContainer/LobbyGrid/Tank1" method="_on_Radioman_pressed"]
