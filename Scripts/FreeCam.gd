@@ -65,10 +65,8 @@ func _process(delta):
 	elif selected:
 		selected.transform.origin -= transform.basis.x * move.x * delta * move_speed
 		selected.transform.origin -= transform.basis.z * move.z * delta * move_speed
-		var i = selected.transform.basis.z.angle_to(Basis.IDENTITY.z)
-#		print(i)
+		selected.get_child(0).rotation.y += move.y * delta * move_speed / 10 #dont use get_child(0) fix it!!!
 		R.FloorFinder.find_floor2(selected, false)
-		selected.rotate_object_local(Basis.IDENTITY.y,i-PI/2+move.y/10)
 	timer += delta
 	if timer > delay:
 		timer -= delay
