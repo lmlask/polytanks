@@ -5,6 +5,7 @@ onready var lever = owner.get_node("Interior/HullInterior/Dynamic/LeverDriver")
 onready var shape = $CollisionShape
 onready var sideport = owner.get_node("Visuals/Hull/HullSideportDriver")
 onready var tween = owner.get_node("Interior/Tween")
+var indicator = "hand"
 
 
 # Called when the node enters the scene tree for the first time.

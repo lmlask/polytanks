@@ -4,6 +4,7 @@ onready var tween = owner.get_node("Interior/Tween")
 onready var top = owner.get_node("Interior/HullInterior/Dynamic/GyroIndicatorTop")
 onready var top_mat = top.get_surface_material(0)
 var interacting
+var indicator = "hand"
 
 func _ready():
 	pass

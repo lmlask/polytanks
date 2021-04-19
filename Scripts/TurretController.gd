@@ -67,6 +67,7 @@ func toggleTraverseMode():
 		traverse_mode = "manual"
 	elif traverse_mode == "manual":
 		traverse_mode = "power"
+	owner.get_node("Interior/TurretInterior/Dynamic/LeverTraverse").toggle()
 	
 func fire(id = 0, number = 0, host = false):
 	#spawning shell

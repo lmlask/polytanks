@@ -3,6 +3,7 @@ extends Area
 onready var object = owner.get_node("Interior/HullInterior/Dynamic/DriverPanel")
 onready var light = owner.get_node("Interior/HullInterior/Dynamic/DriverPanelLight")
 var on = false
+var indicator = "hand"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

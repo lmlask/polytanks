@@ -1,6 +1,7 @@
 extends Area
 
 onready var gunner_camera = owner.get_node("Players/Gunner/Camera")
+var indicator = "eye"
 
 func interact():
 	if get_parent().get_node("GunnerDoors").state == "closed":

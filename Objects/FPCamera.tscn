@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scripts/FPCamera.gd" type="Script" id=1]
+[ext_resource path="res://Textures/crosshair.png" type="Texture" id=2]
 
 [node name="FPCamera" type="Spatial"]
 script = ExtResource( 1 )
@@ -20,3 +21,23 @@ enabled = true
 cast_to = Vector3( 0, 0, -1 )
 collide_with_areas = true
 collide_with_bodies = false
+
+[node name="CrosshairContainer" type="CenterContainer" parent="OuterGimbal/InnerGimbal/ClippedCamera"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Crosshair" type="TextureRect" parent="OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer"]
+modulate = Color( 1, 1, 1, 0.741176 )
+margin_left = 620.0
+margin_top = 380.0
+margin_right = 660.0
+margin_bottom = 420.0
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

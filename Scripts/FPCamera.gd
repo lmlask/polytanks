@@ -31,6 +31,18 @@ var target_offset_x = 0
 var target_offset_y = 0
 var true_offset = Vector2(0, 0)
 
+#crosshair
+onready var hand_img = preload("res://Textures/hand.png")
+onready var eye_img = preload("res://Textures/eye.png")
+onready var cross_img = preload("res://Textures/crosshair.png")
+onready var dot_img = preload("res://Textures/dot.png")
+onready var crosshairs = {
+	"hand" : hand_img,
+	"eye" : eye_img,
+	"cross" : cross_img,
+	"dot" : dot_img
+}
+
 #raycast
 onready var ray = $OuterGimbal/InnerGimbal/ClippedCamera/RayCast
 var aimedObject = null
@@ -47,6 +59,11 @@ func _ready():
 	default_transform = global_transform
 
 func _process(delta):
+	if $OuterGimbal/InnerGimbal/ClippedCamera.current:
+		$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer.visible = true
+	else:
+		$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer.visible = false
+	
 	applyOffset(target_offset_x, target_offset_y)
 	
 	#clamp rotation
@@ -116,12 +133,12 @@ func applyOffset(x, y):
 		target_offset_x = 0
 		target_offset_y = 0
 
-func resetCamera():
+func resetCamera(y_rot=0):
 	true_offset = Vector2(0, 0)
 	target = null
 	mode = "pan" 
 	$OuterGimbal/InnerGimbal.rotation.x = 0
-	$OuterGimbal.rotation.y = 0
+	$OuterGimbal.rotation.y = y_rot
 	rotation_degrees.y = 0
 	transform.origin = Vector3.ZERO
 	$OuterGimbal/InnerGimbal/ClippedCamera.translation.z = 0
@@ -146,5 +163,7 @@ func togglePortMode(port, transZ, rotY, rotX, clampmin, clampmax):
 func lookatHandler():
 	if $OuterGimbal/InnerGimbal/ClippedCamera.current and interact_areas.has(ray.get_collider()):
 		aimedObject = ray.get_collider()
+		$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer/Crosshair.texture = crosshairs[aimedObject.indicator]
 	else:
 		aimedObject = null
+		$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer/Crosshair.texture = dot_img
