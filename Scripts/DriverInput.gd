@@ -29,7 +29,6 @@ func _process(delta):
 func manageCamera():
 	if Input.is_action_just_pressed("external_cam"):
 		if get_parent().get_node("Camera/OuterGimbal/InnerGimbal/ClippedCamera").current:
-#			get_tree().get_root().get_node("gameRoot/CameraRig/ClippedCamera").current = true
 			owner.owner.get_node("CameraRig/Target/ClippedCamera").current = true #FIX node references
 		else:
 			get_parent().get_node("Camera").set_current()
@@ -38,8 +37,10 @@ func manageCamera():
 		get_parent().get_node("Camera").aimedObject.interact()
 	
 func _physics_process(delta):
+	if not GameState.role == GameState.Role.Driver:
+		return
 	manageSteeringPhysics() #To be fixed
-			
+
 func manageThrottleAndBrake(delta):
 	# Manage throttle
 	if Input.is_action_pressed("ui_up"):

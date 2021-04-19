@@ -6,7 +6,7 @@ var shell_number = 0
 func _ready():
 	pass
 
-func _process(delta): #Should be _input not _process
+func _process(delta):
 	if not GameState.role == GameState.Role.Gunner:
 		return
 		
