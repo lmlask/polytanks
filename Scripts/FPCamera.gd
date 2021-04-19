@@ -50,6 +50,7 @@ var interact_areas = []
 
 #modes
 var mode = "pan"
+onready var tween = owner.get_node("Interior/Tween")
 
 #port clamping
 var portmax = 165
@@ -159,6 +160,10 @@ func togglePortMode(port, transZ, rotY, rotX, clampmin, clampmax):
 	elif mode == "port":
 		resetCamera()
 
+func tween(pos, speed, easing):
+	tween.interpolate_property(self, "translation", translation, pos, speed, easing, Tween.EASE_IN_OUT)
+	tween.start()
+	true_offset = Vector2(0, 0)
 
 func lookatHandler():
 	if $OuterGimbal/InnerGimbal/ClippedCamera.current and interact_areas.has(ray.get_collider()):
