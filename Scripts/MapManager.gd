@@ -157,7 +157,7 @@ func terrain_complete(data):
 		R.ManVehicle.reset_tank(R.ManVehicle.vehicle) #reset tank should be in a base class for all tanks
 	for i in maptiles[data].get_children():
 		if i.is_in_group("item"): #Fix this up, sort buildings/items or group them something better then "item"
-			R.FloorFinder.find_floor2(i,false)
+			R.FloorFinder.find_floor2(i,true)
 		
 
 func add_tiles(pos,size = 100):

@@ -31,7 +31,7 @@ func find_floor(tank, pos = Vector3.ZERO):
 		tsf.origin = ray.get_collision_point()
 		set_xform(tank,tsf)
 
-func find_floor2(building, rot = true):
+func find_floor2(building:Spatial, rot = true):
 	ray.translation = building.global_transform.origin + Vector3(0,500,0)
 	ray.force_raycast_update()
 	if ray.is_colliding():
@@ -41,7 +41,7 @@ func find_floor2(building, rot = true):
 			tsf = tsf.rotated(tsf.basis.y,randf()*TAU)
 		building.transform.basis = tsf.basis
 		building.transform.origin.y = ray.get_collision_point().y
-		building.scale *= 2 #Should not need to double the size
+#		building.scale *= 2 #Should not need to double the size
 #		var grid = (building.owner.transform.origin/1000).snapped(Vector3(1,10,1))
 #		building.translation += Vector3(500,0,500)-grid*1000
 

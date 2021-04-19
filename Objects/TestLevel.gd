@@ -134,7 +134,7 @@ func add_buildings(pos, Buidling, bpos):
 #	print("add building at ",grid)
 	R.Map.maptiles[grid].add_child(building)
 	building.translation = pos+bpos+Vector3(500,0,500)-grid*1000
-	R.FloorFinder.find_floor2(building,false)
+	R.FloorFinder.find_floor2(building,true)
 	
 
 func get_noise(tile, vec2):
