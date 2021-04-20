@@ -1,23 +1,24 @@
 extends Button
 
+var id = 0
+
 func _ready():
 	pass # Replace with function body.
-
 
 func _on_Button_gui_input(event):
 	if event is InputEventMouseButton and event.pressed:
 		match event.button_index:
 			BUTTON_LEFT:
-#				owner.selected = 
+				owner.SiteLabel.text = "Site: " + text
 				pass
 			BUTTON_RIGHT:
 				owner.menu.show_menu(self)
 				owner.menu.rect_position = get_global_mouse_position()
 				print(event.position)
 
-func add(site):
+func add(site,id):
 	var but = self.duplicate()
-	but.name = site
+	but.id = id
 	but.text = site
 	get_parent().add_child(but)
 	but.owner = owner

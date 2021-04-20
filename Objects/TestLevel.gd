@@ -11,9 +11,10 @@ var tile_pos:Vector3 = Vector3.INF
 #var height = true #heightmap
 #var flats = [Vector3(0,0,0),Vector3(1,0,1),Vector3(1,0,0),Vector3(1,0,2),Vector3(1,0,3)] #define some flat areas
 
-var alphagrepmap = "res://Textures/greyalpha-16bit.exr"
-var flatmap = "res://Textures/flat.exr"
-var height_map = [alphagrepmap,flatmap]
+#var alphagrepmap = "res://Textures/greyalpha-16bit.exr"
+#var flatmap = "res://Textures/flat.exr"
+var height_map = {0:["res://Textures/greyalpha-16bit.exr","Test map"],
+	1:["res://Textures/flat.exr","Flat map"]}
 var height_factor = 255
 
 var image = Image.new()
@@ -41,7 +42,7 @@ var inprogress = false
 func _ready():
 	
 	if height_map:
-		image.load(height_map[R.Map.map]) 
+		image.load(height_map[R.Map.map][0]) 
 		imgdata = image.get_data()
 #	var imageTex = ImageTexture.new()
 #	imageTex.create_from_image(image,0)

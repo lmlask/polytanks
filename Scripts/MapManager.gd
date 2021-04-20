@@ -17,6 +17,7 @@ var mutex = Mutex.new()
 var fine_size = 5
 var tilemesh = {}
 var sites:Dictionary
+var sitesID:int = 0
 onready var SitesNode = $Sites
 var buildings_added = false #change this
 signal terrain_completed
@@ -45,6 +46,7 @@ func _ready():
 	if not file.file_exists(R.sitesfile):
 		return
 	file.open(R.sitesfile, File.READ)
+	sitesID = file.get_32()
 	sites = file.get_var()
 
 	
@@ -194,11 +196,12 @@ func add_sites():
 		add_site(i)
 		
 func add_site(i):
-	var sc = R.SiteCentre.instance()
-	sc.transform = sites[i]
-	SitesNode.add_child(sc)
-	sc.name = i
-	R.FloorFinder.find_floor2(sc, false)
+	pass
+#	var sc = R.SiteCentre.instance()
+#	sc.transform = sites[i]
+#	SitesNode.add_child(sc)
+#	sc.name = i
+#	R.FloorFinder.find_floor2(sc, false)
 
 func remove_sites():
 	for i in SitesNode.get_children():

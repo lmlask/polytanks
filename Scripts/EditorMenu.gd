@@ -15,15 +15,15 @@ func show_menu(node):
 func _on_Rename_pressed():
 	rename.hide()
 	sitename.show()
-	sitename.text = item.name
+	sitename.text = item.text
 
 func _on_Delete_pressed():
-	owner.sites.erase(item.name)
+	R.Map.sites.erase(item.id)
 	item.queue_free()
 	hide()
 
 func _on_Name_text_entered(new_text):
-	owner.renamesite(item.name, new_text)
+	R.Map.sites[item.id] = new_text
 	rename.show()
 	sitename.hide()
 	hide()

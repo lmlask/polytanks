@@ -2,7 +2,9 @@ extends Spatial
 
 onready var panel = $Editor/Panel
 onready var menu = $Editor/Menu
-onready var site_button = $Editor/Panel/Label/ScrollContainer/VBoxContainer/SiteButton
+onready var site_button = $Editor/Panel/HBoxContainer/VSplitContainer/ScrollContainer/VBoxContainer/SiteButton
+onready var MapLabel = $Editor/Panel/Map
+onready var SiteLabel = $Editor/Panel/Site
 
 var enabled = false
 var move_fwd = 0.0
@@ -33,7 +35,7 @@ func _ready():
 #	file.open(R.sitesfile, File.READ)
 #	sites = file.get_var()
 	for i in R.Map.sites:
-		site_button.add(i)
+		site_button.add(R.Map.sites[i], i)
 
 func _input(event):
 	if not event.is_action_pressed("ui_cancel") and not panel.visible: #only exists to not handle showing mouse so you can exit game
@@ -105,23 +107,19 @@ func _unhandled_key_input(event): #Trying something different
 		$Camera.current = true
 		global_transform = GameState.CamActive._cam.global_transform #ehhhh _cam?
 		panel.hide()
-		R.Map.add_sites()
-
-func _on_Button2_pressed():
-	site_button.add("New")
-	var t = Transform.IDENTITY
-	t.origin = transform.origin - transform.basis.z * 25
-	R.Map.sites["New"] = t
-	R.Map.add_site("New")
-
-func renamesite(old,new):
-	var i = R.Map.sites[old]
-	R.Map.sites.erase(old)
-	R.Map.sites[new] = i
-	
+		MapLabel.text = "Map: " + R.Map.MapNode.height_map[R.Map.map][1]
+#		R.Map.add_sites()
 
 func _on_Save_pressed():
 	var file = File.new()
 	file.open(R.sitesfile, File.WRITE)
+	file.store_32(R.Map.sitesID)
 	file.store_var(R.Map.sites)
 	file.close()
+
+func _on_SiteAdd_pressed():
+	var default = "New"
+	R.Map.sitesID += 1
+	site_button.add(default, R.Map.sitesID)
+	R.Map.sites[R.Map.sitesID] = default
+	R.Map.add_site(default)

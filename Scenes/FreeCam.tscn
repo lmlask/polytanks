@@ -32,39 +32,58 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Editor/Panel"]
-margin_left = 110.532
-margin_top = 162.369
-margin_right = 238.532
-margin_bottom = 211.369
+[node name="HBoxContainer" type="HBoxContainer" parent="Editor/Panel"]
+anchor_left = 0.5
+anchor_top = 0.241
+anchor_right = 0.5
+anchor_bottom = 0.813
+grow_horizontal = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="VSplitContainer" type="VSplitContainer" parent="Editor/Panel/HBoxContainer"]
+margin_right = 261.0
+margin_bottom = 457.0
+rect_min_size = Vector2( 0, 300 )
+
+[node name="HSplitContainer" type="HSplitContainer" parent="Editor/Panel/HBoxContainer/VSplitContainer"]
+margin_right = 261.0
+margin_bottom = 55.0
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Editor/Panel/HBoxContainer/VSplitContainer/HSplitContainer"]
+margin_top = 3.0
+margin_right = 128.0
+margin_bottom = 52.0
 custom_fonts/font = ExtResource( 2 )
 text = "Sites"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button2" type="Button" parent="Editor/Panel/Label"]
-margin_left = 149.159
-margin_top = -1.90869
-margin_right = 270.159
-margin_bottom = 53.0913
+[node name="SiteAdd" type="Button" parent="Editor/Panel/HBoxContainer/VSplitContainer/HSplitContainer"]
+margin_left = 140.0
+margin_right = 261.0
+margin_bottom = 55.0
 custom_fonts/font = ExtResource( 2 )
 text = "Add"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Editor/Panel/Label"]
-margin_left = -65.0
+[node name="ScrollContainer" type="ScrollContainer" parent="Editor/Panel/HBoxContainer/VSplitContainer"]
 margin_top = 67.0
-margin_right = 364.0
-margin_bottom = 396.0
+margin_right = 261.0
+margin_bottom = 457.0
+size_flags_vertical = 3
 custom_styles/bg = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Editor/Panel/Label/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Editor/Panel/HBoxContainer/VSplitContainer/ScrollContainer"]
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 2.0
@@ -73,7 +92,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SiteButton" type="Button" parent="Editor/Panel/Label/ScrollContainer/VBoxContainer"]
+[node name="SiteButton" type="Button" parent="Editor/Panel/HBoxContainer/VSplitContainer/ScrollContainer/VBoxContainer"]
 visible = false
 margin_right = 50.0
 margin_bottom = 20.0
@@ -81,11 +100,147 @@ custom_fonts/font = ExtResource( 2 )
 text = "Name"
 script = ExtResource( 3 )
 
+[node name="VSplitContainer2" type="VSplitContainer" parent="Editor/Panel/HBoxContainer"]
+margin_left = 265.0
+margin_right = 536.0
+margin_bottom = 457.0
+rect_min_size = Vector2( 0, 300 )
+
+[node name="HSplitContainer" type="HSplitContainer" parent="Editor/Panel/HBoxContainer/VSplitContainer2"]
+margin_right = 271.0
+margin_bottom = 55.0
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Editor/Panel/HBoxContainer/VSplitContainer2/HSplitContainer"]
+margin_top = 3.0
+margin_right = 138.0
+margin_bottom = 52.0
+custom_fonts/font = ExtResource( 2 )
+text = "Items"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ItemAdd" type="Button" parent="Editor/Panel/HBoxContainer/VSplitContainer2/HSplitContainer"]
+margin_left = 150.0
+margin_right = 271.0
+margin_bottom = 55.0
+custom_fonts/font = ExtResource( 2 )
+text = "Add"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Editor/Panel/HBoxContainer/VSplitContainer2"]
+margin_top = 67.0
+margin_right = 271.0
+margin_bottom = 457.0
+size_flags_vertical = 3
+custom_styles/bg = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Editor/Panel/HBoxContainer/VSplitContainer2/ScrollContainer"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 2.0
+margin_bottom = 2.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ItemButton" type="Button" parent="Editor/Panel/HBoxContainer/VSplitContainer2/ScrollContainer/VBoxContainer"]
+visible = false
+margin_right = 50.0
+margin_bottom = 20.0
+custom_fonts/font = ExtResource( 2 )
+text = "Name"
+
+[node name="VSplitContainer3" type="VSplitContainer" parent="Editor/Panel/HBoxContainer"]
+margin_left = 540.0
+margin_right = 902.0
+margin_bottom = 457.0
+rect_min_size = Vector2( 0, 300 )
+
+[node name="HSplitContainer" type="HSplitContainer" parent="Editor/Panel/HBoxContainer/VSplitContainer3"]
+margin_right = 362.0
+margin_bottom = 55.0
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Editor/Panel/HBoxContainer/VSplitContainer3/HSplitContainer"]
+margin_top = 3.0
+margin_right = 229.0
+margin_bottom = 52.0
+custom_fonts/font = ExtResource( 2 )
+text = "Location"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LocAdd" type="Button" parent="Editor/Panel/HBoxContainer/VSplitContainer3/HSplitContainer"]
+margin_left = 241.0
+margin_right = 362.0
+margin_bottom = 55.0
+custom_fonts/font = ExtResource( 2 )
+text = "Add"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Editor/Panel/HBoxContainer/VSplitContainer3"]
+margin_top = 67.0
+margin_right = 362.0
+margin_bottom = 457.0
+size_flags_vertical = 3
+custom_styles/bg = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Editor/Panel/HBoxContainer/VSplitContainer3/ScrollContainer"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 2.0
+margin_bottom = 2.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LocButton" type="Button" parent="Editor/Panel/HBoxContainer/VSplitContainer3/ScrollContainer/VBoxContainer"]
+visible = false
+margin_right = 50.0
+margin_bottom = 20.0
+custom_fonts/font = ExtResource( 2 )
+text = "Name"
+
+[node name="Map" type="Label" parent="Editor/Panel"]
+margin_left = 475.213
+margin_top = 45.9572
+margin_right = 601.213
+margin_bottom = 94.9572
+custom_fonts/font = ExtResource( 2 )
+text = "Map:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Site" type="Label" parent="Editor/Panel"]
+margin_left = 477.591
+margin_top = 101.85
+margin_right = 603.591
+margin_bottom = 150.85
+custom_fonts/font = ExtResource( 2 )
+text = "Site:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Save" type="Button" parent="Editor/Panel"]
-margin_left = 441.886
-margin_top = 62.3629
-margin_right = 482.886
-margin_bottom = 82.3629
+margin_left = 251.642
+margin_top = 78.0658
+margin_right = 394.642
+margin_bottom = 133.066
 custom_fonts/font = ExtResource( 2 )
 text = "Save"
 __meta__ = {
@@ -131,8 +286,10 @@ text = "Delete"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="Editor/Panel/Label/Button2" to="." method="_on_Button2_pressed"]
-[connection signal="gui_input" from="Editor/Panel/Label/ScrollContainer/VBoxContainer/SiteButton" to="Editor/Panel/Label/ScrollContainer/VBoxContainer/SiteButton" method="_on_Button_gui_input"]
+[connection signal="pressed" from="Editor/Panel/HBoxContainer/VSplitContainer/HSplitContainer/SiteAdd" to="." method="_on_SiteAdd_pressed"]
+[connection signal="gui_input" from="Editor/Panel/HBoxContainer/VSplitContainer/ScrollContainer/VBoxContainer/SiteButton" to="Editor/Panel/HBoxContainer/VSplitContainer/ScrollContainer/VBoxContainer/SiteButton" method="_on_Button_gui_input"]
+[connection signal="gui_input" from="Editor/Panel/HBoxContainer/VSplitContainer2/ScrollContainer/VBoxContainer/ItemButton" to="Editor/Panel/HBoxContainer/VSplitContainer2/ScrollContainer/VBoxContainer/ItemButton" method="_on_Button_gui_input"]
+[connection signal="gui_input" from="Editor/Panel/HBoxContainer/VSplitContainer3/ScrollContainer/VBoxContainer/LocButton" to="Editor/Panel/HBoxContainer/VSplitContainer3/ScrollContainer/VBoxContainer/LocButton" method="_on_Button_gui_input"]
 [connection signal="pressed" from="Editor/Panel/Save" to="." method="_on_Save_pressed"]
 [connection signal="pressed" from="Editor/Menu/VBoxContainer/Rename" to="Editor/Menu" method="_on_Rename_pressed"]
 [connection signal="text_entered" from="Editor/Menu/VBoxContainer/Name" to="Editor/Menu" method="_on_Name_text_entered"]
