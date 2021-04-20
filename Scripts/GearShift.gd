@@ -32,11 +32,11 @@ func shift(nextGear):
 	complete_3 = false
 	
 	if nextGear == 1 or nextGear == 2 or nextGear == -1:
-		transl = 0.338
+		transl = 0.132
 	elif nextGear == 3 or nextGear == 4 or nextGear == 0:
-		transl = 0.323
+		transl = 0.117
 	elif nextGear == 5 or nextGear == 6:
-		transl = 0.308
+		transl = 0.103
 		
 	if nextGear != 0 and nextGear % 2 == 0:
 		rot = -10
@@ -53,7 +53,7 @@ func step1(trans):
 	tween.start()
 	
 func step2():
-	tween.interpolate_property(self, "translation", translation, Vector3(transl, -0.374, 1.016), time, trans, Tween.EASE_IN_OUT)
+	tween.interpolate_property(self, "translation", translation, Vector3(transl, -0.344, 0.885), time, trans, Tween.EASE_IN_OUT)
 	tween.start()
 	
 func step3():
