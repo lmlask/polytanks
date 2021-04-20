@@ -5,6 +5,7 @@ onready var menu = $Editor/Menu
 onready var site_button = $Editor/Panel/HBoxContainer/VSplitContainer/ScrollContainer/VBoxContainer/SiteButton
 onready var MapLabel = $Editor/Panel/Map
 onready var SiteLabel = $Editor/Panel/Site
+onready var ItemsButton = $Editor/ItemsButton
 
 var enabled = false
 var move_fwd = 0.0
@@ -36,6 +37,8 @@ func _ready():
 #	sites = file.get_var()
 	for i in R.Map.sites:
 		site_button.add(R.Map.sites[i], i)
+	for i in R.Items:
+		ItemsButton.add_item(R.Items[i][1],i)
 
 func _input(event):
 	if not event.is_action_pressed("ui_cancel") and not panel.visible: #only exists to not handle showing mouse so you can exit game
@@ -123,3 +126,12 @@ func _on_SiteAdd_pressed():
 	site_button.add(default, R.Map.sitesID)
 	R.Map.sites[R.Map.sitesID] = default
 	R.Map.add_site(default)
+
+
+func _on_ItemAdd_pressed():
+	ItemsButton.show()
+
+
+func _on_ItemsButton_item_selected(index):
+	print("Add ", R.Items[index][1])
+	ItemsButton.hide()

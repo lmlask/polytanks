@@ -259,15 +259,15 @@ __meta__ = {
 [node name="VBoxContainer" type="VBoxContainer" parent="Editor/Menu"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 71.0
-margin_bottom = 51.0
+margin_right = 230.0
+margin_bottom = 121.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Rename" type="Button" parent="Editor/Menu/VBoxContainer"]
-margin_right = 64.0
-margin_bottom = 20.0
+margin_right = 223.0
+margin_bottom = 55.0
 custom_fonts/font = ExtResource( 2 )
 text = "Rename"
 
@@ -278,19 +278,38 @@ margin_bottom = 24.0
 custom_fonts/font = ExtResource( 2 )
 
 [node name="Delete" type="Button" parent="Editor/Menu/VBoxContainer"]
-margin_top = 24.0
-margin_right = 64.0
-margin_bottom = 44.0
+margin_top = 59.0
+margin_right = 223.0
+margin_bottom = 114.0
 custom_fonts/font = ExtResource( 2 )
 text = "Delete"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ItemsButton" type="OptionButton" parent="Editor"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -83.5
+margin_top = -27.5
+margin_right = 83.5
+margin_bottom = 27.5
+grow_horizontal = 2
+custom_fonts/font = ExtResource( 2 )
+text = "Items"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="Editor/Panel/HBoxContainer/VSplitContainer/HSplitContainer/SiteAdd" to="." method="_on_SiteAdd_pressed"]
 [connection signal="gui_input" from="Editor/Panel/HBoxContainer/VSplitContainer/ScrollContainer/VBoxContainer/SiteButton" to="Editor/Panel/HBoxContainer/VSplitContainer/ScrollContainer/VBoxContainer/SiteButton" method="_on_Button_gui_input"]
+[connection signal="pressed" from="Editor/Panel/HBoxContainer/VSplitContainer2/HSplitContainer/ItemAdd" to="." method="_on_ItemAdd_pressed"]
 [connection signal="gui_input" from="Editor/Panel/HBoxContainer/VSplitContainer2/ScrollContainer/VBoxContainer/ItemButton" to="Editor/Panel/HBoxContainer/VSplitContainer2/ScrollContainer/VBoxContainer/ItemButton" method="_on_Button_gui_input"]
 [connection signal="gui_input" from="Editor/Panel/HBoxContainer/VSplitContainer3/ScrollContainer/VBoxContainer/LocButton" to="Editor/Panel/HBoxContainer/VSplitContainer3/ScrollContainer/VBoxContainer/LocButton" method="_on_Button_gui_input"]
 [connection signal="pressed" from="Editor/Panel/Save" to="." method="_on_Save_pressed"]
 [connection signal="pressed" from="Editor/Menu/VBoxContainer/Rename" to="Editor/Menu" method="_on_Rename_pressed"]
 [connection signal="text_entered" from="Editor/Menu/VBoxContainer/Name" to="Editor/Menu" method="_on_Name_text_entered"]
 [connection signal="pressed" from="Editor/Menu/VBoxContainer/Delete" to="Editor/Menu" method="_on_Delete_pressed"]
+[connection signal="item_selected" from="Editor/ItemsButton" to="." method="_on_ItemsButton_item_selected"]
