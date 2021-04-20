@@ -68,7 +68,7 @@ func _process(delta):
 	applyOffset(target_offset_x, target_offset_y)
 	
 	#clamp rotation
-	if mode == "pan":
+	if mode == "pan" or mode == "hatch":
 		$OuterGimbal/InnerGimbal.rotation.x = clamp($OuterGimbal/InnerGimbal.rotation.x, -1, 1.4)
 	elif mode == "port":
 		$OuterGimbal/InnerGimbal.rotation.x = clamp($OuterGimbal/InnerGimbal.rotation.x, -0.15, 0.2)
