@@ -1,13 +1,18 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Objects/FPCamera.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Objects/RadiomanCamera.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/RadiomanInput.gd" type="Script" id=3]
 
 [node name="Radioman" type="Spatial"]
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, -0.572498, 1.41652, 1.32898 )
 
+[node name="RadiomanInput" type="Node" parent="."]
+script = ExtResource( 3 )
+
 [node name="Camera" parent="." instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 role = ""
+max_movement = Vector2( 0.2, 0.1 )
 
 [node name="Tween" type="Tween" parent="."]
