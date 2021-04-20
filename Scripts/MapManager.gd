@@ -16,14 +16,15 @@ var thread_update = Thread.new()
 var mutex = Mutex.new()
 var fine_size = 5
 var tilemesh = {}
-var sites:Dictionary
+var sites:Dictionary #0=Name
 var sitesID:int = 0
 var site_selected:int = -1
-var items:Dictionary
+var items:Dictionary #0=Site ID, 1=Item ID, 2=Location, 3=Rotation
 var itemsID:int = 0
-var locations:Dictionary
+var locations:Dictionary #0=Map, 1=Site ID, 2=Label, 3=Location, 4=Rotation
 var locsID:int = 0
 onready var LocsNode = $Locations
+onready var ItemsNode = $Items
 var buildings_added = false #change this
 signal terrain_completed
 
@@ -227,10 +228,35 @@ func show_location(i):
 func remove_locations():
 	for i in LocsNode.get_children():
 		i.queue_free()
+	for i in ItemsNode.get_children():
+		i.queue_free()
 
 func update_locations():
 	for i in LocsNode.get_children():
 		var id = int(i.name.right(i.name.find_last("-")+1))
 		locations[id].remove(3)
 		locations[id].insert(3,Vector2(i.translation.x,i.translation.z))
-		
+
+func update_items():
+	for i in ItemsNode.get_children():
+		if i.name.left(1) == "@":
+			return
+		var id = int(i.name.right(i.name.find_last("-")+1))
+		var site = items[id][0]
+		for l in locations:
+			if locations[l][1] == site:
+				items[id].remove(2)
+				items[id].insert(2,Vector2(locations[l][3].x-i.translation.x,locations[l][3].y-i.translation.z))
+
+func add_items():
+	for l in locations:
+		if locations[l][0] == map:
+			for i in items:
+				if items[i][0] == locations[l][1]:
+					var item = R.Items[items[i][1]]
+					var node = item[0].instance()
+					node.name = item[1]+"-"+str(i)
+					node.transform = Transform.IDENTITY
+					node.transform.origin = Vector3(items[i][2].x+locations[l][3].x,0,items[i][2].y+locations[l][3].y)
+					ItemsNode.add_child(node)
+					R.FloorFinder.find_floor2(node, false)

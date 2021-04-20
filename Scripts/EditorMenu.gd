@@ -28,7 +28,7 @@ func _on_Delete_pressed():
 		R.Map.items.erase(item.id)
 		print(R.Map.items)
 	elif item.is_in_group("loc"):
-		print("delete location")
+		R.Map.locations.erase(item.id)
 	item.queue_free()
 	hide()
 

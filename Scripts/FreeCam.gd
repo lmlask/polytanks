@@ -48,6 +48,7 @@ func _input(event):
 		get_tree().set_input_as_handled()
 	if Input.is_action_just_pressed("F4"):
 		panel.visible = !panel.visible
+		R.Map.update_items()
 		R.Map.update_locations()
 	if Input.is_action_just_pressed("F3"):
 		enabled = false
@@ -118,6 +119,7 @@ func _unhandled_key_input(event): #Trying something different
 		panel.hide()
 		MapLabel.text = "Map: " + R.Map.MapNode.height_map[R.Map.map][1] + "-" + str(R.Map.map)
 		R.Map.show_locations()
+		R.Map.add_items()
 
 func _on_Save_pressed():
 	var file = File.new()
