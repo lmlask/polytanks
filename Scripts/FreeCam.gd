@@ -48,14 +48,14 @@ func _input(event):
 		get_tree().set_input_as_handled()
 	if Input.is_action_just_pressed("F4"):
 		panel.visible = !panel.visible
-		R.Map.update_sites()
+		R.Map.update_locations()
 	if Input.is_action_just_pressed("F3"):
 		enabled = false
 		$Editor/Enabled.hide()
 		set_process(enabled)
 		set_process_input(enabled)
 		GameState.CamActive._cam.current = true #would imply _cam is consistant for all cams
-		R.Map.remove_sites()
+		R.Map.remove_locations()
 		return
 	if event is InputEventMouseMotion:
 		if GameState.mouseHidden:
@@ -117,7 +117,7 @@ func _unhandled_key_input(event): #Trying something different
 		global_transform = GameState.CamActive._cam.global_transform #ehhhh _cam?
 		panel.hide()
 		MapLabel.text = "Map: " + R.Map.MapNode.height_map[R.Map.map][1] + "-" + str(R.Map.map)
-#		R.Map.add_sites()
+		R.Map.show_locations()
 
 func _on_Save_pressed():
 	var file = File.new()
@@ -180,6 +180,6 @@ func _on_LocAdd_pressed():
 	var default = "New Location"
 	R.Map.locsID += 1
 	loc_button.add(default, R.Map.locsID)
-	var o = transform.origin + transform.basis.z * 100
+	var o = transform.origin - transform.basis.z * 100
 	R.Map.locations[R.Map.locsID] = [R.Map.map, R.Map.site_selected, default, Vector2(o.x,o.z),0]
 	print(R.Map.locations[R.Map.locsID])

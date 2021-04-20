@@ -23,7 +23,7 @@ var items:Dictionary
 var itemsID:int = 0
 var locations:Dictionary
 var locsID:int = 0
-onready var SitesNode = $Sites
+onready var LocsNode = $Locations
 var buildings_added = false #change this
 signal terrain_completed
 
@@ -101,7 +101,7 @@ func clear_map():
 	maptiles.clear()
 	maptiles_size.clear()
 	mutex.unlock()
-	for i in SitesNode.get_children():
+	for i in LocsNode.get_children():
 		i.queue_free()
 
 func load_map(i,pos): #Need to add a location
@@ -188,8 +188,8 @@ func terrain_complete(data):
 	for i in maptiles[data].get_children():
 		if i.is_in_group("item"): #Fix this up, sort buildings/items or group them something better then "item"
 			R.FloorFinder.find_floor2(i,true)
-	for i in SitesNode.get_children():
-		R.FloorFinder.find_floor2(i,false)
+#	for i in SitesNode.get_children():
+#		R.FloorFinder.find_floor2(i,false)
 
 func add_tiles(pos,size = 100):
 	for i in tile_offset:
@@ -211,23 +211,26 @@ func generate_map(mesh):
 func _exit_tree():
 	thread_update.wait_to_finish()
 
-#func add_sites():
-#	for i in sites:
-#		add_site(i)
-#
-#func add_site(i):
-#	pass
-#	var sc = R.SiteCentre.instance()
-#	sc.transform = sites[i]
-#	SitesNode.add_child(sc)
-#	sc.name = i
-#	R.FloorFinder.find_floor2(sc, false)
+func show_locations():
+	for i in locations:
+		if locations[i][0] == map:
+			show_location(i)
 
-func remove_sites():
-	for i in SitesNode.get_children():
+func show_location(i):
+	var sc = R.SiteCentre.instance()
+	sc.transform = Transform.IDENTITY
+	sc.transform.origin = Vector3(locations[i][3].x,0,locations[i][3].y)
+	LocsNode.add_child(sc)
+	sc.name = locations[i][2]+"-"+str(i)
+	R.FloorFinder.find_floor2(sc, false)
+
+func remove_locations():
+	for i in LocsNode.get_children():
 		i.queue_free()
-		
-func update_sites():
-	for i in SitesNode.get_children():
-		sites[i.name] = i.transform
+
+func update_locations():
+	for i in LocsNode.get_children():
+		var id = int(i.name.right(i.name.find_last("-")+1))
+		locations[id].remove(3)
+		locations[id].insert(3,Vector2(i.translation.x,i.translation.z))
 		

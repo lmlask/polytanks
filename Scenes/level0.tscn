@@ -74,7 +74,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Sites" type="Node" parent="Map"]
+[node name="Locations" type="Node" parent="Map"]
+
+[node name="Items" type="Node" parent="Map"]
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
 anchor_left = 1.0
