@@ -1,10 +1,13 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/FreeCam.gd" type="Script" id=1]
 [ext_resource path="res://Fonts/default-font.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Scripts/EditorSites.gd" type="Script" id=3]
 [ext_resource path="res://Fonts/PanelStyle.tres" type="StyleBox" id=4]
 [ext_resource path="res://Scripts/EditorMenu.gd" type="Script" id=5]
+[ext_resource path="res://Scripts/EditorItems.gd" type="Script" id=6]
+[ext_resource path="res://Fonts/default-font-small.tres" type="DynamicFont" id=7]
+[ext_resource path="res://Scripts/EditorLocs.gd" type="Script" id=8]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
@@ -92,11 +95,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SiteButton" type="Button" parent="Editor/Panel/HBoxContainer/VSplitContainer/ScrollContainer/VBoxContainer"]
+[node name="SiteButton" type="Button" parent="Editor/Panel/HBoxContainer/VSplitContainer/ScrollContainer/VBoxContainer" groups=[
+"site",
+]]
 visible = false
 margin_right = 50.0
 margin_bottom = 20.0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 7 )
 text = "Name"
 script = ExtResource( 3 )
 
@@ -150,12 +155,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ItemButton" type="Button" parent="Editor/Panel/HBoxContainer/VSplitContainer2/ScrollContainer/VBoxContainer"]
+[node name="ItemButton" type="Button" parent="Editor/Panel/HBoxContainer/VSplitContainer2/ScrollContainer/VBoxContainer" groups=[
+"item",
+]]
 visible = false
 margin_right = 50.0
 margin_bottom = 20.0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 7 )
 text = "Name"
+script = ExtResource( 6 )
 
 [node name="VSplitContainer3" type="VSplitContainer" parent="Editor/Panel/HBoxContainer"]
 margin_left = 540.0
@@ -207,12 +215,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LocButton" type="Button" parent="Editor/Panel/HBoxContainer/VSplitContainer3/ScrollContainer/VBoxContainer"]
+[node name="LocButton" type="Button" parent="Editor/Panel/HBoxContainer/VSplitContainer3/ScrollContainer/VBoxContainer" groups=[
+"loc",
+]]
 visible = false
 margin_right = 50.0
 margin_bottom = 20.0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 7 )
 text = "Name"
+script = ExtResource( 8 )
 
 [node name="Map" type="Label" parent="Editor/Panel"]
 margin_left = 475.213
@@ -287,6 +298,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Cancel" type="Button" parent="Editor/Menu/VBoxContainer"]
+margin_top = 59.0
+margin_right = 223.0
+margin_bottom = 114.0
+custom_fonts/font = ExtResource( 2 )
+text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="ItemsButton" type="OptionButton" parent="Editor"]
 visible = false
 anchor_left = 0.5
@@ -299,7 +320,21 @@ margin_right = 83.5
 margin_bottom = 27.5
 grow_horizontal = 2
 custom_fonts/font = ExtResource( 2 )
-text = "Items"
+text = "Select"
+items = [ "Select", null, true, -1, null ]
+selected = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Enabled" type="Label" parent="Editor"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -135.5
+margin_right = 135.5
+margin_bottom = 25.0
+custom_fonts/font = ExtResource( 7 )
+text = "Editor Mode Eanbled"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -307,9 +342,11 @@ __meta__ = {
 [connection signal="gui_input" from="Editor/Panel/HBoxContainer/VSplitContainer/ScrollContainer/VBoxContainer/SiteButton" to="Editor/Panel/HBoxContainer/VSplitContainer/ScrollContainer/VBoxContainer/SiteButton" method="_on_Button_gui_input"]
 [connection signal="pressed" from="Editor/Panel/HBoxContainer/VSplitContainer2/HSplitContainer/ItemAdd" to="." method="_on_ItemAdd_pressed"]
 [connection signal="gui_input" from="Editor/Panel/HBoxContainer/VSplitContainer2/ScrollContainer/VBoxContainer/ItemButton" to="Editor/Panel/HBoxContainer/VSplitContainer2/ScrollContainer/VBoxContainer/ItemButton" method="_on_Button_gui_input"]
+[connection signal="pressed" from="Editor/Panel/HBoxContainer/VSplitContainer3/HSplitContainer/LocAdd" to="." method="_on_LocAdd_pressed"]
 [connection signal="gui_input" from="Editor/Panel/HBoxContainer/VSplitContainer3/ScrollContainer/VBoxContainer/LocButton" to="Editor/Panel/HBoxContainer/VSplitContainer3/ScrollContainer/VBoxContainer/LocButton" method="_on_Button_gui_input"]
 [connection signal="pressed" from="Editor/Panel/Save" to="." method="_on_Save_pressed"]
 [connection signal="pressed" from="Editor/Menu/VBoxContainer/Rename" to="Editor/Menu" method="_on_Rename_pressed"]
 [connection signal="text_entered" from="Editor/Menu/VBoxContainer/Name" to="Editor/Menu" method="_on_Name_text_entered"]
 [connection signal="pressed" from="Editor/Menu/VBoxContainer/Delete" to="Editor/Menu" method="_on_Delete_pressed"]
+[connection signal="pressed" from="Editor/Menu/VBoxContainer/Cancel" to="Editor/Menu" method="_on_Cancel_pressed"]
 [connection signal="item_selected" from="Editor/ItemsButton" to="." method="_on_ItemsButton_item_selected"]

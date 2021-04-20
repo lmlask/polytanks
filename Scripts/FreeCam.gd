@@ -3,6 +3,8 @@ extends Spatial
 onready var panel = $Editor/Panel
 onready var menu = $Editor/Menu
 onready var site_button = $Editor/Panel/HBoxContainer/VSplitContainer/ScrollContainer/VBoxContainer/SiteButton
+onready var item_button = $Editor/Panel/HBoxContainer/VSplitContainer2/ScrollContainer/VBoxContainer/ItemButton
+onready var loc_button = $Editor/Panel/HBoxContainer/VSplitContainer3/ScrollContainer/VBoxContainer/LocButton
 onready var MapLabel = $Editor/Panel/Map
 onready var SiteLabel = $Editor/Panel/Site
 onready var ItemsButton = $Editor/ItemsButton
@@ -27,6 +29,7 @@ var delay = 0.25
 
 func _ready():
 	panel.hide()
+	$Editor/Enabled.hide()
 	set_process(false)
 	set_process_input(false)
 	
@@ -48,6 +51,7 @@ func _input(event):
 		R.Map.update_sites()
 	if Input.is_action_just_pressed("F3"):
 		enabled = false
+		$Editor/Enabled.hide()
 		set_process(enabled)
 		set_process_input(enabled)
 		GameState.CamActive._cam.current = true #would imply _cam is consistant for all cams
@@ -82,7 +86,8 @@ func _input(event):
 			var space_state = get_world().direct_space_state
 			var result = space_state.intersect_ray(from,to)
 			selected = result.collider.owner
-			print(selected.name)
+			if selected:
+				print(selected.name)
 
 func _process(delta):
 	if GameState.mouseHidden:
@@ -104,13 +109,14 @@ func _unhandled_key_input(event): #Trying something different
 	if event.is_action_pressed("F3") and not event.echo and not enabled:
 		print("F3 pressed")
 		enabled = true
+		$Editor/Enabled.show()
 		set_process(enabled)
 		set_process_input(enabled)
 		GameState.hide_mouse()
 		$Camera.current = true
 		global_transform = GameState.CamActive._cam.global_transform #ehhhh _cam?
 		panel.hide()
-		MapLabel.text = "Map: " + R.Map.MapNode.height_map[R.Map.map][1]
+		MapLabel.text = "Map: " + R.Map.MapNode.height_map[R.Map.map][1] + "-" + str(R.Map.map)
 #		R.Map.add_sites()
 
 func _on_Save_pressed():
@@ -119,19 +125,61 @@ func _on_Save_pressed():
 	file.store_32(R.Map.sitesID)
 	file.store_var(R.Map.sites)
 	file.close()
+	file.open(R.itemsfile, File.WRITE)
+	file.store_32(R.Map.itemsID)
+	file.store_var(R.Map.items)
+	file.close()
+	file.open(R.locsfile, File.WRITE)
+	file.store_32(R.Map.locsID)
+	file.store_var(R.Map.locations)
+	file.close()
 
 func _on_SiteAdd_pressed():
-	var default = "New"
+	var default = "New Site"
 	R.Map.sitesID += 1
 	site_button.add(default, R.Map.sitesID)
 	R.Map.sites[R.Map.sitesID] = default
-	R.Map.add_site(default)
-
+#	R.Map.add_site(default)
 
 func _on_ItemAdd_pressed():
+	if R.Map.site_selected == -1:
+		print("Select a site first")
+		return
 	ItemsButton.show()
 
-
 func _on_ItemsButton_item_selected(index):
-	print("Add ", R.Items[index][1])
+	var id = ItemsButton.get_item_id(index)
 	ItemsButton.hide()
+	ItemsButton.selected= 0
+	R.Map.itemsID += 1
+	item_button.add(R.Items[id][1], R.Map.itemsID)
+	R.Map.items[R.Map.itemsID] = [R.Map.site_selected,id,Vector2.ZERO,0]
+	print(R.Map.items)
+	
+func reload_items(id):
+	clear_items()
+	for i in R.Map.items:
+		if R.Map.items[i][0] == id:
+			item_button.add(R.Items[R.Map.items[i][1]][1],i)
+	for i in R.Map.locations:
+		if R.Map.locations[i][0] == R.Map.map and R.Map.locations[i][1] == R.Map.site_selected:
+			loc_button.add(R.Map.locations[i][2],i)
+
+func clear_items():
+	for i in item_button.get_parent().get_children():
+		if i.visible:
+			i.queue_free()
+	for i in loc_button.get_parent().get_children():
+		if i.visible:
+			i.queue_free()
+
+func _on_LocAdd_pressed():
+	if R.Map.site_selected == -1:
+		print("Select a site first")
+		return
+	var default = "New Location"
+	R.Map.locsID += 1
+	loc_button.add(default, R.Map.locsID)
+	var o = transform.origin + transform.basis.z * 100
+	R.Map.locations[R.Map.locsID] = [R.Map.map, R.Map.site_selected, default, Vector2(o.x,o.z),0]
+	print(R.Map.locations[R.Map.locsID])

@@ -18,6 +18,11 @@ var fine_size = 5
 var tilemesh = {}
 var sites:Dictionary
 var sitesID:int = 0
+var site_selected:int = -1
+var items:Dictionary
+var itemsID:int = 0
+var locations:Dictionary
+var locsID:int = 0
 onready var SitesNode = $Sites
 var buildings_added = false #change this
 signal terrain_completed
@@ -27,6 +32,7 @@ var time_of_day:float = 1.0
 onready var env:Environment = $WorldEnvironment.environment
 
 func _ready():
+	load_files()
 	env.background_energy = 1
 	env.ambient_light_energy = 1
 	$DirectionalLight.rotation.x = -0.5
@@ -42,13 +48,27 @@ func _ready():
 	var map_thread = Thread.new()
 	map_thread.start(self,"create_mesh", fine_size)
 	create_mesh(100)
+
+func load_files():
 	var file = File.new()
 	if not file.file_exists(R.sitesfile):
 		return
 	file.open(R.sitesfile, File.READ)
 	sitesID = file.get_32()
 	sites = file.get_var()
-
+	file.close()
+	if not file.file_exists(R.itemsfile):
+		return
+	file.open(R.itemsfile, File.READ)
+	itemsID = file.get_32()
+	items = file.get_var()
+	file.close()
+	if not file.file_exists(R.locsfile):
+		return
+	file.open(R.locsfile, File.READ)
+	locsID = file.get_32()
+	locations = file.get_var()
+	file.close()
 	
 func create_mesh(size)->ArrayMesh:
 	var vertices = PoolVector3Array()
@@ -191,12 +211,12 @@ func generate_map(mesh):
 func _exit_tree():
 	thread_update.wait_to_finish()
 
-func add_sites():
-	for i in sites:
-		add_site(i)
-		
-func add_site(i):
-	pass
+#func add_sites():
+#	for i in sites:
+#		add_site(i)
+#
+#func add_site(i):
+#	pass
 #	var sc = R.SiteCentre.instance()
 #	sc.transform = sites[i]
 #	SitesNode.add_child(sc)

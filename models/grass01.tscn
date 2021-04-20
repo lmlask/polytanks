@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://models/grass01.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://models/grass01_Color.png" type="Texture" id=2]
+[ext_resource path="res://Shaders/flexible_toon.shader" type="Shader" id=3]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 3 )
+shader_param/albedo = Color( 1, 1, 1, 1 )
+shader_param/clamp_diffuse_to_max = false
+shader_param/cuts = 2
+shader_param/wrap = -0.1
+shader_param/steepness = 1.0
+shader_param/use_attenuation = true
+shader_param/use_specular = false
+shader_param/specular_strength = 1.0
+shader_param/specular_shininess = 16.0
+shader_param/use_rim = false
+shader_param/rim_width = 8.0
+shader_param/rim_color = Color( 1, 1, 1, 1 )
+shader_param/use_ramp = false
+shader_param/albedo_texture = ExtResource( 2 )
+
+[sub_resource type="SphereShape" id=2]
+
+[node name="grass01" type="Spatial" groups=[
+"item",
+]]
+
+[node name="MeshInstance" type="MeshInstance" parent="." groups=[
+"item",
+]]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0, 0 )
+material_override = SubResource( 1 )
+mesh = ExtResource( 1 )
+material/0 = null
+
+[node name="StaticBody2" type="StaticBody" parent="MeshInstance"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.76353e-10, 0.00231004 )
+
+[node name="CollisionShape" type="CollisionShape" parent="MeshInstance/StaticBody2"]
+shape = SubResource( 2 )

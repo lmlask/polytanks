@@ -10,6 +10,10 @@ func _ready():
 
 func show_menu(node):
 	item = node
+	if item.is_in_group("item"):
+		rename.hide()
+	else:
+		rename.show()
 	show()
 
 func _on_Rename_pressed():
@@ -18,13 +22,29 @@ func _on_Rename_pressed():
 	sitename.text = item.text
 
 func _on_Delete_pressed():
-	R.Map.sites.erase(item.id)
+	if item.is_in_group("site"):
+		R.Map.sites.erase(item.id)
+	elif item.is_in_group("item"):
+		R.Map.items.erase(item.id)
+		print(R.Map.items)
+	elif item.is_in_group("loc"):
+		print("delete location")
 	item.queue_free()
 	hide()
 
 func _on_Name_text_entered(new_text):
-	R.Map.sites[item.id] = new_text
+	if item.is_in_group("site"):
+		R.Map.sites[item.id] = new_text
+	elif item.is_in_group("loc"):
+		R.Map.locations[item.id].remove(2)
+		R.Map.locations[item.id].insert(2,new_text)
 	rename.show()
 	sitename.hide()
 	hide()
 	item.text = new_text
+
+
+func _on_Cancel_pressed():
+	rename.show()
+	sitename.hide()
+	hide()
