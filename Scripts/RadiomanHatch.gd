@@ -13,7 +13,7 @@ func _ready():
 
 func interact():
 	if state == "closed":
-		camera.tween(Vector3(0, 0.4, -0.1), 1.0, Tween.TRANS_CUBIC)
+		camera.tween(Vector3(0, 0.4, 0), 1.0, Tween.TRANS_CUBIC)
 		tween.interpolate_property(hatch, "rotation_degrees", hatch.rotation_degrees, Vector3(179, 0, 0), 1.0, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 		tween.start()
 		state = "open"

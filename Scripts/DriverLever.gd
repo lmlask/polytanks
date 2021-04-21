@@ -15,12 +15,12 @@ func _ready():
 
 func interact():
 	if state == "closed":
-		tween.interpolate_property(lever, "rotation_degrees", lever.rotation_degrees, Vector3(0, -12.391, 60), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
-		tween.interpolate_property(sideport, "rotation_degrees", sideport.rotation_degrees, Vector3(0, -12.696, 70), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+		tween.interpolate_property(lever, "rotation_degrees", lever.rotation_degrees, Vector3(0, -12.4, 60), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+		tween.interpolate_property(sideport, "rotation_degrees", sideport.rotation_degrees, Vector3(0, -12.7, 70), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 		tween.start()
 		state = "open"
 	elif state == "open":
-		tween.interpolate_property(lever, "rotation_degrees", lever.rotation_degrees, Vector3(0, -12.391, 0), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
-		tween.interpolate_property(sideport, "rotation_degrees", sideport.rotation_degrees, Vector3(0, -12.696, 0), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+		tween.interpolate_property(lever, "rotation_degrees", lever.rotation_degrees, Vector3(0, -12.4, 0), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+		tween.interpolate_property(sideport, "rotation_degrees", sideport.rotation_degrees, Vector3(0, -12.7, 0), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 		tween.start()
 		state = "closed"
