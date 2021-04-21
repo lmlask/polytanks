@@ -8,7 +8,7 @@ script = ExtResource( 1 )
 
 [node name="Target" type="Spatial" parent="."]
 
-[node name="ClippedCamera" type="ClippedCamera" parent="Target"]
+[node name="ClippedCamera" type="Camera" parent="Target"]
 keep_aspect = 0
 cull_mask = 1048573
 current = true
@@ -16,5 +16,4 @@ fov = 90.0
 size = 7.31429
 near = 0.1
 far = 2000.0
-margin = 1.0
 script = ExtResource( 2 )

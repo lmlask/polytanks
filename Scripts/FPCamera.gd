@@ -145,6 +145,7 @@ func resetCamera(y_rot=0):
 	$OuterGimbal/InnerGimbal/ClippedCamera.translation.z = 0
 	get_node("OuterGimbal/InnerGimbal/ClippedCamera").fov = 70
 	zoom = 1
+	$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer/Crosshair.visible = true
 
 func togglePortMode(port, transZ, rotY, rotX, clampmin, clampmax):
 	if mode == "pan":
@@ -157,6 +158,7 @@ func togglePortMode(port, transZ, rotY, rotX, clampmin, clampmax):
 		true_offset = Vector2(0, 0)
 		portmin = clampmin
 		portmax = clampmax
+		$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer/Crosshair.visible = false
 	elif mode == "port":
 		resetCamera()
 

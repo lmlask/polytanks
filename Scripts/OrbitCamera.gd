@@ -1,7 +1,7 @@
 extends Spatial
 
 # Control variables
-export var maxPitch : float = 45
+export var maxPitch : float = 0
 export var minPitch : float = -45
 export var maxZoom : float = 20
 export var minZoom : float = 4
@@ -15,7 +15,7 @@ export(NodePath) var target
 
 # Private variables
 #onready var _camTarget : Spatial = $"../Map"
-var _cam : ClippedCamera
+var _cam : Camera
 var _curZoom : float = 0.0
 var canrotx = false
 
