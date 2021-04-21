@@ -16,7 +16,7 @@ var tile_pos:Vector3 = Vector3.INF
 var height_map = {0:["res://Textures/greyalpha-16bit.exr","Test map"],
 	1:["res://Textures/flat.exr","Flat map"],
 	2:["res://Textures/likethis.exr","Like this map"]}
-var height_factor = 255
+var height_factor = 200
 
 var image = Image.new()
 var imgdata
@@ -149,5 +149,5 @@ func get_noise(tile, vec2):
 	image.unlock()
 	n = n*(1-col.a)+col.r*col.a
 #		print(n,"-",col.r,"-",col.a)
-	
-	return n*height_factor
+	n *= 1.75
+	return n*n*height_factor

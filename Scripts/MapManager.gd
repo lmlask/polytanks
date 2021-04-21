@@ -73,19 +73,29 @@ func load_files():
 	
 func create_mesh(size)->ArrayMesh:
 	var vertices = PoolVector3Array()
+	var UVs = PoolVector2Array()
 	for x in range(0,1000,size):
 		for z in range(0,1000,size):
 			vertices.push_back(Vector3(x, 0, z))
+			UVs.push_back(Vector2(x/1000.0, z/1000.0))
 			vertices.push_back(Vector3(x+size, 0, z))
+			UVs.push_back(Vector2((x+size)/1000.0, z/1000.0))
 			vertices.push_back(Vector3(x, 0, z+size))
+			UVs.push_back(Vector2(x/1000.0, (z+size)/1000.0))
 			vertices.push_back(Vector3(x+size, 0, z))
+			UVs.push_back(Vector2((x+size)/1000.0, z/1000.0))
 			vertices.push_back(Vector3(x+size, 0, z+size))
+			UVs.push_back(Vector2((x+size)/1000.0, (z+size)/1000.0))
 			vertices.push_back(Vector3(x, 0, z+size))
+			UVs.push_back(Vector2(x/1000.0, (z+size)/1000.0))
+			
 	# Initialize the ArrayMesh.
+
 	var mesh = ArrayMesh.new()
 	var arrays = []
 	arrays.resize(ArrayMesh.ARRAY_MAX)
 	arrays[ArrayMesh.ARRAY_VERTEX] = vertices
+	arrays[ArrayMesh.ARRAY_TEX_UV] = UVs
 	# Create the Mesh.
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 	tilemesh[size] = mesh
