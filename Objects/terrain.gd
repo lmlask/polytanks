@@ -14,7 +14,8 @@ var tile_pos:Vector3 = Vector3.INF
 #var alphagrepmap = "res://Textures/greyalpha-16bit.exr"
 #var flatmap = "res://Textures/flat.exr"
 var height_map = {0:["res://Textures/greyalpha-16bit.exr","Test map"],
-	1:["res://Textures/flat.exr","Flat map"]}
+	1:["res://Textures/flat.exr","Flat map"],
+	2:["res://Textures/likethis.exr","Like this map"]}
 var height_factor = 255
 
 var image = Image.new()
@@ -40,7 +41,6 @@ var inprogress = false
 # Called when the node enters the scene tree for the first time.
 
 func _ready():
-	
 	if height_map:
 		image.load(height_map[R.Map.map][0]) 
 		imgdata = image.get_data()

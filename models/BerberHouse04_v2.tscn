@@ -28,9 +28,7 @@ points = PoolVector3Array( -0.46707, -4.55893, 2.15976, -2.32783, -3.93328, 2.17
 "item",
 ]]
 
-[node name="MeshInstance" type="MeshInstance" parent="." groups=[
-"item",
-]]
+[node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.98298, 0 )
 material_override = SubResource( 1 )
 mesh = ExtResource( 1 )

@@ -9,6 +9,7 @@ onready var ManNetwork = Root.get_node("NetworkManager")
 onready var GUI = Root.get_node("ViewportContainer/View/GUI")
 onready var VTanks = Root.get_node("Vehicles/Tanks") #V for Vehciels ??? maybe N for Node NVTanks
 onready var NoiseTex = Map.get_node("NoiseTexture")
+onready var Lobby = Root.get_node("Lobby")
 
 var sitesfile = "res://MapData/Sites.dat"
 var itemsfile = "res://MapData/Items.dat"
@@ -34,5 +35,6 @@ onready var Items = {0:[VWKWagen,"K Wagen"],
 	2:[BerHouseT2, "Ber House T 2"],
 	3:[BerHouseT3, "Ber House T 3"],
 	4:[BerHouseT4, "Ber House T 4"],
-	5:[Grass01, "Grass 01"]
+	5:[Grass01, "Grass 01"],
+	6:[MHouse, "WhiteHouse"]
 	}

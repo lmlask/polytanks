@@ -176,7 +176,6 @@ margin_right = 888.0
 margin_bottom = 519.0
 custom_fonts/font = ExtResource( 2 )
 text = "Hills"
-items = [ "Hills", null, false, 0, null, "Flat", null, false, 1, null, "N/A", null, true, 2, null ]
 selected = 0
 [connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/Host" to="." method="_on_Host_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/Join" to="." method="_on_Join_pressed"]
