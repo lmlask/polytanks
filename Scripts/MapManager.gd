@@ -243,11 +243,16 @@ func update_items():
 		pass
 
 func update_item(i):
-	var lid = int(i.name.split("-")[1])
-	var id = int(i.name.split("-")[2])
-	print(lid,"-",id)
-	items[id].remove(2)
-	items[id].insert(2,Vector2(i.translation.x-locations[lid][3].x,i.translation.z-locations[lid][3].y))
+	if i.is_in_group("item"):
+		var lid = int(i.name.split("-")[1])
+		var id = int(i.name.split("-")[2])
+		print(lid,"-",id)
+		items[id].remove(2)
+		items[id].insert(2,Vector2(i.translation.x-locations[lid][3].x,i.translation.z-locations[lid][3].y))
+	if i.is_in_group("loc"):
+		var id = int(i.name.split("-")[1])
+		locations[id].remove(3)
+		locations[id].insert(3,Vector2(i.translation.x,i.translation.z))
 
 func add_items():
 	for l in locations:
