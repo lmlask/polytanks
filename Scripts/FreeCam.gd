@@ -19,7 +19,7 @@ var selected:Spatial = null
 var site = null
 
 var move_speed = 25.0
-var rot_speed = 250.0
+var rot_speed = 150.0
 
 var timer = 0.0
 var delay = 0.25
@@ -48,8 +48,8 @@ func _input(event):
 		get_tree().set_input_as_handled()
 	if Input.is_action_just_pressed("F4"):
 		panel.visible = !panel.visible
-		R.Map.update_items()
 		R.Map.update_locations()
+#		R.Map.update_items()
 	if Input.is_action_just_pressed("F3"):
 		enabled = false
 		$Editor/Enabled.hide()
@@ -86,9 +86,11 @@ func _input(event):
 			var to = from + $Camera.project_ray_normal(position) * 1000
 			var space_state = get_world().direct_space_state
 			var result = space_state.intersect_ray(from,to)
-			selected = result.collider.owner
-			if selected:
-				print(selected.name)
+			if result.has("collider"):
+				selected = result.collider.owner
+				if selected:
+					print(selected.name)
+					R.Map.update_item(selected)
 
 func _process(delta):
 	if GameState.mouseHidden:

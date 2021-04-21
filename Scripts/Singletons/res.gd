@@ -29,7 +29,7 @@ onready var Grass01 = preload("res://models/grass01.tscn")
 onready var SiteCentre = preload("res://models/SiteCenter.tscn")
 onready var DebugUI = preload("res://Scenes/DebugUI.tscn")
 
-onready var Items = {0:[VWKWagen,"K-Wagen"],
+onready var Items = {0:[VWKWagen,"K Wagen"],
 	1:[BerHouseS1,"Ber House Small 1"],
 	2:[BerHouseT2, "Ber House T 2"],
 	3:[BerHouseT3, "Ber House T 3"],

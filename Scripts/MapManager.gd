@@ -233,20 +233,21 @@ func remove_locations():
 
 func update_locations():
 	for i in LocsNode.get_children():
-		var id = int(i.name.right(i.name.find_last("-")+1))
+		var id = int(i.name.split("-")[1])
 		locations[id].remove(3)
 		locations[id].insert(3,Vector2(i.translation.x,i.translation.z))
 
 func update_items():
+	print("obsolete")
 	for i in ItemsNode.get_children():
-		if i.name.left(1) == "@":
-			return
-		var id = int(i.name.right(i.name.find_last("-")+1))
-		var site = items[id][0]
-		for l in locations:
-			if locations[l][1] == site:
-				items[id].remove(2)
-				items[id].insert(2,Vector2(locations[l][3].x-i.translation.x,locations[l][3].y-i.translation.z))
+		pass
+
+func update_item(i):
+	var lid = int(i.name.split("-")[1])
+	var id = int(i.name.split("-")[2])
+	print(lid,"-",id)
+	items[id].remove(2)
+	items[id].insert(2,Vector2(i.translation.x-locations[lid][3].x,i.translation.z-locations[lid][3].y))
 
 func add_items():
 	for l in locations:
@@ -255,7 +256,7 @@ func add_items():
 				if items[i][0] == locations[l][1]:
 					var item = R.Items[items[i][1]]
 					var node = item[0].instance()
-					node.name = item[1]+"-"+str(i)
+					node.name = item[1]+"-"+str(l)+"-"+str(i)
 					node.transform = Transform.IDENTITY
 					node.transform.origin = Vector3(items[i][2].x+locations[l][3].x,0,items[i][2].y+locations[l][3].y)
 					ItemsNode.add_child(node)

@@ -19,7 +19,7 @@ func show_menu(node):
 func _on_Rename_pressed():
 	rename.hide()
 	sitename.show()
-	sitename.text = item.text
+	sitename.text = item.text.split("-")[0]
 
 func _on_Delete_pressed():
 	if item.is_in_group("site"):
@@ -41,7 +41,7 @@ func _on_Name_text_entered(new_text):
 	rename.show()
 	sitename.hide()
 	hide()
-	item.text = new_text
+	item.text = new_text+"-"+str(item.id)
 
 
 func _on_Cancel_pressed():
