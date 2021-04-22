@@ -11,14 +11,14 @@ func _process(delta):
 	#Recoil code
 #	print(state)
 	if state == "back":
-		$Breech.translation.z = -0.103
+		$Breech.translation.z = -0.3
 		state = "return"
 	elif state == "return":
-		if $Breech.translation.z >= 0.145:
-			$Breech.translation.z == 0.145
+		if $Breech.translation.z >= 0:
+			$Breech.translation.z == 0
 			state = "idle"
 		else:
-			$Breech.translation.z = lerp($Breech.translation.z, 0.15, delta*3)
+			$Breech.translation.z = lerp($Breech.translation.z, 0, delta*3)
 
 func recoil():
 	state = "back"
