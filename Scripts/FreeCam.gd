@@ -100,9 +100,6 @@ func _input(event):
 					for i in range(10):
 						result = get_ground(event.position + Vector2(rand_range(-100,100),rand_range(-100,100)))
 						if result.has("collider"):
-							print("add_tree:",result.position)
-		#					treemmi.multimesh.visible_instance_count += 1
-							print(treemmi.multimesh.visible_instance_count, Transform(Basis.IDENTITY,result.position))
 							treemmi.multimesh.set_instance_transform(treemmi.multimesh.visible_instance_count,Transform(Basis.IDENTITY,result.position))
 							treemmi.multimesh.visible_instance_count += 1
 					
@@ -112,7 +109,6 @@ func _input(event):
 #	print(l)
 
 func get_ground(position):
-	print(position)
 	var from = $Camera.project_ray_origin(position)
 	var to = from + $Camera.project_ray_normal(position) * 1000
 	var space_state = get_world().direct_space_state
@@ -183,7 +179,7 @@ func _on_ItemsButton_item_selected(index):
 	R.Map.itemsID += 1
 	item_button.add(R.Items[id][1], R.Map.itemsID)
 	R.Map.items[R.Map.itemsID] = [R.Map.site_selected,id,Vector2.ZERO,0]
-	print(R.Map.items)
+#	print(R.Map.items)
 	
 func reload_items(id):
 	clear_items()
@@ -211,4 +207,4 @@ func _on_LocAdd_pressed():
 	loc_button.add(default, R.Map.locsID)
 	var o = transform.origin - transform.basis.z * 100
 	R.Map.locations[R.Map.locsID] = [R.Map.map, R.Map.site_selected, default, Vector2(o.x,o.z),0]
-	print(R.Map.locations[R.Map.locsID])
+#	print(R.Map.locations[R.Map.locsID])
