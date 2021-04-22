@@ -112,8 +112,8 @@ func clear_map():
 	maptiles.clear()
 	maptiles_size.clear()
 	mutex.unlock()
-	for i in LocsNode.get_children():
-		i.queue_free()
+	remove_items()
+	remove_locations()
 
 func load_map(i,pos): #Need to add a location
 	clear_map()
@@ -123,15 +123,15 @@ func load_map(i,pos): #Need to add a location
 	generate_map(tilemesh[100])
 	check_area(pos)
 #	map.get_node("DirectionalLight").show()
-	
+	add_items()
 	#Dont expand on this. the map itself should do this
-	if map == 1 and false: #fix later
-		for i in range(10):
-			for j in range(10):
-				var house = map.get_node("house").duplicate()
-				house.translation.z += 15 * i
-				house.translation.x += 15 * j
-				map.add_child(house)
+#	if map == 1 and false: #fix later
+#		for i in range(10):
+#			for j in range(10):
+#				var house = map.get_node("house").duplicate()
+#				house.translation.z += 15 * i
+#				house.translation.x += 15 * j
+#				map.add_child(house)
 
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -143,7 +143,6 @@ func _process(delta):
 		env.ambient_light_energy = max(0,sin(time_of_day))
 		$DirectionalLight.rotation.x = -time_of_day
 		$DirectionalLight.light_energy = max(0,sin(time_of_day))
-
 	
 	
 func check_area(pos,large = false):
@@ -155,8 +154,9 @@ func check_area(pos,large = false):
 	if center == prev_tile:
 		return
 	prev_tile = center
-	for j in tile_offset:
-		MapNode.add_sites(center+j)
+#	for j in tile_offset:
+#		MapNode.add_sites(center+j)
+	
 	
 #	return
 	for i in tile_offset:
@@ -223,11 +223,14 @@ func _exit_tree():
 	thread_update.wait_to_finish()
 
 func show_locations():
+	while LocsNode.get_child_count():
+		yield(get_tree(),"idle_frame") #wait for nodes to clear
 	for i in locations:
 		if locations[i][0] == map:
 			show_location(i)
 
 func show_location(i):
+
 	var sc = R.SiteCentre.instance()
 	sc.transform = Transform.IDENTITY
 	sc.transform.origin = Vector3(locations[i][3].x,0,locations[i][3].y)
@@ -238,8 +241,10 @@ func show_location(i):
 func remove_locations():
 	for i in LocsNode.get_children():
 		i.queue_free()
+func remove_items():
 	for i in ItemsNode.get_children():
 		i.queue_free()
+		
 
 func update_locations():
 	for i in LocsNode.get_children():
@@ -265,6 +270,8 @@ func update_item(i):
 		locations[id].insert(3,Vector2(i.translation.x,i.translation.z))
 
 func add_items():
+	while ItemsNode.get_child_count():
+		yield(get_tree(),"idle_frame") #wait for nodes to clear
 	for l in locations:
 		if locations[l][0] == map:
 			for i in items:

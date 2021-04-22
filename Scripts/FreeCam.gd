@@ -44,7 +44,7 @@ func _ready():
 		ItemsButton.add_item(R.Items[i][1],i)
 
 func _input(event):
-	if not event.is_action_pressed("ui_cancel") and not panel.visible: #only exists to not handle showing mouse so you can exit game
+	if enabled and not panel.visible and not event.is_action_pressed("ui_cancel"): #only exists to not handle showing mouse so you can exit game
 		get_tree().set_input_as_handled()
 	if Input.is_action_just_pressed("F4"):
 		panel.visible = !panel.visible
@@ -57,6 +57,9 @@ func _input(event):
 		set_process_input(enabled)
 		GameState.CamActive._cam.current = true #would imply _cam is consistant for all cams
 		R.Map.remove_locations()
+		R.Map.remove_items()
+		R.Map.add_items()
+		selected = null
 		return
 	if event is InputEventMouseMotion:
 		if GameState.mouseHidden:
@@ -121,7 +124,6 @@ func _unhandled_key_input(event): #Trying something different
 		panel.hide()
 		MapLabel.text = "Map: " + R.Map.MapNode.height_map[R.Map.map][1] + "-" + str(R.Map.map)
 		R.Map.show_locations()
-		R.Map.add_items()
 
 func _on_Save_pressed():
 	var file = File.new()

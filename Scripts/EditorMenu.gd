@@ -48,3 +48,7 @@ func _on_Cancel_pressed():
 	rename.show()
 	sitename.hide()
 	hide()
+
+
+func _on_Name_text_changed(new_text):
+	get_tree().set_input_as_handled()

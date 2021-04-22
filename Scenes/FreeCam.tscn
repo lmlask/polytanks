@@ -338,6 +338,7 @@ text = "Editor Mode Eanbled"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="pressed" from="Editor/Panel/HBoxContainer/VSplitContainer/HSplitContainer/SiteAdd" to="." method="_on_SiteAdd_pressed"]
 [connection signal="gui_input" from="Editor/Panel/HBoxContainer/VSplitContainer/ScrollContainer/VBoxContainer/SiteButton" to="Editor/Panel/HBoxContainer/VSplitContainer/ScrollContainer/VBoxContainer/SiteButton" method="_on_Button_gui_input"]
 [connection signal="pressed" from="Editor/Panel/HBoxContainer/VSplitContainer2/HSplitContainer/ItemAdd" to="." method="_on_ItemAdd_pressed"]
@@ -346,6 +347,7 @@ __meta__ = {
 [connection signal="gui_input" from="Editor/Panel/HBoxContainer/VSplitContainer3/ScrollContainer/VBoxContainer/LocButton" to="Editor/Panel/HBoxContainer/VSplitContainer3/ScrollContainer/VBoxContainer/LocButton" method="_on_Button_gui_input"]
 [connection signal="pressed" from="Editor/Panel/Save" to="." method="_on_Save_pressed"]
 [connection signal="pressed" from="Editor/Menu/VBoxContainer/Rename" to="Editor/Menu" method="_on_Rename_pressed"]
+[connection signal="text_changed" from="Editor/Menu/VBoxContainer/Name" to="Editor/Menu" method="_on_Name_text_changed"]
 [connection signal="text_entered" from="Editor/Menu/VBoxContainer/Name" to="Editor/Menu" method="_on_Name_text_entered"]
 [connection signal="pressed" from="Editor/Menu/VBoxContainer/Delete" to="Editor/Menu" method="_on_Delete_pressed"]
 [connection signal="pressed" from="Editor/Menu/VBoxContainer/Cancel" to="Editor/Menu" method="_on_Cancel_pressed"]
