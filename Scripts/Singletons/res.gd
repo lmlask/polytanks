@@ -26,6 +26,7 @@ onready var BerHouseT2 = preload("res://models/BerberHouse02_v2.tscn")
 onready var BerHouseT3 = preload("res://models/BerberHouse03_v2.tscn")
 onready var BerHouseT4 = preload("res://models/BerberHouse04_v2.tscn")
 onready var Grass01 = preload("res://models/grass01.tscn")
+onready var tree = preload("res://models/tree.tscn")
 
 onready var SiteCentre = preload("res://models/SiteCenter.tscn")
 onready var DebugUI = preload("res://Scenes/DebugUI.tscn")
@@ -36,5 +37,6 @@ onready var Items = {0:[VWKWagen,"K Wagen"],
 	3:[BerHouseT3, "Ber House T 3"],
 	4:[BerHouseT4, "Ber House T 4"],
 	5:[Grass01, "Grass 01"],
-	6:[MHouse, "WhiteHouse"]
+	6:[MHouse, "WhiteHouse"],
+	7:[tree, "Tree"]
 	}

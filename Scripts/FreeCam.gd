@@ -9,6 +9,8 @@ onready var MapLabel = $Editor/Panel/Map
 onready var SiteLabel = $Editor/Panel/Site
 onready var ItemsButton = $Editor/ItemsButton
 
+onready var treemmi:MultiMeshInstance = R.Map.get_node("tree_temp") #To be fixed later, POC
+
 var enabled = false
 var move_fwd = 0.0
 var move_side = 0.0
@@ -20,6 +22,7 @@ var site = null
 
 var move_speed = 25.0
 var rot_speed = 150.0
+var paint = false
 
 var timer = 0.0
 var delay = 0.25
@@ -66,34 +69,54 @@ func _input(event):
 	#		rotate_y(event.relative.x/100.0)
 			rotate(Basis.IDENTITY.y, -event.relative.x/rot_speed)
 			rotation.x = clamp(rotation.x - event.relative.y /rot_speed, -PI/2, PI/2)
-		else:
-			var position = event.position
-			var from = $Camera.project_ray_origin(position)
-			var to = from + $Camera.project_ray_normal(position) * 1000
-			var space_state = get_world().direct_space_state
-			var result = space_state.intersect_ray(from,to)
+#		else:
+#			var position = event.position
+#			var from = $Camera.project_ray_origin(position)
+#			var to = from + $Camera.project_ray_normal(position) * 1000
+#			var space_state = get_world().direct_space_state
+#			var result = space_state.intersect_ray(from,to)
 #			print(result.collider.owner)
 			
 	elif event is InputEventKey:
 		move.z = Input.get_action_strength("ui_up") - Input.get_action_strength("ui_down")
 		move.x = Input.get_action_strength("ui_left") - Input.get_action_strength("ui_right")
 		move.y = Input.get_action_strength("gear_down") - Input.get_action_strength("gear_up")
+		if Input.is_action_pressed("reset_vehicle"): #same action does multiple things
+			paint = !paint
+			print("tree paint mode: ",paint)
 	elif event is InputEventMouseButton:
 		if event.is_action_pressed("cam_zoom_in"):
 			move_speed = min(move_speed * 1.5, 500.0)
 		if event.is_action_pressed("cam_zoom_out"):
 			move_speed = max(move_speed / 1.5, 10.0)
 		if event.is_action_pressed("action") and not panel.visible:
-			var position = event.position
-			var from = $Camera.project_ray_origin(position)
-			var to = from + $Camera.project_ray_normal(position) * 1000
-			var space_state = get_world().direct_space_state
-			var result = space_state.intersect_ray(from,to)
+			var result = get_ground(event.position)
 			if result.has("collider"):
-				selected = result.collider.owner
-				if selected:
-					print(selected.name)
-					R.Map.update_item(selected)
+				if not paint:
+					selected = result.collider.owner
+					if selected:
+						R.Map.update_item(selected)
+				else:
+					for i in range(10):
+						result = get_ground(event.position + Vector2(rand_range(-100,100),rand_range(-100,100)))
+						if result.has("collider"):
+							print("add_tree:",result.position)
+		#					treemmi.multimesh.visible_instance_count += 1
+							print(treemmi.multimesh.visible_instance_count, Transform(Basis.IDENTITY,result.position))
+							treemmi.multimesh.set_instance_transform(treemmi.multimesh.visible_instance_count,Transform(Basis.IDENTITY,result.position))
+							treemmi.multimesh.visible_instance_count += 1
+					
+
+#func add_tree():
+#	var l = get_ground(event)
+#	print(l)
+
+func get_ground(position):
+	print(position)
+	var from = $Camera.project_ray_origin(position)
+	var to = from + $Camera.project_ray_normal(position) * 1000
+	var space_state = get_world().direct_space_state
+	return space_state.intersect_ray(from,to)
 
 func _process(delta):
 	if GameState.mouseHidden:
