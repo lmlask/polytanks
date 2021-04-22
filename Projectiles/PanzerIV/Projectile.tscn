@@ -8,7 +8,7 @@
 [ext_resource path="res://Materials/Toon/Projectiles/PanzerIV/shell.tres" type="Material" id=6]
 [ext_resource path="res://Materials/Toon/Projectiles/PanzerIV/cap.tres" type="Material" id=7]
 [ext_resource path="res://Materials/Toon/Projectiles/PanzerIV/bands.tres" type="Material" id=8]
-[ext_resource path="res://Projectiles/TracerDelay.gd" type="Script" id=9]
+[ext_resource path="res://Scripts/TracerDelay.gd" type="Script" id=9]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "shell"
