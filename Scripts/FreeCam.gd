@@ -46,8 +46,7 @@ func _ready():
 		ItemsButton.add_item(R.Items[i][1],i)
 	for i in R.TerrainMMI.get_children():
 		terrainmmi.append(i)
-	print(terrainmmi)
-
+	
 func _input(event):
 	if enabled and not panel.visible and not event.is_action_pressed("ui_cancel"): #only exists to not handle showing mouse so you can exit game
 		get_tree().set_input_as_handled()

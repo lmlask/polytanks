@@ -56,7 +56,7 @@ float get_snow_and_grass_mix(float curr_height){
 void fragment(){
 	
 	vec3 noise = vec3(texture(grass_noise, UV).rgb);
-	vec3 dnoise = vec3(texture(grass_noise, UV*1.0).rgb);
+	vec3 dnoise = vec3(texture(grass_noise, UV*50.0).rgb);
 	
 	vec3 dirt1 = vec3(texture(dirt_tex1, UV*dirt_scale).rgb)*0.35;
 	vec3 dirt2 = vec3(texture(dirt_tex2, UV*dirt_scale).rgb)*0.36;
@@ -65,7 +65,7 @@ void fragment(){
 	vec3 snow = vec3(texture(snow_tex, UV*snow_scale).rgb);
 	
 	vec3 grass = mix(grass1, grass2, noise);
-	vec3 dirt = mix(dirt1, dirt2, dnoise);
+	vec3 dirt = mix(dirt1, dirt2, noise);
 	
 	float slope = clamp(get_slope_of_terrain(normal.y), 0.0, 1.0);
 	float snow_mix = clamp(get_snow_and_grass_mix(height_val), 0.0, 1.0);
@@ -76,6 +76,8 @@ void fragment(){
 	vec3 mixin = mix(grass_mixin, snow_mixin, snow_mix);
 
 	ALBEDO = mixin;
+	NORMALMAP = dnoise;
+	NORMALMAP_DEPTH = (dnoise.x+dnoise.y);
 	
 }
 "

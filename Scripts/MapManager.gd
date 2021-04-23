@@ -193,7 +193,6 @@ func check_area(pos,large = false):
 				prev_tile = Vector3.INF
 
 func update_tile(data):
-	print("updateing tile", data)
 	var pos = data[0]
 	var size = data[1]
 #	print("update", pos, "-", size)
