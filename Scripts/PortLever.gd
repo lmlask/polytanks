@@ -15,9 +15,9 @@ func _ready():
 
 func interact():
 	if state == "closed":
-		tween.interpolate_property(lever, "rotation_degrees", lever.rotation_degrees, Vector3(-40, 0, 0), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
-		tween.interpolate_property(shape, "rotation_degrees", lever.rotation_degrees, Vector3(-40, 0, 0), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
-		tween.interpolate_property(port, "rotation_degrees", port.rotation_degrees, Vector3(-70, 0, 0), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+		tween.interpolate_property(lever, "rotation_degrees", lever.rotation_degrees, Vector3(-40, -90, 40), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+		tween.interpolate_property(shape, "rotation_degrees", lever.rotation_degrees, Vector3(-40, -90, 40), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+		tween.interpolate_property(port, "rotation_degrees", port.rotation_degrees, Vector3(0, 0, 70), 0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 		tween.start()
 		state = "open"
 	elif state == "open":

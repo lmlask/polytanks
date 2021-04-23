@@ -75,13 +75,10 @@ func fire(id = 0, number = 0, host = false):
 	shell.name = str(id,"-",number)
 	shell.host = host
 	shell.global_transform = turret.get_node("gun/gunMesh/barrel/projectile_spawner").global_transform
-#	shell.transform.origin += shell.transform.basis.z*100
 	
 	if GameState.ShellCam and GameState.InGame and host:
 		shell.shellcam(GameState.ShellCam)
 	add_child(shell)
-#	shell.show()
-#	shell.set_process(true)
 	
 	#barrel recoil anim
 	barrel.recoil()
