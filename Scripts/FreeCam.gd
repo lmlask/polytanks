@@ -9,7 +9,7 @@ onready var MapLabel = $Editor/Panel/Map
 onready var SiteLabel = $Editor/Panel/Site
 onready var ItemsButton = $Editor/ItemsButton
 
-onready var treemmi:MultiMeshInstance = R.Map.get_node("tree_temp") #To be fixed later, POC
+onready var terrainmmi = [] #To be fixed later, POC
 
 var enabled = false
 var move_fwd = 0.0
@@ -29,7 +29,6 @@ var delay = 0.25
 
 #var sites = {} #to be loaded from a file
 
-
 func _ready():
 	panel.hide()
 	$Editor/Enabled.hide()
@@ -45,6 +44,9 @@ func _ready():
 		site_button.add(R.Map.sites[i], i)
 	for i in R.Items:
 		ItemsButton.add_item(R.Items[i][1],i)
+	for i in R.TerrainMMI.get_children():
+		terrainmmi.append(i)
+	print(terrainmmi)
 
 func _input(event):
 	if enabled and not panel.visible and not event.is_action_pressed("ui_cancel"): #only exists to not handle showing mouse so you can exit game
@@ -97,11 +99,12 @@ func _input(event):
 					if selected:
 						R.Map.update_item(selected)
 				else:
-					for i in range(10):
+					for i in range(25):
 						result = get_ground(event.position + Vector2(rand_range(-100,100),rand_range(-100,100)))
 						if result.has("collider"):
-							treemmi.multimesh.set_instance_transform(treemmi.multimesh.visible_instance_count,Transform(Basis.IDENTITY,result.position))
-							treemmi.multimesh.visible_instance_count += 1
+							var rn = int(rand_range(0,terrainmmi.size()))
+							terrainmmi[rn].multimesh.set_instance_transform(terrainmmi[rn].multimesh.visible_instance_count,Transform(Basis.IDENTITY,result.position))
+							terrainmmi[rn].multimesh.visible_instance_count += 1
 					
 
 #func add_tree():

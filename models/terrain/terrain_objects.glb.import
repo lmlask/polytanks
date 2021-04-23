@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/tree.glb-dbddb30e49b01232e92ba32e8f4d23dd.scn"
+path="res://.import/terrain_objects.glb-cce8e0d6918153b526c6b6ae7b6d9983.scn"
 
 [deps]
 
-source_file="res://models/tree.glb"
-dest_files=[ "res://.import/tree.glb-dbddb30e49b01232e92ba32e8f4d23dd.scn" ]
+source_file="res://models/terrain/terrain_objects.glb"
+dest_files=[ "res://.import/terrain_objects.glb-cce8e0d6918153b526c6b6ae7b6d9983.scn" ]
 
 [params]
 
@@ -16,6 +16,7 @@ nodes/root_name="Scene Root"
 nodes/root_scale=1.0
 nodes/custom_script=""
 nodes/storage=0
+nodes/use_legacy_names=false
 materials/location=1
 materials/storage=1
 materials/keep_on_reimport=true

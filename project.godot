@@ -267,5 +267,6 @@ common/physics_jitter_fix=1.0
 [rendering]
 
 threads/thread_model=2
+quality/filters/use_nearest_mipmap_filter=true
 quality/filters/msaa=2
 environment/default_environment="res://default_env.tres"

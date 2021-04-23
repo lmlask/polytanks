@@ -10,6 +10,7 @@ onready var GUI = Root.get_node("ViewportContainer/View/GUI")
 onready var VTanks = Root.get_node("Vehicles/Tanks") #V for Vehciels ??? maybe N for Node NVTanks
 onready var NoiseTex = Map.get_node("NoiseTexture")
 onready var Lobby = Root.get_node("Lobby")
+onready var TerrainMMI = Map.get_node("TerrainMMI")
 
 var sitesfile = "res://MapData/Sites.dat"
 var itemsfile = "res://MapData/Items.dat"
@@ -26,7 +27,7 @@ onready var BerHouseT2 = preload("res://models/BerberHouse02_v2.tscn")
 onready var BerHouseT3 = preload("res://models/BerberHouse03_v2.tscn")
 onready var BerHouseT4 = preload("res://models/BerberHouse04_v2.tscn")
 onready var Grass01 = preload("res://models/grass01.tscn")
-onready var tree = preload("res://models/tree.tscn")
+onready var tree01 = preload("res://models/terrain/tree01.tscn")
 
 onready var SiteCentre = preload("res://models/SiteCenter.tscn")
 onready var DebugUI = preload("res://Scenes/DebugUI.tscn")
@@ -38,5 +39,5 @@ onready var Items = {0:[VWKWagen,"K Wagen"],
 	4:[BerHouseT4, "Ber House T 4"],
 	5:[Grass01, "Grass 01"],
 	6:[MHouse, "WhiteHouse"],
-	7:[tree, "Tree"]
+	7:[tree01, "Tree"]
 	}
