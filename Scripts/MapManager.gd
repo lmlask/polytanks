@@ -154,11 +154,14 @@ func load_map(i,pos): #Need to add a location
 func _process(delta):
 	if GameState.EnvCycle:
 		time_of_day += delta / 10
-		time_of_day = wrapf(time_of_day,0.0,PI+0.5)
-		env.background_energy = max(0.1,sin(time_of_day))
-		env.ambient_light_energy = max(0,sin(time_of_day))
+		time_of_day = wrapf(time_of_day,-0.25,PI+0.25)
+		env.background_energy = max(0.01,sin(time_of_day))
+		env.background_sky.sky_energy = max(0.01,sin(time_of_day))
+		env.background_sky.ground_energy = max(0.01,sin(time_of_day))
+		env.ambient_light_energy = max(0.005,sin(time_of_day))
+		env.background_sky.sun_latitude = -rad2deg(time_of_day+PI)
 		$DirectionalLight.rotation.x = -time_of_day
-		$DirectionalLight.light_energy = max(0,sin(time_of_day))
+		$DirectionalLight.light_energy = max(0.0,sin(time_of_day))
 	
 	
 func check_area(pos,large = false):
