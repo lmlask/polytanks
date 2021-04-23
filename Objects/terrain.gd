@@ -67,9 +67,8 @@ func update_tile(tile_pos,mesh,tile_node):
 	tile_mesh.surface_set_material(0, mat)
 	mutex.lock()
 	tile_node.mesh = tile_mesh
-	while inprogress:
-		yield(get_tree().create_timer(1),"timeout")
-	tile_node.get_node("StaticBody/CollisionShape").shape = tile_mesh.create_trimesh_shape()
+	if not inprogress:
+		tile_node.get_node("StaticBody/CollisionShape").shape = tile_mesh.create_trimesh_shape()
 	mutex.unlock()
 	
 func create_tile_mesh(tile, tile_pos,meshx):

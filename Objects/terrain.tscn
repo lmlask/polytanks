@@ -1,11 +1,13 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Objects/hill_mesh.tres" type="ArrayMesh" id=1]
 [ext_resource path="res://Objects/terrain.gd" type="Script" id=2]
 [ext_resource path="res://Textures/dirt.jpg" type="Texture" id=3]
 [ext_resource path="res://Objects/hill_shader.tres" type="Material" id=4]
-[ext_resource path="res://Textures/Grass0177.jpg" type="Texture" id=5]
+[ext_resource path="res://Textures/aerial_rocks_04_diff_1k.jpg" type="Texture" id=5]
 [ext_resource path="res://Textures/snow.jpg" type="Texture" id=6]
+[ext_resource path="res://Textures/red_mud_stones_diff_1k.jpg" type="Texture" id=7]
+[ext_resource path="res://Textures/rocks_ground_08_diff_1k.jpg" type="Texture" id=8]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type spatial;
@@ -14,11 +16,14 @@ uniform float max_grass_height = 2.0;
 uniform float min_snow_height = 18.0;
 uniform float slope_factor = 8.0;
 
-uniform sampler2D grass_tex;
+uniform sampler2D grass_tex1;
 uniform vec2 grass_scale;
+uniform sampler2D grass_tex2;
+uniform sampler2D grass_noise;
 
-uniform sampler2D dirt_tex;
+uniform sampler2D dirt_tex1;
 uniform vec2 dirt_scale;
+uniform sampler2D dirt_tex2;
 
 uniform sampler2D snow_tex;
 uniform vec2 snow_scale;
@@ -49,9 +54,18 @@ float get_snow_and_grass_mix(float curr_height){
 }
 
 void fragment(){
-	vec3 dirt = vec3(texture(dirt_tex, UV*dirt_scale).rgb)*0.35;
-	vec3 grass = vec3(texture(grass_tex, UV*grass_scale).rgb)*0.5;
+	
+	vec3 noise = vec3(texture(grass_noise, UV).rgb);
+	vec3 dnoise = vec3(texture(grass_noise, UV*1.0).rgb);
+	
+	vec3 dirt1 = vec3(texture(dirt_tex1, UV*dirt_scale).rgb)*0.35;
+	vec3 dirt2 = vec3(texture(dirt_tex2, UV*dirt_scale).rgb)*0.36;
+	vec3 grass1 = vec3(texture(grass_tex1, UV*grass_scale).rgb)*0.35;
+	vec3 grass2 = vec3(texture(grass_tex2, UV*grass_scale).rgb)*0.36;
 	vec3 snow = vec3(texture(snow_tex, UV*snow_scale).rgb);
+	
+	vec3 grass = mix(grass1, grass2, noise);
+	vec3 dirt = mix(dirt1, dirt2, dnoise);
 	
 	float slope = clamp(get_slope_of_terrain(normal.y), 0.0, 1.0);
 	float snow_mix = clamp(get_snow_and_grass_mix(height_val), 0.0, 1.0);
@@ -62,24 +76,63 @@ void fragment(){
 	vec3 mixin = mix(grass_mixin, snow_mixin, snow_mix);
 
 	ALBEDO = mixin;
+	
 }
 "
 
-[sub_resource type="ShaderMaterial" id=2]
+[sub_resource type="OpenSimplexNoise" id=2]
+
+[sub_resource type="NoiseTexture" id=3]
+width = 1000
+height = 1000
+seamless = true
+noise = SubResource( 2 )
+
+[sub_resource type="ShaderMaterial" id=4]
 shader = SubResource( 1 )
 shader_param/max_grass_height = 300.0
 shader_param/min_snow_height = 400.0
 shader_param/slope_factor = 100.0
 shader_param/grass_scale = Vector2( 100, 100 )
-shader_param/dirt_scale = Vector2( 250, 250 )
+shader_param/dirt_scale = Vector2( 15, 10 )
 shader_param/snow_scale = Vector2( 250, 250 )
-shader_param/grass_tex = ExtResource( 5 )
-shader_param/dirt_tex = ExtResource( 3 )
+shader_param/grass_tex1 = ExtResource( 3 )
+shader_param/grass_tex2 = ExtResource( 7 )
+shader_param/grass_noise = SubResource( 3 )
+shader_param/dirt_tex1 = ExtResource( 5 )
+shader_param/dirt_tex2 = ExtResource( 8 )
 shader_param/snow_tex = ExtResource( 6 )
 
-[sub_resource type="Skin" id=3]
+[sub_resource type="Skin" id=5]
 
-[sub_resource type="PlaneMesh" id=4]
+[sub_resource type="VisualShader" id=6]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx;
+
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Output:0
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+nodes/fragment/0/position = Vector2( 1700, 20 )
+
+[sub_resource type="ShaderMaterial" id=7]
+shader = SubResource( 6 )
+
+[sub_resource type="PlaneMesh" id=8]
 material = ExtResource( 4 )
 size = Vector2( 100000, 100000 )
 subdivide_width = 100
@@ -91,9 +144,9 @@ script = ExtResource( 2 )
 [node name="Tile" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0121956, 0.0465546, -0.0223198 )
 visible = false
-material_override = SubResource( 2 )
+material_override = SubResource( 4 )
 mesh = ExtResource( 1 )
-skin = SubResource( 3 )
+skin = SubResource( 5 )
 material/0 = null
 
 [node name="StaticBody" type="StaticBody" parent="Tile"]
@@ -103,5 +156,6 @@ collision_layer = 524289
 
 [node name="Ground" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -100, 0 )
-mesh = SubResource( 4 )
+material_override = SubResource( 7 )
+mesh = SubResource( 8 )
 material/0 = null
