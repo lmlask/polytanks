@@ -35,13 +35,14 @@ func find_floor2(building:Spatial, rot = true):
 	ray.translation = building.global_transform.origin + Vector3(0,500,0)
 	ray.force_raycast_update()
 	if ray.is_colliding():
-		var tsf = Transform.looking_at(ray.get_collision_normal(),Vector3(1,0,0))
+#		var tsf = Transform.looking_at(ray.get_collision_normal(),Vector3(1,0,0))
+		var tsf = Transform.looking_at(Vector3(0,1,0),Vector3(1,0,0))
 		tsf = tsf.rotated(tsf.basis.x,-PI/2)
 		if rot:
 			building.get_child(0).rotation.y = randf()*TAU #dont use get_child(0)
 		building.get_child(0).rotation.y = wrapf(building.get_child(0).rotation.y,0,TAU)
 		building.transform.basis = tsf.basis
-		building.transform.origin.y = ray.get_collision_point().y
+		building.global_transform.origin.y = ray.get_collision_point().y
 #		building.scale *= 2 #Should not need to double the size
 #		var grid = (building.owner.transform.origin/1000).snapped(Vector3(1,10,1))
 #		building.translation += Vector3(500,0,500)-grid*1000

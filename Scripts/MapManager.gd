@@ -128,7 +128,7 @@ func clear_map():
 	maptiles.clear()
 	maptiles_size.clear()
 	mutex.unlock()
-	remove_items()
+#	remove_items()
 	remove_locations()
 
 func load_map(i,pos): #Need to add a location
@@ -209,15 +209,23 @@ func update_tile(data):
 	thread_update.call_deferred("wait_to_finish")
 	
 func terrain_complete(data):
-#	print("terrain complete", data)
+	print("terrain complete", data)
 	var pos = R.ManVehicle.vehicle.global_transform.origin
 	var grid = (pos/1000).snapped(Vector3(1,10,1))
 	if data == grid:
 		print("resetting vehicle")
-		R.ManVehicle.reset_tank(R.ManVehicle.vehicle) #reset tank should be in a base class for all tanks
-	for i in maptiles[data].get_children():
-		if i.is_in_group("item"): #Fix this up, sort buildings/items or group them something better then "item"
-			R.FloorFinder.find_floor2(i,true)
+		R.ManVehicle.reset_tank(R.ManVehicle.vehicle) #maybe reset tank should be in a base class for all tanks
+	for i in LocsNode.get_children():
+#		print(i.name)
+		if i.is_in_group("loc"):
+			R.FloorFinder.find_floor2(i,false)
+	for j in LocsNode.get_children():
+		for i in j.get_node("Center").get_children():
+#		for i in j.get_node("Center").get_children():
+			if i.is_in_group("item"): #Fix this up, sort buildings/items or group them something better then "item"
+				grid = (i.global_transform.origin/1000).snapped(Vector3(1,10,1))
+				if grid == data:
+					R.FloorFinder.find_floor2(i,false)
 #	for i in SitesNode.get_children():
 #		R.FloorFinder.find_floor2(i,false)
 
@@ -249,30 +257,40 @@ func show_locations():
 			show_location(i)
 
 func show_location(i):
-
 	var sc = R.SiteCentre.instance()
 	sc.transform = Transform.IDENTITY
 	sc.transform.origin = Vector3(locations[i][3].x,0,locations[i][3].y)
+	sc.get_child(0).rotation.y = locations[i][4]
 	LocsNode.add_child(sc)
+	while not sc.is_inside_tree():
+		print("not in tree")
+		yield(get_tree(),"idle_frame")
+	sc.get_node("Center/CenterMesh").hide()
 	sc.name = locations[i][2]+"-"+str(i)
 	R.FloorFinder.find_floor2(sc, false)
 
 func remove_locations():
 	for i in LocsNode.get_children():
 		i.queue_free()
+		while is_instance_valid(i):
+			yield(get_tree(),"idle_frame")
 func remove_items():
 	for i in ItemsNode.get_children():
 		i.queue_free()
+func locations_visibile(vis):
+	for i in LocsNode.get_children():
+		i.get_node("Center/CenterMesh").visible = vis
 		
 
 func update_locations():
+	print_debug("obsolete")
 	for i in LocsNode.get_children():
 		var id = int(i.name.split("-")[1])
 		locations[id].remove(3)
 		locations[id].insert(3,Vector2(i.translation.x,i.translation.z))
 
 func update_items():
-	print("obsolete")
+	print_debug("obsolete")
 	for i in ItemsNode.get_children():
 		pass
 
@@ -282,23 +300,39 @@ func update_item(i):
 		var id = int(i.name.split("-")[2])
 		print(lid,"-",id)
 		items[id].remove(2)
-		items[id].insert(2,Vector2(i.translation.x-locations[lid][3].x,i.translation.z-locations[lid][3].y))
+#		items[id].insert(2,Vector2(i.translation.x-locations[lid][3].x,i.translation.z-locations[lid][3].y))
+		items[id].insert(2,Vector2(i.translation.x,i.translation.z))
+		items[id].remove(3)
+		items[id].insert(3,i.get_child(0).rotation.y)
 	if i.is_in_group("loc"):
 		var id = int(i.name.split("-")[1])
 		locations[id].remove(3)
 		locations[id].insert(3,Vector2(i.translation.x,i.translation.z))
+		locations[id].remove(4)
+		locations[id].insert(4,i.get_child(0).rotation.y)
+		print(locations[id])
 
 func add_items():
-	while ItemsNode.get_child_count():
-		yield(get_tree(),"idle_frame") #wait for nodes to clear
+	show_locations()
+	for wait in range(5):
+		yield(get_tree(),"idle_frame")
 	for l in locations:
 		if locations[l][0] == map:
+#			var lnode2 = LocsNode.get_node(locations[l][2]+"-"+str(l))
+			var lnode = LocsNode.get_node(locations[l][2]+"-"+str(l)).get_node("Center")
+#			print(lnode2, lnode)
 			for i in items:
 				if items[i][0] == locations[l][1]:
 					var item = R.Items[items[i][1]]
 					var node = item[0].instance()
 					node.name = item[1]+"-"+str(l)+"-"+str(i)
 					node.transform = Transform.IDENTITY
-					node.transform.origin = Vector3(items[i][2].x+locations[l][3].x,0,items[i][2].y+locations[l][3].y)
-					ItemsNode.add_child(node)
+#					node.transform.origin = Vector3(items[i][2].x+locations[l][3].x,0,items[i][2].y+locations[l][3].y)
+					node.transform.origin = Vector3(items[i][2].x,0,items[i][2].y)
+					node.get_child(0).rotation.y = items[i][3]
+					lnode.add_child(node)
 					R.FloorFinder.find_floor2(node, false)
+					
+#					print(lnode)
+#					for ln in LocsNode.get_children():
+#						print(ln)
