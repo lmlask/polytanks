@@ -23,6 +23,8 @@ var site = null
 var move_speed = 25.0
 var rot_speed = 150.0
 var paint = false
+var is_painting = false
+var paint_pos = Vector3.ZERO
 
 var timer = 0.0
 var delay = 0.25
@@ -70,7 +72,11 @@ func _input(event):
 	#		rotate_y(event.relative.x/100.0)
 			rotate(Basis.IDENTITY.y, -event.relative.x/rot_speed)
 			rotation.x = clamp(rotation.x - event.relative.y /rot_speed, -PI/2, PI/2)
-#		else:
+		elif is_painting:
+			var result = get_ground(event.position)
+			if result.has("collider"):
+				paint_pos = result.position
+			
 #			var position = event.position
 #			var from = $Camera.project_ray_origin(position)
 #			var to = from + $Camera.project_ray_normal(position) * 1000
@@ -98,12 +104,18 @@ func _input(event):
 					if selected:
 						R.Map.update_item(selected)
 				else:
-					for i in range(25):
-						result = get_ground(event.position + Vector2(rand_range(-100,100),rand_range(-100,100)))
-						if result.has("collider"):
-							var rn = int(rand_range(0,terrainmmi.size()))
-							terrainmmi[rn].multimesh.set_instance_transform(terrainmmi[rn].multimesh.visible_instance_count,Transform(Basis.IDENTITY,result.position))
-							terrainmmi[rn].multimesh.visible_instance_count += 1
+					is_painting = true
+					print(is_painting)
+		elif Input.is_action_just_released("action"):
+			is_painting = false
+					
+func paint(c_pos):
+	for i in range(25):
+		var pos = c_pos + Vector3(rand_range(-100,100),0,rand_range(-100,100))
+		pos = R.FloorFinder.floor_at_point(pos)
+		var rn = int(rand_range(0,terrainmmi.size()))
+		terrainmmi[rn].multimesh.set_instance_transform(terrainmmi[rn].multimesh.visible_instance_count,Transform(Basis.IDENTITY,pos))
+		terrainmmi[rn].multimesh.visible_instance_count += 1
 					
 
 #func add_tree():
@@ -130,6 +142,8 @@ func _process(delta):
 	if timer > delay:
 		timer -= delay
 		R.Map.check_area(global_transform.origin,true)
+	if is_painting:
+		paint(paint_pos)
 
 
 func _unhandled_key_input(event): #Trying something different
