@@ -52,7 +52,7 @@ func _input(event):
 		get_tree().set_input_as_handled()
 	if Input.is_action_just_pressed("F4"):
 		panel.visible = !panel.visible
-		R.Map.update_locations()
+#		R.Map.update_locations()
 #		R.Map.update_items()
 	if Input.is_action_just_pressed("F3"):
 		enabled = false
@@ -61,7 +61,7 @@ func _input(event):
 		set_process_input(enabled)
 		GameState.CamActive._cam.current = true #would imply _cam is consistant for all cams
 		R.Map.remove_locations()
-		R.Map.remove_items()
+#		R.Map.remove_items()
 		R.Map.add_items()
 		selected = null
 		return
@@ -144,7 +144,7 @@ func _unhandled_key_input(event): #Trying something different
 		global_transform = GameState.CamActive._cam.global_transform #ehhhh _cam?
 		panel.hide()
 		MapLabel.text = "Map: " + R.Map.MapNode.height_map[R.Map.map][1] + "-" + str(R.Map.map)
-		R.Map.show_locations()
+		R.Map.locations_visibile(true)
 
 func _on_Save_pressed():
 	var file = File.new()
