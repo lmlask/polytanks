@@ -7,6 +7,12 @@ var indicator = "hand"
 var mesh
 var ammo_positions : Dictionary
 
+var apc_tex = preload("res://Textures/Icons/APC.png")
+var apcr_tex = preload("res://Textures/Icons/APCR.png")
+var he_tex = preload("res://Textures/Icons/HE.png")
+var heat_tex = preload("res://Textures/Icons/HEAT.png")
+var smoke_tex = preload("res://Textures/Icons/dot.png")
+
 var apc = preload("res://Projectiles/PanzerIV/APC.tscn")
 var apcr = preload("res://Projectiles/PanzerIV/APC.tscn")
 var he = preload("res://Projectiles/PanzerIV/HE.tscn")
@@ -98,6 +104,35 @@ func lower(shell):
 		tween.interpolate_property(curr_shell, "translation:y", curr_shell.translation.y, 0, 0.4, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 		tween.start()
 
+func prev_shell():
+	var curr_index = shell_array.find(active_shell)
+	if (curr_index - 1) >= 0:
+		lower(active_shell)
+		active_shell = shell_array[curr_index - 1]
+		lift(active_shell)
+		print(shell_array.find(active_shell))
+
+func next_shell():
+	var curr_index = shell_array.find(active_shell)
+	if (curr_index + 1) < ammo_code.length():
+		lower(active_shell)
+		active_shell = shell_array[curr_index + 1]
+		lift(active_shell)
+		print(shell_array.find(active_shell))
+
+func get_crosshair_tex():
+	var type = decode(ammo_code[shell_array.find(active_shell)])
+	print("Type: " + String(type))
+	if type == GameState.Ammo.HE:
+		return he_tex
+	elif type == GameState.Ammo.HEAT:
+		return heat_tex
+	elif type == GameState.Ammo.APC:
+		return apc_tex
+	elif type == GameState.Ammo.APCR:
+		return apcr_tex
+	elif type == GameState.Ammo.Smoke:
+		return smoke_tex
+	
 func interact():
 	pass
-	

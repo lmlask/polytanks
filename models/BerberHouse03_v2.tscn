@@ -1,8 +1,10 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://models/BerberHouse03_v2.obj" type="ArrayMesh" id=1]
-[ext_resource path="res://models/Berberhouse03_Default_color.png" type="Texture" id=2]
+[ext_resource path="res://BlenderFiles/BerberHouse03_v2.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://Textures/Berberhouse03_Default_color.png" type="Texture" id=2]
 [ext_resource path="res://Shaders/flexible_toon.shader" type="Shader" id=3]
+
+
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 3 )

@@ -1,7 +1,8 @@
 [gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Shaders/flexible_toon.shader" type="Shader" id=1]
-[ext_resource path="res://models/Kubelwagen_v1_DesertCamo_bakedAO_color.png" type="Texture" id=2]
+[ext_resource path="res://Textures/Kubelwagen_v1_DesertCamo_bakedAO_color.png" type="Texture" id=2]
+
 
 [sub_resource type="SpatialMaterial" id=1]
 metallic = 0.5

@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/BerberHouse03_v2.obj-2e7c547bb2ab6a55df674086959661bb.mesh"
+
+[deps]
+
+files=[ "res://.import/BerberHouse03_v2.obj-2e7c547bb2ab6a55df674086959661bb.mesh" ]
+
+source_file="res://BlenderFiles/BerberHouse03_v2.obj"
+dest_files=[ "res://.import/BerberHouse03_v2.obj-2e7c547bb2ab6a55df674086959661bb.mesh", "res://.import/BerberHouse03_v2.obj-2e7c547bb2ab6a55df674086959661bb.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

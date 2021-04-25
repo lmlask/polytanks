@@ -32,10 +32,10 @@ var target_offset_y = 0
 var true_offset = Vector2(0, 0)
 
 #crosshair
-onready var hand_img = preload("res://Textures/hand.png")
-onready var eye_img = preload("res://Textures/eye.png")
+onready var hand_img = preload("res://Textures/Icons/hand.png")
+onready var eye_img = preload("res://Textures/Icons/eye.png")
 onready var cross_img = preload("res://Textures/crosshair.png")
-onready var dot_img = preload("res://Textures/dot.png")
+onready var dot_img = preload("res://Textures/Icons/dot.png")
 onready var crosshairs = {
 	"hand" : hand_img,
 	"eye" : eye_img,
@@ -170,7 +170,10 @@ func tween(pos, speed, easing):
 func lookatHandler():
 	if $OuterGimbal/InnerGimbal/ClippedCamera.current and interact_areas.has(ray.get_collider()):
 		aimedObject = ray.get_collider()
-		$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer/Crosshair.texture = crosshairs[aimedObject.indicator]
+		if aimedObject.name.substr(0, 3) == "Bin":
+			$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer/Crosshair.texture = aimedObject.get_crosshair_tex()
+		else:
+			$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer/Crosshair.texture = crosshairs[aimedObject.indicator]
 	else:
 		aimedObject = null
 		$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer/Crosshair.texture = dot_img
