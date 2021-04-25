@@ -105,7 +105,6 @@ func _input(event):
 						R.Map.update_item(selected)
 				else:
 					is_painting = true
-					print(is_painting)
 		elif Input.is_action_just_released("action"):
 			is_painting = false
 					

@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Stuka_v1.obj-1689ab4ed71f3e3bffe5eed2d4601a25.mesh"
+
+[deps]
+
+files=[ "res://.import/Stuka_v1.obj-1689ab4ed71f3e3bffe5eed2d4601a25.mesh" ]
+
+source_file="res://models/Stuka_v1.obj"
+dest_files=[ "res://.import/Stuka_v1.obj-1689ab4ed71f3e3bffe5eed2d4601a25.mesh", "res://.import/Stuka_v1.obj-1689ab4ed71f3e3bffe5eed2d4601a25.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

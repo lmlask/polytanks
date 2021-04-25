@@ -209,7 +209,7 @@ func update_tile(data):
 	thread_update.call_deferred("wait_to_finish")
 	
 func terrain_complete(data):
-	print("terrain complete", data)
+#	print("terrain complete", data)
 	var pos = R.ManVehicle.vehicle.global_transform.origin
 	var grid = (pos/1000).snapped(Vector3(1,10,1))
 	if data == grid:

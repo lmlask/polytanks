@@ -8,6 +8,7 @@ onready var FloorFinder:FF = ManVehicle.get_node("FloorFinder")
 onready var ManNetwork = Root.get_node("NetworkManager")
 onready var GUI = Root.get_node("ViewportContainer/View/GUI")
 onready var VTanks = Root.get_node("Vehicles/Tanks") #V for Vehciels ??? maybe N for Node NVTanks
+onready var VPlanes = Root.get_node("Vehicles/Planes") #V for Vehciels ??? maybe N for Node NVTanks
 onready var NoiseTex = Map.get_node("NoiseTexture")
 onready var Lobby = Root.get_node("Lobby")
 onready var TerrainMMI = Map.get_node("TerrainMMI")
@@ -28,6 +29,8 @@ onready var BerHouseT3 = preload("res://models/BerberHouse03_v2.tscn")
 onready var BerHouseT4 = preload("res://models/BerberHouse04_v2.tscn")
 onready var Grass01 = preload("res://models/grass01.tscn")
 onready var tree01 = preload("res://models/terrain/tree01.tscn")
+
+onready var Stuka = preload("res://models/Stuka.tscn")
 
 onready var SiteCentre = preload("res://models/SiteCenter.tscn")
 onready var DebugUI = preload("res://Scenes/DebugUI.tscn")

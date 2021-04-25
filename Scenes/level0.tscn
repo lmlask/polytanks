@@ -171,4 +171,6 @@ render_target_update_mode = 3
 
 [node name="Wheeled" type="Node" parent="Vehicles"]
 
+[node name="Planes" type="Node" parent="Vehicles"]
+
 [node name="FreeCam" parent="." instance=ExtResource( 9 )]
