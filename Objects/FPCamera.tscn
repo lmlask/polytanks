@@ -19,7 +19,7 @@ process_mode = 1
 clip_to_bodies = false
 
 [node name="RoundPos" type="Spatial" parent="OuterGimbal/InnerGimbal/ClippedCamera"]
-transform = Transform( 0.239721, -0.970414, 0.0288186, 0.970657, 0.238991, -0.0266131, 0.0189384, 0.0343527, 0.99923, 0.47, -0.268, -0.311 )
+transform = Transform( -0.19304, 0.978721, -0.0695751, -0.98039, -0.195261, -0.0266131, -0.0396321, 0.0630734, 0.997221, 0.403, -0.256, -0.299 )
 
 [node name="RayCast" type="RayCast" parent="OuterGimbal/InnerGimbal/ClippedCamera"]
 enabled = true

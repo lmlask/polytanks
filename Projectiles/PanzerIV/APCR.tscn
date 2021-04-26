@@ -5,7 +5,7 @@
 [ext_resource path="res://Materials/Toon/Projectiles/PanzerIV/shell.tres" type="Material" id=3]
 [ext_resource path="res://Materials/Toon/Projectiles/PanzerIV/casing.tres" type="Material" id=4]
 
-[sub_resource type="ArrayMesh" id=6]
+[sub_resource type="ArrayMesh" id=1]
 resource_name = "shell"
 surfaces/0 = {
 "aabb": AABB( -0.0503685, -0.517058, -0.0438053, 0.100737, 0.018424, 0.0876108 ),
@@ -45,8 +45,8 @@ surfaces/2 = {
 }
 
 [node name="APCR" type="MeshInstance"]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
-mesh = SubResource( 6 )
+layers = 2
+mesh = SubResource( 1 )
 material/0 = ExtResource( 1 )
 material/1 = ExtResource( 3 )
 material/2 = ExtResource( 4 )
