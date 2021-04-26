@@ -14,7 +14,7 @@ var heat_tex = preload("res://Textures/Icons/HEAT.png")
 var smoke_tex = preload("res://Textures/Icons/dot.png")
 
 var apc = preload("res://Projectiles/PanzerIV/APC.tscn")
-var apcr = preload("res://Projectiles/PanzerIV/APC.tscn")
+var apcr = preload("res://Projectiles/PanzerIV/APCR.tscn")
 var he = preload("res://Projectiles/PanzerIV/HE.tscn")
 var heat = preload("res://Projectiles/PanzerIV/HEAT.tscn")
 var smoke = preload("res://Projectiles/PanzerIV/Smoke.tscn")
@@ -58,6 +58,8 @@ func _ready():
 	active_shell = shell_array[0]
 
 func _process(delta):
+	if not GameState.role == GameState.Role.Loader:
+		return
 	#find active bin
 	if camera.current and loader_camera.aimedObject == self:
 		active = true
@@ -149,9 +151,8 @@ func remove_shell(shell):
 	yield(get_tree().create_timer(1), "timeout")
 	#animate shell going to camera
 	var camera = owner.get_node("Players/Loader/Camera/OuterGimbal/InnerGimbal/ClippedCamera")
-	shell.remove_child(curr_shell)
-	
 	var old_pos = curr_shell.get_global_transform().origin
+	shell.remove_child(curr_shell)
 	camera.add_child(curr_shell)
 	curr_shell.global_transform.origin = camera.get_node("RoundPos").global_transform.origin
 	

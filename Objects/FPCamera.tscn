@@ -14,7 +14,7 @@ role = "driver"
 
 [node name="ClippedCamera" type="ClippedCamera" parent="OuterGimbal/InnerGimbal"]
 cull_mask = 7
-far = 2000.0
+far = 3000.0
 process_mode = 1
 clip_to_bodies = false
 

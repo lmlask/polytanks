@@ -111,6 +111,7 @@ transform = Transform( 1, 0, 0, 0, 0.707107, 0.707106, 0, -0.707107, 0.707106, 0
 light_indirect_energy = 0.33
 light_cull_mask = 4294967293
 shadow_enabled = true
+shadow_reverse_cull_face = true
 
 [node name="NoiseTexture" type="TextureRect" parent="Map"]
 margin_left = -1055.62
