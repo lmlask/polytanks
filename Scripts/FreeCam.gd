@@ -129,8 +129,12 @@ func _process(delta):
 		transform.origin -= transform.basis.x * move.x * delta * move_speed
 		transform.origin -= transform.basis.y * move.y * delta * move_speed
 	elif selected:
-		selected.transform.origin -= transform.basis.x * move.x * delta * move_speed
-		selected.transform.origin -= transform.basis.z * move.z * delta * move_speed
+		if selected.is_in_group("loc"):
+			selected.transform.origin -= transform.basis.x * move.x * delta * move_speed
+			selected.transform.origin -= transform.basis.z * move.z * delta * move_speed
+		elif selected.is_in_group("item"):
+			selected.transform.origin -= transform.basis.x * move.rotated(Vector3.UP, -selected.get_parent().rotation.y-PI/2).x * delta * move_speed
+			selected.transform.origin -= transform.basis.z * move.rotated(Vector3.UP, -selected.get_parent().rotation.y-PI/2).z * delta * move_speed
 		selected.get_child(0).rotation.y += move.y * delta * move_speed / 10 #dont use get_child(0) fix it!!!
 		R.FloorFinder.find_floor2(selected, false)
 	timer += delta

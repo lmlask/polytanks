@@ -1,6 +1,6 @@
 extends Spatial
 
-var life = 10.0
+var life = 99.0
 
 func _ready():
 	pass # Replace with function body.
@@ -11,4 +11,4 @@ func _process(delta):
 	life -= delta
 	if life < 0:
 		queue_free()
-	translation += transform.basis.z
+	translation += transform.basis.z * delta * 100
