@@ -6,6 +6,8 @@ onready var heat = preload("res://Textures/Icons/HEAT.png")
 onready var apcr = preload("res://Textures/Icons/APCR.png")
 onready var smoke = preload("res://Textures/Icons/dot.png")
 
+var holding_shell = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	for i in get_parent().get_parent().get_parent().get_node("Interior/TurretInterior/LoaderClickables").get_children():

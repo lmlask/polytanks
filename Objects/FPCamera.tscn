@@ -18,6 +18,9 @@ far = 2000.0
 process_mode = 1
 clip_to_bodies = false
 
+[node name="RoundPos" type="Spatial" parent="OuterGimbal/InnerGimbal/ClippedCamera"]
+transform = Transform( 0.239721, -0.970414, 0.0288186, 0.970657, 0.238991, -0.0266131, 0.0189384, 0.0343527, 0.99923, 0.47, -0.268, -0.311 )
+
 [node name="RayCast" type="RayCast" parent="OuterGimbal/InnerGimbal/ClippedCamera"]
 enabled = true
 cast_to = Vector3( 0, 0, -2 )

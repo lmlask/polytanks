@@ -102,4 +102,3 @@ func _physics_process(delta) -> void:
 
 func calcStats(delta):
 	speed = 3.6 * self.transform.basis.xform_inv(self.linear_velocity).z
-	

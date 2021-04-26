@@ -33,6 +33,7 @@ var camera
 var loader_camera
 var shell_array : Array
 var tween
+var shell_to_rm
 
 func _ready():
 	mesh = owner.get_node("Interior/HullInterior/Dynamic/AmmoBins/" + String(self.name))
@@ -57,20 +58,26 @@ func _ready():
 	active_shell = shell_array[0]
 
 func _process(delta):
+	#find active bin
 	if camera.current and loader_camera.aimedObject == self:
 		active = true
 	else:
 		active = false
-
-	if active == true and last_active == false:
-		print("lifting")
-		lift(active_shell)
 	
-	if active == false and last_active == true:
-		print("lowering")
-		lower(active_shell)
+	#if not holding shell, run shell selection animations
+	if owner.get_node("Players/Loader/Camera").holding_shell == false:
+		if active == true and last_active == false and active_shell and owner.get_node("Players/Loader/Camera").holding_shell == false:
+			lift(active_shell)
+		
+		if active == false and last_active == true and active_shell and owner.get_node("Players/Loader/Camera").holding_shell == false:
+			lower(active_shell)
+	else:
+		#TODO: shell insertion logic here
+		pass
 	
+	#update last_active (this should be the last line)
 	last_active = active
+
 
 func decode(i):
 	if i == "0":
@@ -85,13 +92,30 @@ func decode(i):
 		return GameState.Ammo.HEAT
 	elif i == "5":
 		return GameState.Ammo.Smoke
-	
-func remove_shell(pos):
-	ammo_positions[pos] = GameState.Ammo.None
-	
-func add_shell(pos, type):
-	ammo_positions[pos] = type
 
+func prev_shell():
+	var curr_index = shell_array.find(active_shell)
+	if (curr_index - 1) >= 0 and shell_array[curr_index - 1] != null:
+		lower(active_shell)
+		active_shell = shell_array[curr_index - 1]
+		if owner.get_node("Players/Loader/Camera").holding_shell == false:
+			lift(active_shell)
+		return true
+	else:
+		return false
+
+func next_shell():
+	var curr_index = shell_array.find(active_shell)
+	if ((curr_index + 1) < ammo_code.length()) and shell_array[curr_index + 1] != null:
+		lower(active_shell)
+		active_shell = shell_array[curr_index + 1]
+		if owner.get_node("Players/Loader/Camera").holding_shell == false:
+			lift(active_shell)
+		return true
+	else:
+		return false
+
+#shell animating funcs
 func lift(shell):
 	var curr_shell = shell.get_child(0)
 	if type == "v":
@@ -104,25 +128,44 @@ func lower(shell):
 		tween.interpolate_property(curr_shell, "translation:y", curr_shell.translation.y, 0, 0.4, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 		tween.start()
 
-func prev_shell():
-	var curr_index = shell_array.find(active_shell)
-	if (curr_index - 1) >= 0:
-		lower(active_shell)
-		active_shell = shell_array[curr_index - 1]
-		lift(active_shell)
-		print(shell_array.find(active_shell))
+func remove_shell(shell):
+	
+	var curr_shell = shell.get_child(0)
+	shell_to_rm = curr_shell
+	#set shell dict to reflect empty position
+	ammo_positions[shell_array.find(shell)] = GameState.Ammo.None
+	#set ammo code to reflect empty pos
+	ammo_code[shell_array.find(shell)] = '0'
+	#set shell array to reflect empty pos
+	shell_array[shell_array.find(shell)] = null
+	#set holding_shell
+	owner.get_node("Players/Loader/Camera").holding_shell = true
+	#set active_shell
+	if not next_shell():
+		prev_shell()
+	#animate shell leaving bin
+	tween.interpolate_property(curr_shell, "translation:y", curr_shell.translation.y, 0.2, 1, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+	tween.start()
+	yield(get_tree().create_timer(1), "timeout")
+	#animate shell going to camera
+	var camera = owner.get_node("Players/Loader/Camera/OuterGimbal/InnerGimbal/ClippedCamera")
+	shell.remove_child(curr_shell)
+	
+	var old_pos = curr_shell.get_global_transform().origin
+	camera.add_child(curr_shell)
+	curr_shell.global_transform.origin = camera.get_node("RoundPos").global_transform.origin
+	
+	tween.interpolate_property(curr_shell, "translation", curr_shell.translation, camera.get_node("RoundPos").translation, 2, Tween.TRANS_BACK, Tween.EASE_OUT)
+	tween.interpolate_property(curr_shell, "rotation_degrees", curr_shell.rotation_degrees, camera.get_node("RoundPos").rotation_degrees, 2, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+	tween.start()
 
-func next_shell():
-	var curr_index = shell_array.find(active_shell)
-	if (curr_index + 1) < ammo_code.length():
-		lower(active_shell)
-		active_shell = shell_array[curr_index + 1]
-		lift(active_shell)
-		print(shell_array.find(active_shell))
+func add_shell(pos, type):
+	ammo_positions[pos] = type
 
 func get_crosshair_tex():
+	if owner.get_node("Players/Loader/Camera").holding_shell:
+		return smoke_tex
 	var type = decode(ammo_code[shell_array.find(active_shell)])
-	print("Type: " + String(type))
 	if type == GameState.Ammo.HE:
 		return he_tex
 	elif type == GameState.Ammo.HEAT:
@@ -133,6 +176,7 @@ func get_crosshair_tex():
 		return apcr_tex
 	elif type == GameState.Ammo.Smoke:
 		return smoke_tex
-	
+
 func interact():
-	pass
+	if owner.get_node("Players/Loader/Camera").holding_shell == false:
+		remove_shell(active_shell)
