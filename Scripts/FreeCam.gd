@@ -9,7 +9,7 @@ onready var MapLabel = $Editor/Panel/Map
 onready var SiteLabel = $Editor/Panel/Site
 onready var ItemsButton = $Editor/ItemsButton
 
-onready var terrainmmi = [] #To be fixed later, POC
+#onready var terrainmmi = [] #To be fixed later, POC
 
 var enabled = false
 var move_fwd = 0.0
@@ -46,8 +46,10 @@ func _ready():
 		site_button.add(R.Map.sites[i], i)
 	for i in R.Items:
 		ItemsButton.add_item(R.Items[i][1],i)
-	for i in R.TerrainMMI.get_children():
-		terrainmmi.append(i)
+#	for i in R.TerrainMMI.get_children():
+#		terrainmmi.append(i)
+#		i.multimesh.instance_count = 9999
+	
 	
 func _input(event):
 	if enabled and not panel.visible and not event.is_action_pressed("ui_cancel"): #only exists to not handle showing mouse so you can exit game
@@ -108,13 +110,7 @@ func _input(event):
 		elif Input.is_action_just_released("action"):
 			is_painting = false
 					
-func paint(c_pos):
-	for i in range(25):
-		var pos = c_pos + Vector3(rand_range(-100,100),0,rand_range(-100,100))
-		pos = R.FloorFinder.floor_at_point(pos)
-		var rn = int(rand_range(0,terrainmmi.size()))
-		terrainmmi[rn].multimesh.set_instance_transform(terrainmmi[rn].multimesh.visible_instance_count,Transform(Basis.IDENTITY,pos))
-		terrainmmi[rn].multimesh.visible_instance_count += 1
+
 					
 
 #func add_tree():
@@ -123,7 +119,7 @@ func paint(c_pos):
 
 func get_ground(position):
 	var from = $Camera.project_ray_origin(position)
-	var to = from + $Camera.project_ray_normal(position) * 1000
+	var to = from + $Camera.project_ray_normal(position) * 5000
 	var space_state = get_world().direct_space_state
 	return space_state.intersect_ray(from,to)
 
@@ -142,7 +138,7 @@ func _process(delta):
 		timer -= delay
 		R.Map.check_area(global_transform.origin,true)
 	if is_painting:
-		paint(paint_pos)
+		R.TerrainMMI.paint(paint_pos)
 
 
 func _unhandled_key_input(event): #Trying something different
