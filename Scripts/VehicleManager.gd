@@ -36,11 +36,10 @@ func _process(_delta):
 		timer -= 0.1
 	if Input.is_action_just_pressed("reset_vehicle"):
 		reset_tank(vehicle)
-	
-	if randf() < 0.001: #Randome plane random direction
+
+	if randf() < 0.005: #Randome plane random direction
 		var stuka = R.Stuka.instance()
-		stuka.translation = Vector3(rand_range(-1000,1000),400,rand_range(-1000,1000))
-		stuka.rotation.y = randf()*TAU
+		stuka.translation = Vector3(rand_range(-1000,1000),100,rand_range(-1000,1000))
 		R.VPlanes.add_child(stuka)
 
 func reset_tank(v): #should be part of the vehicle

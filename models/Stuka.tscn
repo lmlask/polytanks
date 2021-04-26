@@ -45,3 +45,11 @@ material/6 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="MeshInstance/StaticBody"]
 shape = SubResource( 2 )
+
+[node name="FwdRay" type="RayCast" parent="MeshInstance"]
+enabled = true
+cast_to = Vector3( 0, 0, 250 )
+
+[node name="DownRay" type="RayCast" parent="."]
+enabled = true
+cast_to = Vector3( 0, -100, 0 )

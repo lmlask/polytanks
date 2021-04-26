@@ -56,6 +56,7 @@ func _input(event):
 		get_tree().set_input_as_handled()
 	if Input.is_action_just_pressed("F4"):
 		panel.visible = !panel.visible
+		GameState.show_mouse()
 #		R.Map.update_locations()
 #		R.Map.update_items()
 	if Input.is_action_just_pressed("F3"):
@@ -102,9 +103,9 @@ func _input(event):
 			var result = get_ground(event.position)
 			if result.has("collider"):
 				if not paint:
-					selected = result.collider.owner
 					if selected:
 						R.Map.update_item(selected)
+					selected = result.collider.owner
 				else:
 					is_painting = true
 		elif Input.is_action_just_released("action"):
