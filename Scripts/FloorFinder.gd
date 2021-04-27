@@ -6,7 +6,7 @@ onready var ray = $RayCast
 func _ready():
 	pass # Replace with function body.
 
-func find_floor(tank, pos = Vector3.ZERO):
+func find_floor(tank, pos = Vector3.ZERO): #for tanks
 	ray.enabled = true
 	if pos == Vector3.ZERO:
 		ray.translation = Vector3(rand_range(-50,50),500,rand_range(-50,50))
@@ -20,7 +20,7 @@ func find_floor(tank, pos = Vector3.ZERO):
 #		print(ray.get_collision_normal())
 		var tbz = tank.transform.basis.z
 		var tbx = tank.transform.basis.x
-		var tsf = Transform.looking_at(ray.get_collision_normal(),Vector3(1,0,0))#.rotated(Basis.IDENTITY.z,PI/2)
+		var tsf = Transform.looking_at(ray.get_collision_normal(),Vector3(1,0,0))#.rotated(Basis.IDENTITY.z,PI/2) #this is wierd, why did i do it this way?
 		tsf = tsf.rotated(tsf.basis.x,-PI/2)
 		tsf.basis.z = tbz
 		tsf.basis.x = tbx
@@ -31,12 +31,12 @@ func find_floor(tank, pos = Vector3.ZERO):
 		tsf.origin = ray.get_collision_point()
 		set_xform(tank,tsf)
 
-func find_floor2(building:Spatial, rot = true):
+func find_floor2(building:Spatial, rot = false): #for items, changed default to false
 	ray.translation = building.global_transform.origin + Vector3(0,500,0)
 	ray.force_raycast_update()
 	if ray.is_colliding():
 #		var tsf = Transform.looking_at(ray.get_collision_normal(),Vector3(1,0,0))
-		var tsf = Transform.looking_at(Vector3(0,1,0),Vector3(1,0,0))
+		var tsf = Transform.looking_at(Vector3(0,1,0),Vector3(1,0,0)) #this is wierd, why did i do it this way?
 		tsf = tsf.rotated(tsf.basis.x,-PI/2)
 		if rot:
 			building.get_child(0).rotation.y = randf()*TAU #dont use get_child(0)
