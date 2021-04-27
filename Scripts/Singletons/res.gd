@@ -9,6 +9,7 @@ onready var ManNetwork = Root.get_node("NetworkManager")
 onready var GUI = Root.get_node("ViewportContainer/View/GUI")
 onready var VTanks = Root.get_node("Vehicles/Tanks") #V for Vehciels ??? maybe N for Node NVTanks
 onready var VPlanes = Root.get_node("Vehicles/Planes") #V for Vehciels ??? maybe N for Node NVTanks
+onready var VWheeled = Root.get_node("Vehicles/Wheeled") #V for Vehciels ??? maybe N for Node NVTanks
 onready var NoiseTex = Map.get_node("NoiseTexture")
 onready var Lobby = Root.get_node("Lobby")
 onready var TerrainMMI = Map.get_node("TerrainMMI")
@@ -39,6 +40,7 @@ onready var Bush01 = preload("res://models/terrain/Bush01.scn")
 
 
 onready var Stuka = preload("res://models/Stuka.tscn")
+onready var OpalTruck = preload("res://models/opal_truck.tscn")
 
 onready var SiteCentre = preload("res://models/SiteCenter.tscn")
 onready var DebugUI = preload("res://Scenes/DebugUI.tscn")

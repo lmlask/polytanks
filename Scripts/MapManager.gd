@@ -219,16 +219,16 @@ func terrain_complete(data):
 	for i in LocsNode.get_children():
 #		print(i.name)
 		if i.is_in_group("loc"):
-			R.FloorFinder.find_floor2(i,false)
+			R.FloorFinder.find_floor2(i)
 	for j in LocsNode.get_children():
 		for i in j.get_node("Center").get_children():
 #		for i in j.get_node("Center").get_children():
 			if i.is_in_group("item"): #Fix this up, sort buildings/items or group them something better then "item"
 				grid = (i.global_transform.origin/1000).snapped(Vector3(1,10,1))
 				if grid == data:
-					R.FloorFinder.find_floor2(i,false)
+					R.FloorFinder.find_floor2(i)
 #	for i in SitesNode.get_children():
-#		R.FloorFinder.find_floor2(i,false)
+#		R.FloorFinder.find_floor2(i)
 
 func add_tiles(pos,size = rough_size):
 	for i in tile_offset:
@@ -248,7 +248,8 @@ func generate_map(mesh):
 			mutex.unlock()
 
 func _exit_tree():
-	thread_update.wait_to_finish()
+	if thread_update.is_active():
+		thread_update.wait_to_finish()
 
 func show_locations():
 	while LocsNode.get_child_count():
@@ -268,7 +269,7 @@ func show_location(i):
 		yield(get_tree(),"idle_frame")
 	sc.get_node("Center/CenterMesh").hide()
 	sc.name = locations[i][2]+"-"+str(i)
-	R.FloorFinder.find_floor2(sc, false)
+	R.FloorFinder.find_floor2(sc)
 
 func remove_locations():
 	for i in LocsNode.get_children():
@@ -332,7 +333,7 @@ func add_items():
 					node.transform.origin = Vector3(items[i][2].x,0,items[i][2].y)
 					node.get_child(0).rotation.y = items[i][3]
 					lnode.add_child(node)
-					R.FloorFinder.find_floor2(node, false)
+					R.FloorFinder.find_floor2(node)
 					
 #					print(lnode)
 #					for ln in LocsNode.get_children():

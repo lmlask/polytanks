@@ -137,7 +137,7 @@ func _process(delta):
 			selected.transform.origin -= transform.basis.x * move.rotated(Vector3.UP, -selected.get_parent().rotation.y-PI/2).x * delta * move_speed
 			selected.transform.origin -= transform.basis.z * move.rotated(Vector3.UP, -selected.get_parent().rotation.y-PI/2).z * delta * move_speed
 		selected.get_child(0).rotation.y += move.y * delta * move_speed / 10 #dont use get_child(0) fix it!!!
-		R.FloorFinder.find_floor2(selected, false)
+		R.FloorFinder.find_floor2(selected)
 	timer += delta
 	if timer > delay:
 		timer -= delay

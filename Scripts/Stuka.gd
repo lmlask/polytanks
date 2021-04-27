@@ -1,6 +1,6 @@
 extends Spatial
 
-var life = 30
+var life:float = 30
 onready var FwdRay = $MeshInstance/FwdRay
 onready var DownRay = $DownRay
 onready var plane = $MeshInstance
@@ -13,8 +13,6 @@ func _ready():
 	plane.rotation.y = randf()*TAU
 	plane.rotation.z = rand_range(-PI/3, PI/3)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	timer +=delta
 	if timer > delay:

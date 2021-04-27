@@ -37,10 +37,14 @@ func _process(_delta):
 	if Input.is_action_just_pressed("reset_vehicle"):
 		reset_tank(vehicle)
 
-	if randf() < 0.005: #Randome plane random direction
+	#add planes
+	if randf() < 0.01: #Randome plane random direction
 		var stuka = R.Stuka.instance()
 		stuka.translation = Vector3(rand_range(-1000,1000),100,rand_range(-1000,1000))
 		R.VPlanes.add_child(stuka)
+		var opaltruck = R.OpalTruck.instance()
+		opaltruck.translation = Vector3(rand_range(-100,100),0,rand_range(-100,100))
+		R.VWheeled.add_child(opaltruck)
 
 func reset_tank(v): #should be part of the vehicle
 	v.linear_velocity = Vector3.ZERO
