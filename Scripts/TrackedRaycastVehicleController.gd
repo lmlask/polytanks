@@ -81,7 +81,7 @@ func handleTankDrive(_delta) -> void:
 
 
 func _ready() -> void:
-	if external_only:
+	if external_only and GameState.InGame:
 		$Interior.queue_free()
 	randomize()
 	rnd_power = rand_range(10,30)
