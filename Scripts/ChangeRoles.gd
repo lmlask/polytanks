@@ -15,7 +15,7 @@ func setup_panel():
 		n.queue_free()
 	for i in GameState.Role.size():
 		var b = $Button.duplicate()
-		var nid = get_tree().get_network_unique_id()
+#		var nid = get_tree().get_network_unique_id()
 		b.text = GameState.Role.keys()[i]
 		b.role = i
 		if GameState.roles.has(i):

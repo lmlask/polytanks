@@ -24,7 +24,7 @@ func interact():
 		tween.start()
 		state = "closed"
 
-func _on_Tween_tween_completed(object, key):
+func _on_Tween_tween_completed(object, _key):
 	if object == hatch:
 		if hatch.rotation_degrees.x == 0:
 			camera.mode = "pan"

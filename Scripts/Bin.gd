@@ -208,7 +208,7 @@ func remove_shell(shell):
 	#active shell remains the same, active shell index remains the same
 
 	#animate shell going to camera
-	var camera = owner.get_node("Players/Loader/Camera/OuterGimbal/InnerGimbal/ClippedCamera")
+	camera = owner.get_node("Players/Loader/Camera/OuterGimbal/InnerGimbal/ClippedCamera") #? A seperate camera or the same one, this was called as a new camera
 	shell.remove_child(curr_shell)
 	camera.call_deferred("add_child", curr_shell)
 	
@@ -216,23 +216,23 @@ func remove_shell(shell):
 	tween.interpolate_property(curr_shell, "rotation_degrees", curr_shell.rotation_degrees, camera.get_node("RoundPos").rotation_degrees, 2, Tween.TRANS_CUBIC, Tween.EASE_OUT)
 	tween.start()
 
-func add_shell(pos):
+func add_shell(_pos):
 	#TODO: add shell code
 	pass
 
 func get_crosshair_tex():
 	if owner.get_node("Players/Loader/Camera").holding_shell:
 		return smoke_tex
-	var type = decode(ammo_code[shell_array.find(active_shell)])
-	if type == GameState.Ammo.HE:
+	var type_ = decode(ammo_code[shell_array.find(active_shell)]) #CHECK, is this type scoped correctly, type already exists in this class
+	if type_ == GameState.Ammo.HE:
 		return he_tex
-	elif type == GameState.Ammo.HEAT:
+	elif type_ == GameState.Ammo.HEAT:
 		return heat_tex
-	elif type == GameState.Ammo.APC:
+	elif type_ == GameState.Ammo.APC:
 		return apc_tex
-	elif type == GameState.Ammo.APCR:
+	elif type_ == GameState.Ammo.APCR:
 		return apcr_tex
-	elif type == GameState.Ammo.Smoke:
+	elif type_ == GameState.Ammo.Smoke:
 		return smoke_tex
 
 func interact():

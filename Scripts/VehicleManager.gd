@@ -107,7 +107,7 @@ remote func get_remote_tanks():
 		var nid = get_tree().get_rpc_sender_id()
 		rpc_id(nid, "add_tank", vehicle.translation, GameState.tank)
 
-remote func add_tank(t,tid):
+remote func add_tank(_t,tid):
 #	print("starting remote tank")
 	if R.VTanks.has_node(str(tid)): #Dont add tank if one exists
 		return
@@ -128,7 +128,7 @@ remote func add_tank(t,tid):
 		tank.get_node("Players").queue_free()
 
 func load_intro_tanks():
-	for i in range(5):
+	for _i in range(2):
 		add_intro_tank()
 	
 #	$"../CameraRig"._camTarget = tanks[rand_range(0,tanks.size())]
