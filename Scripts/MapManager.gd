@@ -320,7 +320,7 @@ func update_item(i):
 
 func add_items():
 	show_locations()
-	for wait in range(5):
+	for wait in range(10):
 		yield(get_tree(),"idle_frame")
 	for l in locations:
 		if locations[l][0] == map:

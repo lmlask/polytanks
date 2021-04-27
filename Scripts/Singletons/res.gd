@@ -29,14 +29,13 @@ onready var BerHouseT2 = preload("res://models/BerberHouse02_v2.tscn")
 onready var BerHouseT3 = preload("res://models/BerberHouse03_v2.tscn")
 onready var BerHouseT4 = preload("res://models/BerberHouse04_v2.tscn")
 onready var Grass01 = preload("res://models/grass01.tscn")
-onready var Tree01_shape = preload("res://models/terrain/tree01_shape.tscn") #sperate scene not intended, to be fixed, see other incorrect tree01 and stuff
 
-onready var Tree01 = preload("res://models/terrain/Tree01.scn") #not intended, to be fixed
-onready var Tree02 = preload("res://models/terrain/Tree02.scn") #have a consistent single scene type not
-onready var Tree03 = preload("res://models/terrain/Tree03.scn") #these are wrong
-onready var Rock01 = preload("res://models/terrain/Rock01.scn")
-onready var Rock02 = preload("res://models/terrain/Rock02.scn")
-onready var Bush01 = preload("res://models/terrain/Bush01.scn")
+onready var Tree01 = preload("res://models/terrain/tree01.tscn") #not intended, to be fixed
+onready var Tree02 = preload("res://models/terrain/tree02.tscn") #have a consistent single scene type not
+onready var Tree03 = preload("res://models/terrain/tree03.tscn") #these are wrong
+onready var Rock01 = preload("res://models/terrain/rock01.tscn")
+onready var Rock02 = preload("res://models/terrain/rock02.tscn")
+onready var Bush01 = preload("res://models/terrain/bush01.tscn")
 
 
 onready var Stuka = preload("res://models/Stuka.tscn")
@@ -52,13 +51,18 @@ onready var Items = {0:[VWKWagen,"K Wagen"],
 	4:[BerHouseT4, "Ber House T 4"],
 	5:[Grass01, "Grass 01"],
 	6:[MHouse, "WhiteHouse"],
-	7:[Tree01_shape, "Tree"]
+	7:[Tree01, "Tree Tall"],
+	8:[Tree02, "Tree Medium"],
+	9:[Tree03, "Tree Small"],
+	10:[Rock02, "Rock 01"],
+	11:[Rock02, "Rock 02"],
+	12:[Bush01, "Bush small"],
 	}
 
-onready var EnvItems = {0:[Tree01,"Tree 01"], #all wrong
-	1:[Tree02,"Tree 02"],
-	2:[Tree03,"Tree 03"],
-	3:[Rock01,"Rock 01"],
-	4:[Rock02,"Rock 02"],
-	5:[Bush01,"Bush 01"]
-	}
+#onready var EnvItems = {0:[Tree01,"Tree 01"], #all wrong
+#	1:[Tree02,"Tree 02"],
+#	2:[Tree03,"Tree 03"],
+#	3:[Rock01,"Rock 01"],
+#	4:[Rock02,"Rock 02"],
+#	5:[Bush01,"Bush 01"]
+#	}
