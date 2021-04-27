@@ -3,8 +3,8 @@ extends Node
 var MMIs = {} #key = ID, 0=MMI node
 var MMI_items = {} #key = location, 0=instance id
 
-func _ready():
-	return #Too be changed
+#func _ready():
+#	return #Too be changed
 #	for i in R.EnvItems:
 #		var MMI = MultiMeshInstance.new()
 #		MMI.multimesh = MultiMesh.new()
@@ -15,8 +15,8 @@ func _ready():
 #		MMIs[i] = [MMI]
 #		add_child(MMI)
 
-func paint(c_pos):
-	return #Too be changed
+#func paint(c_pos):
+#	return #Too be changed
 #	for i in range(25):
 #		var pos = c_pos + Vector3(rand_range(-100,100),0,rand_range(-100,100))
 #		pos = R.FloorFinder.floor_at_point(pos)

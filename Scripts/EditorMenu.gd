@@ -23,12 +23,12 @@ func _on_Rename_pressed():
 
 func _on_Delete_pressed():
 	if item.is_in_group("site"):
-		R.Map.sites.erase(item.id)
+		var _err = R.Map.sites.erase(item.id)
 	elif item.is_in_group("item"):
-		R.Map.items.erase(item.id)
+		var _err = R.Map.items.erase(item.id)
 		print(R.Map.items)
 	elif item.is_in_group("loc"):
-		R.Map.locations.erase(item.id)
+		var _err = R.Map.locations.erase(item.id)
 	item.queue_free()
 	hide()
 
@@ -50,5 +50,5 @@ func _on_Cancel_pressed():
 	hide()
 
 
-func _on_Name_text_changed(new_text):
+func _on_Name_text_changed(_new_text):
 	get_tree().set_input_as_handled()

@@ -43,7 +43,7 @@ var turning = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if state == "ON":
-		engine_sfx.stream == idle1_sfx
+		engine_sfx.stream = idle1_sfx
 		engine_sfx.play()
 		
 func _process(delta):
@@ -185,7 +185,7 @@ func manageRPM(delta):
 		#LERP RPM
 		RPM = lerp(RPM, targetRPM, delta*2)
 
-func manageEnginePower(delta):
+func manageEnginePower(_delta):
 	if state == "OFF" or state == "SHUTTING DOWN":
 		enginePower = 0
 	elif state == "ON":

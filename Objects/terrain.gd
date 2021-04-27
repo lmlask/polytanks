@@ -6,7 +6,7 @@ extends Spatial
 var mat:Material = preload("res://Objects/hills map.tres")
 var noise = R.NoiseTex.texture.noise
 var flat = false
-var tile_pos:Vector3 = Vector3.INF
+#var tile_pos:Vector3 = Vector3.INF #Does not seem to be needed
 
 #var height = true #heightmap
 #var flats = [Vector3(0,0,0),Vector3(1,0,1),Vector3(1,0,0),Vector3(1,0,2),Vector3(1,0,3)] #define some flat areas
@@ -50,7 +50,7 @@ func _ready():
 func add_tile(tile_pos,mesh): 
 	var tile = $Tile.duplicate()
 	tile.translation = (tile_pos)*1000-Vector3(500,0,500)
-	var tile_mesh = create_tile_mesh(tile,tile_pos,mesh)
+	var tile_mesh = create_tile_mesh(tile,mesh)
 	tile_mesh.surface_set_material(0, mat)
 	mutex.lock()
 	tile.mesh = tile_mesh
@@ -62,8 +62,8 @@ func add_tile(tile_pos,mesh):
 	tile.show()
 	return tile
 
-func update_tile(tile_pos,mesh,tile_node):
-	var tile_mesh = create_tile_mesh(tile_node,tile_pos,mesh)
+func update_tile(mesh,tile_node):
+	var tile_mesh = create_tile_mesh(tile_node,mesh)
 	tile_mesh.surface_set_material(0, mat)
 	mutex.lock()
 	tile_node.mesh = tile_mesh
@@ -71,7 +71,7 @@ func update_tile(tile_pos,mesh,tile_node):
 		tile_node.get_node("StaticBody/CollisionShape").shape = tile_mesh.create_trimesh_shape()
 	mutex.unlock()
 	
-func create_tile_mesh(tile, tile_pos,meshx):
+func create_tile_mesh(tile, meshx):
 #	tile_pos = (tile.translation/1000).snapped(Vector3(1,10,1))
 #	for i in flats:
 #		if tile_pos == i and R.Map.map == 2:
@@ -142,7 +142,7 @@ func get_noise(tile, vec2):
 	var vec_offset = Vector2(tile.translation.x,tile.translation.z)
 	var n = noise.get_noise_2dv(vec2+vec_offset)/10.0+0.05
 	vec2 = (vec2+vec_offset)/R.Map.fine_size+Vector2(1024,1024)
-	vec2 = Vector2(clamp(vec2.x,0,2048),clamp(vec2.y,0,2048))
+	vec2 = Vector2(clamp(vec2.x,0,2047),clamp(vec2.y,0,2047))
 	image.lock()
 	var col = image.get_pixelv(vec2)
 	image.unlock()

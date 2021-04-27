@@ -3,5 +3,5 @@ extends Label
 #onready var tank = get_parent().get_parent().get_node("PanzerIV")
 #onready var tank = get_parent().vehicle
 
-func _process(delta):
+func _process(_delta):
 	text = "Speed: " + String(int(owner.vehicle.speed))

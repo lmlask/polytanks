@@ -109,7 +109,7 @@ func change_roles(i):
 remote func update_roles(r):
 	roles = r
 
-remotesync func set_driver_id(tank, id):
+remotesync func set_driver_id(tankid, id):
 #	print("set driver",tank,id)
 #	DriverID[tank] = id
 #	if not role == Role.Driver:
@@ -120,7 +120,7 @@ remotesync func set_driver_id(tank, id):
 #		if node is RigidBody:#!!!! DONT DO THIS FIX IT
 #			node.name = str(id) #This however is correct, I think
 	#			print(node.name)
-	DriverID[tank] = id
+	DriverID[tankid] = id
 #	print(DriverID)
 
 func setup_debug():

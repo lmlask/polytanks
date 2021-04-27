@@ -20,7 +20,7 @@ func _ready():
 	complete_3 = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if shifting:
 		pass
 
@@ -45,10 +45,10 @@ func shift(nextGear):
 	else:
 		rot = 10
 	
-	step1(trans)
+	step1()
 
 
-func step1(trans):
+func step1(): #confusing shadow
 	tween.interpolate_property(self, "rotation_degrees", rotation_degrees, Vector3(0, 0, 0), time, trans, Tween.EASE_IN_OUT)
 	tween.start()
 	

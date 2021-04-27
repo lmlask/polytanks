@@ -16,10 +16,10 @@ func _on_Button_gui_input(event):
 				owner.menu.rect_position = get_global_mouse_position()
 				print(event.position)
 				
-func add(item,id):
+func add(item,newid):
 	var but = self.duplicate()
-	but.id = id
-	but.text = item +"-"+ str(id)
+	but.id = newid
+	but.text = item +"-"+ str(newid)
 	get_parent().add_child(but)
 	but.owner = owner
 	but.show()

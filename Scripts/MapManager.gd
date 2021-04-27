@@ -41,7 +41,7 @@ func _ready():
 	$DirectionalLight.rotation.x = -0.5
 	$DirectionalLight.light_energy = 1
 
-	connect("terrain_completed", self, "terrain_complete")
+	var _err = connect("terrain_completed", self, "terrain_complete")
 #	maps[0] = preload("res://Objects/TestLevel.tscn")
 #	maps[1] = preload("res://Objects/CityLevel.tscn")
 #	maps[2] = preload("res://Objects/hills map.tscn")
@@ -49,7 +49,7 @@ func _ready():
 	
 	#Create a plane used for terrain
 	map_thread.start(self,"create_mesh", fine_size)
-	create_mesh(rough_size)
+	var _mesh = create_mesh(rough_size)
 
 func load_files():
 	var file = File.new()
@@ -169,7 +169,7 @@ func _process(delta):
 		$DirectionalLight.light_energy = max(0.0,sin(time_of_day))
 	
 	
-func check_area(pos,large = false):
+func check_area(pos):
 	var size = fine_size
 	if not tilemesh.has(size):
 		return
@@ -209,7 +209,7 @@ func update_tile(data):
 	mutex.lock()
 	maptiles_size[pos] = size
 	mutex.unlock()
-	MapNode.update_tile(pos,tilemesh[size],maptiles[pos])
+	MapNode.update_tile(tilemesh[size],maptiles[pos])
 	emit_signal("terrain_completed",pos)
 	thread_update.call_deferred("wait_to_finish")
 	
@@ -234,13 +234,14 @@ func terrain_complete(data):
 #	for i in SitesNode.get_children():
 #		R.FloorFinder.find_floor2(i)
 
-func add_tiles(pos,size = rough_size):
-	for i in tile_offset:
-		if not maptiles.has(pos+i):
-			mutex.lock()
-			maptiles[pos+i] =  MapNode.add_tile(pos+i,tilemesh[size])
-			maptiles_size[pos+i] = size
-			mutex.unlock()
+#func add_tiles(pos,size = rough_size): #Not used?
+#	print("is this used?")
+#	for i in tile_offset:
+#		if not maptiles.has(pos+i):
+#			mutex.lock()
+#			maptiles[pos+i] =  MapNode.add_tile(pos+i,tilemesh[size])
+#			maptiles_size[pos+i] = size
+#			mutex.unlock()
 		
 func generate_map(mesh):
 	for x in range(-5,5):
@@ -320,7 +321,7 @@ func update_item(i):
 
 func add_items():
 	show_locations()
-	for wait in range(10):
+	for _wait in range(10):
 		yield(get_tree(),"idle_frame")
 	for l in locations:
 		if locations[l][0] == map:

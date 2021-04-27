@@ -85,6 +85,6 @@ func _on_Area_body_entered(body):
 	if life > 0:
 		hit(body)
 	
-func hit(target):
+func hit(_target):
 	print("noooo")
 	life = -1

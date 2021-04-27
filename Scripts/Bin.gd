@@ -78,7 +78,7 @@ func _ready():
 	active_shell = shell_array[0]
 	active_pos = positions_array[find_empty_pos()]
 
-func _process(delta):
+func _process(_delta):
 	if not GameState.role == GameState.Role.Loader:
 		return
 	#find active bin

@@ -12,7 +12,7 @@ func _process(delta):
 		
 	elif state == "return":
 		if translation.z >= 2.286:
-			translation.z == 2.286
+			translation.z = 2.286
 			state = "idle"
 		else:
 			translation.z = lerp(translation.z, 2.3, delta*3)

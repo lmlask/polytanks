@@ -12,7 +12,7 @@ var tanks = []
 var timer:float = 0.0
 #var players = {}
 
-var start = [Vector3(20,0,-12), Vector3(-12,0,-12),Vector3(6,0,-16),Vector3(14,0,-16),Vector3(14,0,-8)] #simple solution
+var start_pos = [Vector3(20,0,-12), Vector3(-12,0,-12),Vector3(6,0,-16),Vector3(14,0,-16),Vector3(14,0,-8)] #simple solution
 
 #var camrig #do everything to do with this differently
 
@@ -55,7 +55,7 @@ func reset_tank(v): #should be part of the vehicle
 		
 
 func start():
-	R.Map.load_map(GameState.map,start[GameState.tank])
+	R.Map.load_map(GameState.map,start_pos[GameState.tank])
 	vehicle = R.VTPzIV.instance()
 	if tanks.size() > 0:
 		for i in tanks:
@@ -74,7 +74,7 @@ func start():
 #	vehicle.translation = start[GameState.tank]
 	vehicle.auto = false #set manual control
 	if GameState.role == GameState.Role.Driver:
-		FloorFinder.find_floor(vehicle,start[GameState.tank])
+		FloorFinder.find_floor(vehicle,start_pos[GameState.tank])
 #	else:
 #		vehicle.mode = RigidBody.MODE_KINEMATIC
 	vehicle.transform.origin += vehicle.transform.basis.y #Fix a weird bug and/or normals are not calcuated correctly

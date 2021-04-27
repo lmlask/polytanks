@@ -141,7 +141,7 @@ func _process(delta):
 	timer += delta
 	if timer > delay:
 		timer -= delay
-		R.Map.check_area(global_transform.origin,true)
+		R.Map.check_area(global_transform.origin)
 	if is_painting:
 		R.TerrainMMI.paint(paint_pos)
 

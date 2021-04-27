@@ -15,7 +15,7 @@ func _process(delta):
 		state = "return"
 	elif state == "return":
 		if $Breech.translation.z >= 0:
-			$Breech.translation.z == 0
+			$Breech.translation.z = 0
 			state = "idle"
 		else:
 			$Breech.translation.z = lerp($Breech.translation.z, 0, delta*3)

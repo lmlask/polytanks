@@ -36,7 +36,7 @@ func manageCamera():
 	if Input.is_action_just_pressed("action") and get_parent().get_node("Camera/OuterGimbal/InnerGimbal/ClippedCamera").current and get_parent().get_node("Camera").aimedObject:
 		get_parent().get_node("Camera").aimedObject.interact()
 	
-func _physics_process(delta):
+func _physics_process(_delta):
 	if not GameState.role == GameState.Role.Driver:
 		return
 	manageSteeringPhysics() #To be fixed

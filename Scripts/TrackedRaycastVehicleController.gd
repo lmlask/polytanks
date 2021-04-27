@@ -48,7 +48,7 @@ func next_transform(t:Transform):
 	next_xform = t
 	prev_xform = transform
 
-func handleTankDrive(delta) -> void:
+func handleTankDrive(_delta) -> void:
 	for ray in rayElements:
 		if engine.clutch == 0:
 			if engine.gear >= 0:
@@ -100,5 +100,5 @@ func _physics_process(delta) -> void:
 	handleTankDrive(delta)
 	calcStats(delta)
 
-func calcStats(delta):
+func calcStats(_delta):
 	speed = 3.6 * self.transform.basis.xform_inv(self.linear_velocity).z
