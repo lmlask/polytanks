@@ -19,8 +19,8 @@ func manageCamera():
 
 func manageShells():
 	if Input.is_action_just_pressed("prev_shell"):
-		if get_parent().get_node("Camera").aimedObject.name.substr(0, 3) == "Bin":
+		if get_parent().get_node("Camera").aimedObject and get_parent().get_node("Camera").aimedObject.name.substr(0, 3) == "Bin":
 			get_parent().get_node("Camera").aimedObject.prev_shell()
 	elif Input.is_action_just_pressed("next_shell"):
-		if get_parent().get_node("Camera").aimedObject.name.substr(0, 3) == "Bin":
+		if get_parent().get_node("Camera").aimedObject and get_parent().get_node("Camera").aimedObject.name.substr(0, 3) == "Bin":
 			get_parent().get_node("Camera").aimedObject.next_shell()

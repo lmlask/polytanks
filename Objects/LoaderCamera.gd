@@ -7,6 +7,7 @@ onready var apcr = preload("res://Textures/Icons/APCR.png")
 onready var smoke = preload("res://Textures/Icons/dot.png")
 
 var holding_shell = false
+var held_shell_type
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

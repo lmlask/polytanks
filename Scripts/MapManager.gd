@@ -119,7 +119,8 @@ func create_mesh(size)->ArrayMesh:
 	return mesh
 
 func clear_map():
-	thread_update.wait_to_finish()
+	if thread_update.is_active():
+		thread_update.wait_to_finish()
 	if MapNode:
 		MapNode.queue_free()
 	map = null
