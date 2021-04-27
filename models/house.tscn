@@ -23,6 +23,7 @@ mesh = ExtResource( 6 )
 material/0 = null
 
 [node name="StaticBody" type="StaticBody" parent="house_rubble" index="0"]
+collision_layer = 98305
 
 [node name="CollisionShape" type="CollisionShape" parent="house_rubble/StaticBody" index="0"]
 shape = SubResource( 1 )
@@ -34,7 +35,7 @@ shard_template = ExtResource( 4 )
 shard_scene = ExtResource( 3 )
 
 [node name="StaticBody" type="StaticBody" parent="Cube" index="1"]
-collision_layer = 524289
+collision_layer = 622593
 
 [node name="CollisionShape" type="CollisionShape" parent="Cube/StaticBody" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50031, 0 )

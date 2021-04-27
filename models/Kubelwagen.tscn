@@ -3,7 +3,6 @@
 [ext_resource path="res://Shaders/flexible_toon.shader" type="Shader" id=1]
 [ext_resource path="res://Textures/Kubelwagen_v1_DesertCamo_bakedAO_color.png" type="Texture" id=2]
 
-
 [sub_resource type="SpatialMaterial" id=1]
 metallic = 0.5
 roughness = 0.5
@@ -171,6 +170,7 @@ mesh = SubResource( 9 )
 material/0 = SubResource( 3 )
 
 [node name="StaticBody" type="StaticBody" parent="Spatial/wheel_low"]
+collision_layer = 167937
 
 [node name="CollisionShape" type="CollisionShape" parent="Spatial/wheel_low/StaticBody"]
 shape = SubResource( 10 )

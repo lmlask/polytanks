@@ -3,7 +3,6 @@
 [ext_resource path="res://models/grass01.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://Textures/grass01_Color.png" type="Texture" id=2]
 
-
 [sub_resource type="SpatialMaterial" id=1]
 flags_transparent = true
 params_diffuse_mode = 4
@@ -26,6 +25,7 @@ material/0 = SubResource( 1 )
 
 [node name="StaticBody2" type="StaticBody" parent="MeshInstance"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.76353e-10, 0.00231004 )
+collision_layer = 163841
 
 [node name="CollisionShape" type="CollisionShape" parent="MeshInstance/StaticBody2"]
 shape = SubResource( 2 )

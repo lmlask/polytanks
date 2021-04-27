@@ -1,6 +1,6 @@
 extends Spatial
 
-var life:float = 30
+var life:float = 60
 onready var FwdRay = $MeshInstance/FwdRay
 onready var DownRay = $DownRay
 onready var plane = $MeshInstance

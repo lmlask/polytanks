@@ -1,5 +1,6 @@
 extends Spatial
 
+var max_speed = 20
 var auto = true
 var life:float = 60
 onready var truck = $MeshInstance
@@ -17,7 +18,7 @@ func _ready():
 
 func _process(delta):
 	timer +=delta
-	turn_rate = lerp(turn_rate, target_turn_rate, 0.1)
+	turn_rate = lerp(turn_rate, target_turn_rate, 0.05)
 	if timer > delay:
 		timer -= delay
 		delay = rand_range(2,5)
@@ -26,7 +27,9 @@ func _process(delta):
 	life -= delta
 	if life < 0.0:
 		queue_free()
-	translation += truck.transform.basis.x * delta * 25
+	var speed = max_speed-(abs(turn_rate)*5)
+	print(speed)
+	translation += truck.transform.basis.x * delta * speed
 	if LeftR.is_colliding():
 		target_turn_rate = -PI
 		delay = 0.333

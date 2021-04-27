@@ -4,8 +4,6 @@
 [ext_resource path="res://Textures/Berberhouse03_Default_color.png" type="Texture" id=2]
 [ext_resource path="res://Shaders/flexible_toon.shader" type="Shader" id=3]
 
-
-
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 3 )
 shader_param/albedo = Color( 1, 1, 1, 1 )
@@ -41,6 +39,7 @@ material/1 = null
 material/2 = null
 
 [node name="StaticBody" type="StaticBody" parent="MeshInstance"]
+collision_layer = 98305
 
 [node name="CollisionShape" type="CollisionShape" parent="MeshInstance/StaticBody"]
 shape = SubResource( 2 )

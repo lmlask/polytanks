@@ -13,6 +13,7 @@ var mesh25:ArrayMesh = ArrayMesh.new()
 var mesh100:ArrayMesh = ArrayMesh.new()
 var MapNode = null
 var thread_update = Thread.new()
+var map_thread = Thread.new()
 var mutex = Mutex.new()
 var fine_size = 5
 var rough_size = 250
@@ -47,7 +48,6 @@ func _ready():
 #	load_map(0,Vector3.ZERO)
 	
 	#Create a plane used for terrain
-	var map_thread = Thread.new()
 	map_thread.start(self,"create_mesh", fine_size)
 	create_mesh(rough_size)
 
@@ -114,11 +114,15 @@ func create_mesh(size)->ArrayMesh:
 	arrays[ArrayMesh.ARRAY_INDEX] = Idx
 	# Create the Mesh.
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+	mutex.lock()
 	tilemesh[size] = mesh
+	mutex.unlock()
 #	emit_signal("flat_terrain_completed")
 	return mesh
 
 func clear_map():
+	if map_thread.is_active():
+		map_thread.wait_to_finish()
 	if thread_update.is_active():
 		thread_update.wait_to_finish()
 	if MapNode:
