@@ -28,7 +28,6 @@ func _process(delta):
 	if life < 0.0:
 		queue_free()
 	var speed = max_speed-(abs(turn_rate)*5)
-	print(speed)
 	translation += truck.transform.basis.x * delta * speed
 	if LeftR.is_colliding():
 		target_turn_rate = -PI
