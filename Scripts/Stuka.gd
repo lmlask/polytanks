@@ -14,6 +14,8 @@ func _ready():
 	plane.rotation.z = rand_range(-PI/3, PI/3)
 
 func _process(delta):
+	if translation.y < -1000:
+		queue_free()
 	timer +=delta
 	if timer > delay:
 		timer -= delay

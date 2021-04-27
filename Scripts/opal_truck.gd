@@ -17,6 +17,8 @@ func _ready():
 	truck.rotation.y = randf()*TAU
 
 func _process(delta):
+	if translation.y < -1000:
+		queue_free()
 	timer +=delta
 	turn_rate = lerp(turn_rate, target_turn_rate, 0.05)
 	if timer > delay:

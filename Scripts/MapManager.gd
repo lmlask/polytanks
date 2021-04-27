@@ -127,6 +127,12 @@ func clear_map():
 		thread_update.wait_to_finish()
 	if MapNode:
 		MapNode.queue_free()
+	for i in R.VTanks.get_children():
+		i.queue_free()
+	for i in R.VWheeled.get_children():
+		i.queue_free()
+	for i in R.VPlanes.get_children():
+		i.queue_free()
 	map = null
 	prev_tile = Vector3.INF
 	mutex.lock()
@@ -135,6 +141,8 @@ func clear_map():
 	mutex.unlock()
 #	remove_items()
 	remove_locations()
+	for _wait in range(10): #Bad solution to possibly fix a weird bug
+		yield(get_tree(),"idle_frame")
 
 func load_map(i,pos): #Need to add a location
 	clear_map()
