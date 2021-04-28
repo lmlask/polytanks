@@ -273,9 +273,9 @@ func generate_map(mesh):
 			maptiles_size[pos] = rough_size
 			mutex.unlock()
 
-func _exit_tree():
-	if thread_update.is_active():
-		thread_update.wait_to_finish()
+#func _exit_tree():
+#	if thread_update.is_active():
+#		thread_update.wait_to_finish()
 
 func show_locations():
 	while LocsNode.get_child_count():

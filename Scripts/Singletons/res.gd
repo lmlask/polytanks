@@ -39,6 +39,7 @@ onready var Bush01 = preload("res://models/terrain/bush01.tscn")
 
 onready var Stuka = preload("res://models/Stuka.tscn")
 onready var OpalTruck = preload("res://models/opal_truck.tscn")
+onready var CamGunTruck = preload("res://models/camion_gun_truck.tscn")
 
 onready var SiteCentre = preload("res://models/SiteCenter.tscn")
 onready var DebugUI = preload("res://Scenes/DebugUI.tscn")

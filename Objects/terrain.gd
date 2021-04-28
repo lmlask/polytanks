@@ -76,6 +76,8 @@ func update_tile(mesh,tile_node):
 	tile_node.set_aabb()
 	if not inprogress:
 		tile_node.get_node("StaticBody/CollisionShape").shape = tile_mesh.create_trimesh_shape()
+	else:
+		print_debug("this should not happen, means the shape hasnt been updated")
 	mutex.unlock()
 	
 func create_tile_mesh(tile, meshx):

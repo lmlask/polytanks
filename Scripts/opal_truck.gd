@@ -11,6 +11,7 @@ var timer:float = 0
 var delay:float = 1
 var turn_rate:float = 0
 var target_turn_rate:float = 0
+var cam
 
 func _ready():
 	notify(false)
@@ -47,6 +48,10 @@ func _process(delta):
 		var tfs = Transform.looking_at(DownRay.get_collision_normal(),Vector3.RIGHT)
 		tfs = tfs.rotated(tfs.basis.x,-PI/2)
 		transform.basis = tfs.basis.slerp(transform.basis,0.95)
+
+func show_cam():
+	cam.current = true
+	GameState.hide_mouse()
 
 func notify(vis):
 	set_process(vis)

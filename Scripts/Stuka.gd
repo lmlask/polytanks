@@ -8,6 +8,8 @@ var agl_prev = 0.0
 var timer = 0.0
 var delay = 2.0
 var target_bank = 0
+var cam 
+
 
 func _ready():
 #	notify(false)
@@ -45,6 +47,10 @@ func _process(delta):
 	else:
 		plane.rotation.x += delta / 2
 	plane.rotation.x = clamp(plane.rotation.x, -PI/2, PI/4)
+
+func show_cam():
+	cam.current = true
+	GameState.hide_mouse()
 
 func notify(vis):
 	set_process(vis)

@@ -44,8 +44,12 @@ func _process(_delta):
 			R.VPlanes.add_child(stuka)
 		
 		if R.VWheeled.get_child_count() < 50:
-			var opaltruck = R.OpalTruck.instance()
-			R.VWheeled.add_child(opaltruck)
+			var truck
+			if randf() > 0.5:
+				truck = R.OpalTruck.instance()
+			else:
+				truck = R.CamGunTruck.instance()
+			R.VWheeled.add_child(truck)
 		
 		
 func reset_tank(v): #should be part of the vehicle
