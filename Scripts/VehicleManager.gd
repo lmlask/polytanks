@@ -41,10 +41,10 @@ func _process(_delta):
 	if randf() < 0.01: #Randome plane random direction
 		var stuka = R.Stuka.instance()
 		R.VPlanes.add_child(stuka)
-		stuka.translation = Vector3(rand_range(-1000,1000),100,rand_range(-1000,1000))
+		
 		var opaltruck = R.OpalTruck.instance()
 		R.VWheeled.add_child(opaltruck)
-		opaltruck.translation = Vector3(rand_range(-100,100),0,rand_range(-100,100))
+		
 		
 func reset_tank(v): #should be part of the vehicle
 	v.linear_velocity = Vector3.ZERO
@@ -75,8 +75,8 @@ func start():
 	vehicle.auto = false #set manual control
 	if GameState.role == GameState.Role.Driver:
 		FloorFinder.find_floor(vehicle,start_pos[GameState.tank])
-#	else:
-#		vehicle.mode = RigidBody.MODE_KINEMATIC
+	else:
+		vehicle.mode = RigidBody.MODE_KINEMATIC
 	vehicle.transform.origin += vehicle.transform.basis.y #Fix a weird bug and/or normals are not calcuated correctly
 	vehicle.rotate_y(PI) #shouldnt be fixed
 	vehicle.next_transform(vehicle.transform)

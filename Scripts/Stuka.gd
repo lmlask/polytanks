@@ -6,12 +6,18 @@ onready var DownRay = $DownRay
 onready var plane = $MeshInstance
 var agl_prev = 0.0
 var timer = 0.0
-var delay = 1.0
+var delay = 2.0
 var target_bank = 0
 
 func _ready():
-	plane.rotation.y = randf()*TAU
-	plane.rotation.z = rand_range(-PI/3, PI/3)
+#	translation = Vector3(rand_range(-10,10),0,rand_range(-10,10))
+	translation = Vector3(280,0,-1000)
+	R.FloorFinder.find_floor2(self)
+	rotation.y -= PI/2
+	translation.y += 1
+	plane.rotation.y = -0.2
+#	plane.rotation.y = randf()*TAU
+#	plane.rotation.z = rand_range(-PI/3, PI/3)
 
 func _process(delta):
 	if translation.y < -1000:

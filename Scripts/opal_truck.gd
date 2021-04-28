@@ -13,6 +13,7 @@ var turn_rate:float = 0
 var target_turn_rate:float = 0
 
 func _ready():
+	translation = Vector3(rand_range(-1000,100),0,rand_range(-1000,1000))
 	R.FloorFinder.find_floor2(self)
 	truck.rotation.y = randf()*TAU
 
