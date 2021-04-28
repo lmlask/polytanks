@@ -98,6 +98,7 @@ margin_top = 116.0
 margin_right = 888.0
 margin_bottom = 460.0
 grow_horizontal = 2
+focus_mode = 2
 columns = 5
 script = ExtResource( 3 )
 __meta__ = {

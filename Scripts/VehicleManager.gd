@@ -58,8 +58,8 @@ func start():
 	R.Map.load_map(GameState.map,start_pos[GameState.tank])
 	vehicle = R.VTPzIV.instance()
 	if tanks.size() > 0:
-		for i in tanks:
-			i.queue_free() #delete intro tanks
+#		for i in tanks: #handled by mapmanager
+#			i.queue_free() #delete intro tanks
 		tanks.clear()
 	GameState.setup_debug() #fix this, make it optional
 	vehicle.external_only = false
@@ -137,7 +137,7 @@ func load_intro_tanks():
 	cam.canrotx = false
 	
 func add_intro_tank():
-	if tanks.size() < 20: #only add tanks when tanks exists, ie game has started
+	if tanks.size() < 5: #only add tanks when tanks exists, ie game has started
 		var tank = R.VTPzIV.instance()
 		R.VTanks.add_child(tank)
 #		tank.rotate_y(-PI/2)
@@ -145,9 +145,9 @@ func add_intro_tank():
 		FloorFinder.find_floor(tank)
 		tanks.append(tank)
 
-func delete_tank(t):
-	t.queue_free()
-	tanks.erase(t)
+#func delete_tank(t):
+#	t.queue_free()
+#	tanks.erase(t)
 
 #Thinking I should have all vehicles in the some folder with a prefix
 #Re-write it later once different things are added

@@ -126,12 +126,16 @@ func clear_map():
 	if thread_update.is_active():
 		thread_update.wait_to_finish()
 	if MapNode:
+		remove_child(MapNode)
 		MapNode.queue_free()
 	for i in R.VTanks.get_children():
-		i.queue_free()
+		R.VTanks.remove_child(i)
+		i.free()
 	for i in R.VWheeled.get_children():
+		R.VWheeled.remove_child(i)
 		i.queue_free()
 	for i in R.VPlanes.get_children():
+		R.VPlanes.remove_child(i)
 		i.queue_free()
 	map = null
 	prev_tile = Vector3.INF
@@ -148,9 +152,9 @@ func load_map(i,pos): #Need to add a location
 	clear_map()
 	map = i
 	MapNode = R.terrain.instance() #only have the one map
-	add_child(MapNode)
-	generate_map(tilemesh[rough_size])
-	check_area(pos)
+	call_deferred("add_child",MapNode)
+#	generate_map(tilemesh[rough_size])
+#	check_area(pos)
 #	map.get_node("DirectionalLight").show()
 	add_items()
 	#Dont expand on this. the map itself should do this
@@ -189,7 +193,8 @@ func check_area(pos):
 #	for j in tile_offset:
 #		MapNode.add_sites(center+j)
 	
-	
+	if not MapNode.img_loaded:
+		return
 #	return
 	for i in tile_offset:
 		if not maptiles.has(center+i):

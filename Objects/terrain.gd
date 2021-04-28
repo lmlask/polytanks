@@ -19,7 +19,8 @@ var height_map = {0:["res://Textures/greyalpha-16bit.exr","Test map"],
 var height_factor = 200
 
 var image = Image.new()
-var imgdata
+var img_loaded = false
+#var imgdata
 
 #building key in array locations
 #all this needs to be in a file selectable by the map
@@ -42,8 +43,10 @@ var inprogress = false
 
 func _ready():
 	if height_map:
-		image.load(height_map[R.Map.map][0]) 
-		imgdata = image.get_data()
+		image = load(height_map[R.Map.map][0]).get_data()
+		image.lock()
+		img_loaded = true
+#		imgdata = image.get_data()
 #	var imageTex = ImageTexture.new()
 #	imageTex.create_from_image(image,0)
 
@@ -143,9 +146,9 @@ func get_noise(tile, vec2):
 	var n = noise.get_noise_2dv(vec2+vec_offset)/10.0+0.05
 	vec2 = (vec2+vec_offset)/R.Map.fine_size+Vector2(1024,1024)
 	vec2 = Vector2(clamp(vec2.x,0,2047),clamp(vec2.y,0,2047))
-	image.lock()
+#	image.lock()
 	var col = image.get_pixelv(vec2)
-	image.unlock()
+#	image.unlock()
 	n = n*(1-col.a)+col.r*col.a
 #		print(n,"-",col.r,"-",col.a)
 	n *= 1.75
