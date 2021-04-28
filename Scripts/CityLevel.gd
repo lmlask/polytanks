@@ -11,8 +11,9 @@ func _ready():
 	for i in range(10):
 		for j in range(10):
 			var house = get_node("house").duplicate()
+			add_child(house)
 			house.translation.z += 15 * i
 			house.translation.x += 15 * j
-			add_child(house)
+			
 	
 

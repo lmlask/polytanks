@@ -16,8 +16,8 @@ func _ready():
 
 remotesync func explode(pos):
 	var explo = Explosion.instance()
-	explo.global_transform.origin = pos
 	get_parent().add_child(explo) #owner of shell should say where the explosion is
+	explo.global_transform.origin = pos #!!!! Indicating an error here
 	call_deferred("queue_free")
 
 func _physics_process(delta):

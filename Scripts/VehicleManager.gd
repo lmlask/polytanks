@@ -30,7 +30,7 @@ func _process(_delta):
 		if GameState.DriverID[GameState.tank] == get_tree().get_network_unique_id():
 #		if GameState.role == GameState.Role.Driver:
 			rpc("set_pos", vehicle.transform, GameState.tank)
-		if GameState.role == GameState.Role.Gunner:
+		if GameState.role == GameState.Role.Gunner and GameState.InGame:
 			rpc("set_tur", vehicle.Turret.rotation,vehicle.Gun.rotation, str(GameState.tank) )
 #		add_random_tank()
 		timer -= 0.1
@@ -40,12 +40,12 @@ func _process(_delta):
 	#add planes
 	if randf() < 0.01: #Randome plane random direction
 		var stuka = R.Stuka.instance()
-		stuka.translation = Vector3(rand_range(-1000,1000),100,rand_range(-1000,1000))
 		R.VPlanes.add_child(stuka)
+		stuka.translation = Vector3(rand_range(-1000,1000),100,rand_range(-1000,1000))
 		var opaltruck = R.OpalTruck.instance()
-		opaltruck.translation = Vector3(rand_range(-100,100),0,rand_range(-100,100))
 		R.VWheeled.add_child(opaltruck)
-
+		opaltruck.translation = Vector3(rand_range(-100,100),0,rand_range(-100,100))
+		
 func reset_tank(v): #should be part of the vehicle
 	v.linear_velocity = Vector3.ZERO
 	v.angular_velocity = Vector3.ZERO

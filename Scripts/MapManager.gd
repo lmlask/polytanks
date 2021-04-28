@@ -41,7 +41,7 @@ func _ready():
 	$DirectionalLight.rotation.x = -0.5
 	$DirectionalLight.light_energy = 1
 
-	var _err = connect("terrain_completed", self, "terrain_complete")
+	var _err = connect("terrain_completed", self, "terrain_complete", [], CONNECT_DEFERRED)
 #	maps[0] = preload("res://Objects/TestLevel.tscn")
 #	maps[1] = preload("res://Objects/CityLevel.tscn")
 #	maps[2] = preload("res://Objects/hills map.tscn")
@@ -148,7 +148,7 @@ func clear_map():
 	for _wait in range(10): #Bad solution to possibly fix a weird bug
 		yield(get_tree(),"idle_frame")
 
-func load_map(i,pos): #Need to add a location
+func load_map(i,_pos): #Need to add a location
 	clear_map()
 	map = i
 	MapNode = R.terrain.instance() #only have the one map
@@ -278,10 +278,10 @@ func show_locations():
 
 func show_location(i):
 	var sc = R.SiteCentre.instance()
+	LocsNode.add_child(sc)
 	sc.transform = Transform.IDENTITY
 	sc.transform.origin = Vector3(locations[i][3].x,0,locations[i][3].y)
 	sc.get_child(0).rotation.y = locations[i][4]
-	LocsNode.add_child(sc)
 	while not sc.is_inside_tree():
 		print("not in tree")
 		yield(get_tree(),"idle_frame")
@@ -345,12 +345,12 @@ func add_items():
 				if items[i][0] == locations[l][1]:
 					var item = R.Items[items[i][1]]
 					var node = item[0].instance()
+					lnode.add_child(node)
 					node.name = item[1]+"-"+str(l)+"-"+str(i)
 					node.transform = Transform.IDENTITY
 #					node.transform.origin = Vector3(items[i][2].x+locations[l][3].x,0,items[i][2].y+locations[l][3].y)
 					node.transform.origin = Vector3(items[i][2].x,0,items[i][2].y)
 					node.get_child(0).rotation.y = items[i][3]
-					lnode.add_child(node)
 					R.FloorFinder.find_floor2(node)
 					
 #					print(lnode)

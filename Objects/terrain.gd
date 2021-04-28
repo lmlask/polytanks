@@ -60,8 +60,8 @@ func add_tile(tile_pos,mesh):
 	inprogress = true
 	tile.get_node("StaticBody/CollisionShape").shape = tile_mesh.create_trimesh_shape()
 	inprogress = false
-	mutex.unlock()
 	add_child(tile)
+	mutex.unlock()
 	tile.show()
 	return tile
 
