@@ -142,6 +142,21 @@ func decode(i):
 	elif i == "5":
 		return GameState.Ammo.Smoke
 
+func encode(i):
+	if i == GameState.Ammo.None:
+		return "0"
+	elif i == GameState.Ammo.APC:
+		return "1"
+	elif i == GameState.Ammo.APCR:
+		return "2"
+	elif i == GameState.Ammo.HE:
+		return "3"
+	elif i == GameState.Ammo.HEAT:
+		return "4"
+	elif i == GameState.Ammo.Smoke:
+		return "5"
+
+
 func prev_shell():
 	if owner.get_node("Players/Loader/Camera").holding_shell == false:
 		var curr_index = shell_array.find(active_shell)
@@ -176,14 +191,14 @@ func next_shell():
 			active_pos.call_deferred("add_child", shell_scene)
 
 #shell animating funcs
-func lift(shell):
-	var curr_shell = shell.get_child(0)
+func lift(pos):
+	var curr_shell = pos.get_child(0)
 	if type == "v":
 		tween.interpolate_property(curr_shell, "translation:y", curr_shell.translation.y, 0.15, 0.4, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 		tween.start()
 
-func lower(shell):
-	var curr_shell = shell.get_child(0)
+func lower(pos):
+	var curr_shell = pos.get_child(0)
 	if type == "v":
 		tween.interpolate_property(curr_shell, "translation:y", curr_shell.translation.y, 0, 0.4, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 		tween.start()
@@ -217,8 +232,29 @@ func remove_shell(shell):
 	tween.start()
 
 func add_shell(pos):
-	#TODO: add shell code
-	pass
+	var curr_shell = ammo_types[owner.get_node("Players/Loader/Camera").held_shell_type].instance()
+	
+	#set shell dict to reflect new shell
+	ammo_positions[positions_array.find(pos)] = owner.get_node("Players/Loader/Camera").held_shell_type
+	
+	#set ammo code to reflect new shell
+	ammo_code[positions_array.find(pos)] = encode(owner.get_node("Players/Loader/Camera").held_shell_type)
+	
+	#set shell array to reflect empty pos
+	shell_array[positions_array.find(pos)] = curr_shell
+	
+	#set holding_shell
+	owner.get_node("Players/Loader/Camera").holding_shell = false
+	
+	#despawn heldshell and transparency
+	pos.get_child(0).queue_free()
+	camera.get_child(3).queue_free()
+	
+	#active shell
+	active_shell = pos
+	active_pos = pos
+	
+	pos.add_child(curr_shell)
 
 func get_crosshair_tex():
 	if owner.get_node("Players/Loader/Camera").holding_shell:
