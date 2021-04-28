@@ -44,6 +44,8 @@ onready var CamGunTruck = preload("res://models/camion_gun_truck.tscn")
 onready var SiteCentre = preload("res://models/SiteCenter.tscn")
 onready var DebugUI = preload("res://Scenes/DebugUI.tscn")
 
+onready var Explosion = preload("res://Scenes/Explosion.tscn")
+
 onready var Items = {0:[VWKWagen,"K Wagen"],
 	2:[BerHouseT2, "Ber House T 2"],
 	3:[BerHouseT3, "Ber House T 3"],

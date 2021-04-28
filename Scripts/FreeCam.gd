@@ -74,6 +74,7 @@ func _input(event):
 		if Input.is_key_pressed(KEY_F5) and selected:
 			if selected.has_method("show_cam"):
 				selected.show_cam()
+				selected.connect("tree_exited",self,"unselect")
 	if event is InputEventMouseMotion:
 		if GameState.mouseHidden:
 	#		rotate_y(event.relative.x/100.0)
@@ -118,7 +119,8 @@ func _input(event):
 			is_painting = false
 					
 
-					
+func unselect():
+	selected = null
 
 #func add_tree():
 #	var l = get_ground(event)

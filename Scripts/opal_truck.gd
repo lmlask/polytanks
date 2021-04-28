@@ -1,6 +1,6 @@
 extends Spatial
 
-var max_speed = 20
+var max_speed = 10
 var auto = true
 var life:float = 60
 onready var truck = $MeshInstance
@@ -12,6 +12,7 @@ var delay:float = 1
 var turn_rate:float = 0
 var target_turn_rate:float = 0
 var cam
+var v = 0.0  #falling
 
 func _ready():
 	notify(false)
@@ -31,10 +32,15 @@ func _process(delta):
 		target_turn_rate = rand_range(-PI/3, PI/3)
 	truck.rotation.y += turn_rate * delta
 	life -= delta
-	if life < 0.0:
+	if life < 0.0 and v == 0:
+		var explo = R.Explosion.instance()
+		get_parent().add_child(explo)
+		explo.translation = translation
 		queue_free()
 	var speed = max_speed-(abs(turn_rate)*5)
 	translation += truck.transform.basis.x * delta * speed
+	translation.y += v
+	v -= delta
 	if LeftR.is_colliding():
 		target_turn_rate = -PI
 		delay = 0.333
@@ -43,7 +49,8 @@ func _process(delta):
 		target_turn_rate = PI
 		delay = 0.333
 		timer = 0
-	if DownRay.is_colliding():
+	if DownRay.is_colliding() and v < 0.1:
+		v = 0
 		translation.y = lerp(DownRay.get_collision_point().y,translation.y,0.95)
 		var tfs = Transform.looking_at(DownRay.get_collision_normal(),Vector3.RIGHT)
 		tfs = tfs.rotated(tfs.basis.x,-PI/2)
@@ -58,3 +65,6 @@ func notify(vis):
 	visible = vis
 	$MeshInstance/StaticBody/CollisionShape.disabled = !vis
 		
+func hit(_node):
+	life = 0
+	v = 1
