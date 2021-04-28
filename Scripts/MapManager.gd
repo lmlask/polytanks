@@ -41,7 +41,7 @@ func _ready():
 	$DirectionalLight.rotation.x = -0.5
 	$DirectionalLight.light_energy = 1
 
-	var _err = connect("terrain_completed", self, "terrain_complete")
+	var _err = connect("terrain_completed", self, "terrain_complete", [], CONNECT_DEFERRED)
 #	maps[0] = preload("res://Objects/TestLevel.tscn")
 #	maps[1] = preload("res://Objects/CityLevel.tscn")
 #	maps[2] = preload("res://Objects/hills map.tscn")
@@ -49,7 +49,8 @@ func _ready():
 	
 	#Create a plane used for terrain
 	map_thread.start(self,"create_mesh", fine_size)
-	var _mesh = create_mesh(rough_size)
+	var _mesh = create_mesh(fine_size)
+	_mesh = create_mesh(rough_size)
 
 func load_files():
 	var file = File.new()
@@ -126,12 +127,16 @@ func clear_map():
 	if thread_update.is_active():
 		thread_update.wait_to_finish()
 	if MapNode:
+		remove_child(MapNode)
 		MapNode.queue_free()
 	for i in R.VTanks.get_children():
-		i.queue_free()
+		R.VTanks.remove_child(i)
+		i.free()
 	for i in R.VWheeled.get_children():
+		R.VWheeled.remove_child(i)
 		i.queue_free()
 	for i in R.VPlanes.get_children():
+		R.VPlanes.remove_child(i)
 		i.queue_free()
 	map = null
 	prev_tile = Vector3.INF
@@ -148,11 +153,18 @@ func load_map(i,pos): #Need to add a location
 	clear_map()
 	map = i
 	MapNode = R.terrain.instance() #only have the one map
-	add_child(MapNode)
+	call_deferred("add_child",MapNode)
+#	add_child(MapNode)
+	MapNode.load_image(map)
 	generate_map(tilemesh[rough_size])
 	check_area(pos)
-#	map.get_node("DirectionalLight").show()
+#	update_tile([Vector3(0,0,0),fine_size])
+	maptiles_size[Vector3(0,0,0)] = fine_size
+	MapNode.update_tile(tilemesh[fine_size],maptiles[Vector3(0,0,0)])
+	
 	add_items()
+#	map.get_node("DirectionalLight").show()
+	
 	#Dont expand on this. the map itself should do this
 #	if map == 1 and false: #fix later
 #		for i in range(10):
@@ -189,7 +201,8 @@ func check_area(pos):
 #	for j in tile_offset:
 #		MapNode.add_sites(center+j)
 	
-	
+	if not MapNode.img_loaded:
+		return
 #	return
 	for i in tile_offset:
 		if not maptiles.has(center+i):
@@ -260,9 +273,9 @@ func generate_map(mesh):
 			maptiles_size[pos] = rough_size
 			mutex.unlock()
 
-func _exit_tree():
-	if thread_update.is_active():
-		thread_update.wait_to_finish()
+#func _exit_tree():
+#	if thread_update.is_active():
+#		thread_update.wait_to_finish()
 
 func show_locations():
 	while LocsNode.get_child_count():
@@ -273,10 +286,10 @@ func show_locations():
 
 func show_location(i):
 	var sc = R.SiteCentre.instance()
+	LocsNode.add_child(sc)
 	sc.transform = Transform.IDENTITY
 	sc.transform.origin = Vector3(locations[i][3].x,0,locations[i][3].y)
 	sc.get_child(0).rotation.y = locations[i][4]
-	LocsNode.add_child(sc)
 	while not sc.is_inside_tree():
 		print("not in tree")
 		yield(get_tree(),"idle_frame")
@@ -340,12 +353,12 @@ func add_items():
 				if items[i][0] == locations[l][1]:
 					var item = R.Items[items[i][1]]
 					var node = item[0].instance()
+					lnode.add_child(node)
 					node.name = item[1]+"-"+str(l)+"-"+str(i)
 					node.transform = Transform.IDENTITY
 #					node.transform.origin = Vector3(items[i][2].x+locations[l][3].x,0,items[i][2].y+locations[l][3].y)
 					node.transform.origin = Vector3(items[i][2].x,0,items[i][2].y)
 					node.get_child(0).rotation.y = items[i][3]
-					lnode.add_child(node)
 					R.FloorFinder.find_floor2(node)
 					
 #					print(lnode)

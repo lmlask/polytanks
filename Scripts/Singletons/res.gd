@@ -24,7 +24,6 @@ onready var VTPzIV = preload("res://Tanks/PzIV/PanzerIV.tscn") #Name/sort it bet
 
 onready var VWKWagen = preload("res://models/Kubelwagen.tscn")
 onready var MHouse = preload("res://models/house.tscn") #Model House
-onready var BerHouseS1 = preload("res://models/Berberhouse_small01.tscn")
 onready var BerHouseT2 = preload("res://models/BerberHouse02_v2.tscn")
 onready var BerHouseT3 = preload("res://models/BerberHouse03_v2.tscn")
 onready var BerHouseT4 = preload("res://models/BerberHouse04_v2.tscn")
@@ -40,12 +39,14 @@ onready var Bush01 = preload("res://models/terrain/bush01.tscn")
 
 onready var Stuka = preload("res://models/Stuka.tscn")
 onready var OpalTruck = preload("res://models/opal_truck.tscn")
+onready var CamGunTruck = preload("res://models/camion_gun_truck.tscn")
 
 onready var SiteCentre = preload("res://models/SiteCenter.tscn")
 onready var DebugUI = preload("res://Scenes/DebugUI.tscn")
 
+onready var Explosion = preload("res://Scenes/Explosion.tscn")
+
 onready var Items = {0:[VWKWagen,"K Wagen"],
-	1:[BerHouseS1,"Ber House Small 1"],
 	2:[BerHouseT2, "Ber House T 2"],
 	3:[BerHouseT3, "Ber House T 3"],
 	4:[BerHouseT4, "Ber House T 4"],

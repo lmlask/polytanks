@@ -19,19 +19,21 @@ var height_map = {0:["res://Textures/greyalpha-16bit.exr","Test map"],
 var height_factor = 200
 
 var image = Image.new()
-var imgdata
+var img_loaded = false
+#var imgdata
 
 #building key in array locations
 #all this needs to be in a file selectable by the map
-var site1 = {R.MHouse:[Vector3(10,0,0),],
-	R.VWKWagen:[Vector3(10,0,5),Vector3(0,0,5),Vector3(-10,0,5)],
-	R.BerHouseS1:[Vector3(30,0,0)],
-	R.BerHouseT2:[Vector3(10,0,20),Vector3(-40,0,10)],
-	R.BerHouseT4:[Vector3(-20,0,-20)],
-	R.BerHouseT3:[Vector3(10,0,-20),Vector3(20,0,-20),Vector3(-10,0,-20),Vector3(10,0,40)]}
+#var site1 = {R.MHouse:[Vector3(10,0,0),],
+#	R.VWKWagen:[Vector3(10,0,5),Vector3(0,0,5),Vector3(-10,0,5)],
+#	R.BerHouseS1:[Vector3(30,0,0)],
+#	R.BerHouseT2:[Vector3(10,0,20),Vector3(-40,0,10)],
+#	R.BerHouseT4:[Vector3(-20,0,-20)],
+#	R.BerHouseT3:[Vector3(10,0,-20),Vector3(20,0,-20),Vector3(-10,0,-20),Vector3(10,0,40)]}
 
 #location of towns global locations
-var site_locations = {Vector3(50,0,0):site1,Vector3(200,0,200):site1,Vector3(250,0,-2500):site1,Vector3(750,0,300):site1,Vector3(550,0,-200):site1}
+#var site_locations = {Vector3(50,0,0):site1,Vector3(200,0,200):site1,Vector3(250,0,-2500):site1,Vector3(750,0,300):site1,Vector3(550,0,-200):site1}
+var site_locations = {}
 var site_added = []
 
 #var height_map = {Vector3(-1,0,0):alphagrepmap,Vector3(-1,0,-1):polytankmap} #Should be one image for the entire map
@@ -41,9 +43,13 @@ var inprogress = false
 # Called when the node enters the scene tree for the first time.
 
 func _ready():
-	if height_map:
-		image.load(height_map[R.Map.map][0]) 
-		imgdata = image.get_data()
+	pass
+func load_image(map):
+	if height_map and not R.Map.map == -1:
+		image = load(height_map[map][0]).get_data()
+		image.lock()
+		img_loaded = true
+#		imgdata = image.get_data()
 #	var imageTex = ImageTexture.new()
 #	imageTex.create_from_image(image,0)
 
@@ -57,8 +63,8 @@ func add_tile(tile_pos,mesh):
 	inprogress = true
 	tile.get_node("StaticBody/CollisionShape").shape = tile_mesh.create_trimesh_shape()
 	inprogress = false
-	mutex.unlock()
 	add_child(tile)
+	mutex.unlock()
 	tile.show()
 	return tile
 
@@ -67,8 +73,11 @@ func update_tile(mesh,tile_node):
 	tile_mesh.surface_set_material(0, mat)
 	mutex.lock()
 	tile_node.mesh = tile_mesh
+	tile_node.set_aabb()
 	if not inprogress:
 		tile_node.get_node("StaticBody/CollisionShape").shape = tile_mesh.create_trimesh_shape()
+	else:
+		print_debug("this should not happen, means the shape hasnt been updated")
 	mutex.unlock()
 	
 func create_tile_mesh(tile, meshx):
@@ -143,10 +152,14 @@ func get_noise(tile, vec2):
 	var n = noise.get_noise_2dv(vec2+vec_offset)/10.0+0.05
 	vec2 = (vec2+vec_offset)/R.Map.fine_size+Vector2(1024,1024)
 	vec2 = Vector2(clamp(vec2.x,0,2047),clamp(vec2.y,0,2047))
-	image.lock()
-	var col = image.get_pixelv(vec2)
-	image.unlock()
-	n = n*(1-col.a)+col.r*col.a
+#	image.lock()
+	if not R.Map.map == -1:
+		var col = image.get_pixelv(vec2)
+		n = n*(1-col.a)+col.r*col.a
+	else:
+		n *= 3
+#	image.unlock()
+		
 #		print(n,"-",col.r,"-",col.a)
 	n *= 1.75
 	return n*n*height_factor

@@ -70,6 +70,11 @@ func _input(event):
 		R.Map.add_items()
 		selected = null
 		return
+	if event is InputEventKey:
+		if Input.is_key_pressed(KEY_F5) and selected:
+			if selected.has_method("show_cam"):
+				selected.show_cam()
+				selected.connect("tree_exited",self,"unselect")
 	if event is InputEventMouseMotion:
 		if GameState.mouseHidden:
 	#		rotate_y(event.relative.x/100.0)
@@ -101,18 +106,21 @@ func _input(event):
 			move_speed = max(move_speed / 1.5, 10.0)
 		if event.is_action_pressed("action") and not panel.visible:
 			var result = get_ground(event.position)
+#			print(result)
 			if result.has("collider"):
 				if not paint:
 					if selected:
 						R.Map.update_item(selected)
 					selected = result.collider.owner
+					
 				else:
 					is_painting = true
 		elif Input.is_action_just_released("action"):
 			is_painting = false
 					
 
-					
+func unselect():
+	selected = null
 
 #func add_tree():
 #	var l = get_ground(event)
@@ -136,8 +144,10 @@ func _process(delta):
 		elif selected.is_in_group("item"):
 			selected.transform.origin -= transform.basis.x * move.rotated(Vector3.UP, -selected.get_parent().rotation.y-PI/2).x * delta * move_speed
 			selected.transform.origin -= transform.basis.z * move.rotated(Vector3.UP, -selected.get_parent().rotation.y-PI/2).z * delta * move_speed
-		selected.get_child(0).rotation.y += move.y * delta * move_speed / 10 #dont use get_child(0) fix it!!!
-		R.FloorFinder.find_floor2(selected)
+		if not (selected.is_in_group("plane") or selected.is_in_group("truck")):
+			selected.get_child(0).rotation.y += move.y * delta * move_speed / 10 #dont use get_child(0) fix it!!!
+			R.FloorFinder.find_floor2(selected)
+		
 	timer += delta
 	if timer > delay:
 		timer -= delay

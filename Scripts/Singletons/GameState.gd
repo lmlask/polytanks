@@ -8,7 +8,7 @@ onready var gameRoot = get_node("/root/gameRoot")
 onready var RoleSelect = gameRoot.get_node("Roles")
 enum Mode {Host, Client}
 enum Role {None, Driver, Radioman, Gunner, Loader, Commander}
-enum Ammo {None, HE, HEAT, APC, APCR, Smoke}
+enum Ammo {None, APC, APCR, HE, HEAT, Smoke}
 var mode
 var role:int
 var tank:int

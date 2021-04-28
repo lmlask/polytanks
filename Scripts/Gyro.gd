@@ -16,6 +16,6 @@ func interact():
 		tween.interpolate_property(top_mat, "uv1_offset", top_mat.uv1_offset, Vector3(target_offset, -0.052, 0), 0.5, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 		tween.start()
 
-func _on_Tween_tween_completed(object, key):
+func _on_Tween_tween_completed(object, _key):
 	if object == top_mat:
 		interacting = false

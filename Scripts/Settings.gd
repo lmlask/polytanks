@@ -27,7 +27,7 @@ func _on_Save_pressed():
 	settings.store_var(data)
 	settings.close()
 
-func _input(event):
+func _input(_event):
 	if Input.is_action_just_pressed("F1"):
 		$Panel.visible = !$Panel.visible
 		if $Panel.visible: #merge into a function

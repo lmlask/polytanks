@@ -30,22 +30,28 @@ func _process(_delta):
 		if GameState.DriverID[GameState.tank] == get_tree().get_network_unique_id():
 #		if GameState.role == GameState.Role.Driver:
 			rpc("set_pos", vehicle.transform, GameState.tank)
-		if GameState.role == GameState.Role.Gunner:
+		if GameState.role == GameState.Role.Gunner and GameState.InGame:
 			rpc("set_tur", vehicle.Turret.rotation,vehicle.Gun.rotation, str(GameState.tank) )
 #		add_random_tank()
 		timer -= 0.1
 	if Input.is_action_just_pressed("reset_vehicle"):
 		reset_tank(vehicle)
 
-	#add planes
+	#add upto 50 planes and vehicles
 	if randf() < 0.01: #Randome plane random direction
-		var stuka = R.Stuka.instance()
-		stuka.translation = Vector3(rand_range(-1000,1000),100,rand_range(-1000,1000))
-		R.VPlanes.add_child(stuka)
-		var opaltruck = R.OpalTruck.instance()
-		opaltruck.translation = Vector3(rand_range(-100,100),0,rand_range(-100,100))
-		R.VWheeled.add_child(opaltruck)
-
+		if R.VPlanes.get_child_count() < 50:
+			var stuka = R.Stuka.instance()
+			R.VPlanes.add_child(stuka)
+		
+		if R.VWheeled.get_child_count() < 50:
+			var truck
+			if randf() > 0.5:
+				truck = R.OpalTruck.instance()
+			else:
+				truck = R.CamGunTruck.instance()
+			R.VWheeled.add_child(truck)
+		
+		
 func reset_tank(v): #should be part of the vehicle
 	v.linear_velocity = Vector3.ZERO
 	v.angular_velocity = Vector3.ZERO
@@ -58,8 +64,8 @@ func start():
 	R.Map.load_map(GameState.map,start_pos[GameState.tank])
 	vehicle = R.VTPzIV.instance()
 	if tanks.size() > 0:
-		for i in tanks:
-			i.queue_free() #delete intro tanks
+#		for i in tanks: #handled by mapmanager
+#			i.queue_free() #delete intro tanks
 		tanks.clear()
 	GameState.setup_debug() #fix this, make it optional
 	vehicle.external_only = false
@@ -75,8 +81,8 @@ func start():
 	vehicle.auto = false #set manual control
 	if GameState.role == GameState.Role.Driver:
 		FloorFinder.find_floor(vehicle,start_pos[GameState.tank])
-#	else:
-#		vehicle.mode = RigidBody.MODE_KINEMATIC
+	else:
+		vehicle.mode = RigidBody.MODE_KINEMATIC
 	vehicle.transform.origin += vehicle.transform.basis.y #Fix a weird bug and/or normals are not calcuated correctly
 	vehicle.rotate_y(PI) #shouldnt be fixed
 	vehicle.next_transform(vehicle.transform)
@@ -107,7 +113,7 @@ remote func get_remote_tanks():
 		var nid = get_tree().get_rpc_sender_id()
 		rpc_id(nid, "add_tank", vehicle.translation, GameState.tank)
 
-remote func add_tank(t,tid):
+remote func add_tank(_t,tid):
 #	print("starting remote tank")
 	if R.VTanks.has_node(str(tid)): #Dont add tank if one exists
 		return
@@ -128,7 +134,7 @@ remote func add_tank(t,tid):
 		tank.get_node("Players").queue_free()
 
 func load_intro_tanks():
-	for i in range(5):
+	for _i in range(2):
 		add_intro_tank()
 	
 #	$"../CameraRig"._camTarget = tanks[rand_range(0,tanks.size())]
@@ -137,7 +143,7 @@ func load_intro_tanks():
 	cam.canrotx = false
 	
 func add_intro_tank():
-	if tanks.size() < 20: #only add tanks when tanks exists, ie game has started
+	if tanks.size() < 5: #only add tanks when tanks exists, ie game has started
 		var tank = R.VTPzIV.instance()
 		R.VTanks.add_child(tank)
 #		tank.rotate_y(-PI/2)
@@ -145,9 +151,9 @@ func add_intro_tank():
 		FloorFinder.find_floor(tank)
 		tanks.append(tank)
 
-func delete_tank(t):
-	t.queue_free()
-	tanks.erase(t)
+#func delete_tank(t):
+#	t.queue_free()
+#	tanks.erase(t)
 
 #Thinking I should have all vehicles in the some folder with a prefix
 #Re-write it later once different things are added

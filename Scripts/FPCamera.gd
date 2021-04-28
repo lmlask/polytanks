@@ -163,7 +163,7 @@ func togglePortMode(port, transZ, rotY, rotX, clampmin, clampmax):
 	elif mode == "port":
 		resetCamera()
 
-func tween(pos, speed, easing):
+func tween_translation(pos, speed, easing):
 	tween.interpolate_property(self, "translation", translation, pos, speed, easing, Tween.EASE_IN_OUT)
 	tween.start()
 	true_offset = Vector2(0, 0)

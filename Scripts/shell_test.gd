@@ -2,7 +2,7 @@ extends Spatial
 
 var life:float = 30.0
 #onready var view = $view
-onready var Explosion = preload("res://Scenes/Explosion.tscn")
+
 onready var models = [$Model/HEModel, $Model/APCModel, $Model/APCRModel, $Model/HEATModel]
 var host = false
 remote var xform = null
@@ -15,9 +15,9 @@ func _ready():
 #	set_process(false)
 
 remotesync func explode(pos):
-	var explo = Explosion.instance()
-	explo.global_transform.origin = pos
+	var explo = R.Explosion.instance()
 	get_parent().add_child(explo) #owner of shell should say where the explosion is
+	explo.global_transform.origin = pos #!!!! Indicating an error here
 	call_deferred("queue_free")
 
 func _physics_process(delta):

@@ -11,8 +11,10 @@ var timer = 0.0 #User for debug
 func _ready():
 	$Lobby.gameRoot = self
 	$NetworkManager.intro = $Lobby
-	R.Map.load_map(0,Vector3.ZERO)
+	R.Map.load_map(-1,Vector3.ZERO)
+	yield(get_tree(),"idle_frame")
 	R.ManVehicle.load_intro_tanks()
+	R.Map.add_items()
 
 #Used for debug, comment out if needed
 func _process(delta):
