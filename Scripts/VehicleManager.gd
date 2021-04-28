@@ -37,13 +37,15 @@ func _process(_delta):
 	if Input.is_action_just_pressed("reset_vehicle"):
 		reset_tank(vehicle)
 
-	#add planes
-	if randf() < 0.01: #Randome plane random direction
-		var stuka = R.Stuka.instance()
-		R.VPlanes.add_child(stuka)
+	#add upto 50 planes and vehicles
+	if randf() < 0.01 and false: #Randome plane random direction
+		if R.VPlanes.get_child_count() < 50:
+			var stuka = R.Stuka.instance()
+			R.VPlanes.add_child(stuka)
 		
-		var opaltruck = R.OpalTruck.instance()
-		R.VWheeled.add_child(opaltruck)
+		if R.VWheeled.get_child_count() < 50:
+			var opaltruck = R.OpalTruck.instance()
+			R.VWheeled.add_child(opaltruck)
 		
 		
 func reset_tank(v): #should be part of the vehicle

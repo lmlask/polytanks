@@ -24,15 +24,16 @@ var img_loaded = false
 
 #building key in array locations
 #all this needs to be in a file selectable by the map
-var site1 = {R.MHouse:[Vector3(10,0,0),],
-	R.VWKWagen:[Vector3(10,0,5),Vector3(0,0,5),Vector3(-10,0,5)],
-	R.BerHouseS1:[Vector3(30,0,0)],
-	R.BerHouseT2:[Vector3(10,0,20),Vector3(-40,0,10)],
-	R.BerHouseT4:[Vector3(-20,0,-20)],
-	R.BerHouseT3:[Vector3(10,0,-20),Vector3(20,0,-20),Vector3(-10,0,-20),Vector3(10,0,40)]}
+#var site1 = {R.MHouse:[Vector3(10,0,0),],
+#	R.VWKWagen:[Vector3(10,0,5),Vector3(0,0,5),Vector3(-10,0,5)],
+#	R.BerHouseS1:[Vector3(30,0,0)],
+#	R.BerHouseT2:[Vector3(10,0,20),Vector3(-40,0,10)],
+#	R.BerHouseT4:[Vector3(-20,0,-20)],
+#	R.BerHouseT3:[Vector3(10,0,-20),Vector3(20,0,-20),Vector3(-10,0,-20),Vector3(10,0,40)]}
 
 #location of towns global locations
-var site_locations = {Vector3(50,0,0):site1,Vector3(200,0,200):site1,Vector3(250,0,-2500):site1,Vector3(750,0,300):site1,Vector3(550,0,-200):site1}
+#var site_locations = {Vector3(50,0,0):site1,Vector3(200,0,200):site1,Vector3(250,0,-2500):site1,Vector3(750,0,300):site1,Vector3(550,0,-200):site1}
+var site_locations = {}
 var site_added = []
 
 #var height_map = {Vector3(-1,0,0):alphagrepmap,Vector3(-1,0,-1):polytankmap} #Should be one image for the entire map
@@ -70,6 +71,7 @@ func update_tile(mesh,tile_node):
 	tile_mesh.surface_set_material(0, mat)
 	mutex.lock()
 	tile_node.mesh = tile_mesh
+	tile_node.set_aabb()
 	if not inprogress:
 		tile_node.get_node("StaticBody/CollisionShape").shape = tile_mesh.create_trimesh_shape()
 	mutex.unlock()

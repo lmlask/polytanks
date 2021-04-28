@@ -13,9 +13,11 @@ var turn_rate:float = 0
 var target_turn_rate:float = 0
 
 func _ready():
-	translation = Vector3(rand_range(-1000,100),0,rand_range(-1000,1000))
+	notify(false)
+	translation = Vector3(rand_range(-100,100),0,rand_range(-100,100))
 	R.FloorFinder.find_floor2(self)
 	truck.rotation.y = randf()*TAU
+	$VisibilityNotifier.aabb = $MeshInstance.mesh.get_aabb()
 
 func _process(delta):
 	if translation.y < -1000:
@@ -45,3 +47,9 @@ func _process(delta):
 		var tfs = Transform.looking_at(DownRay.get_collision_normal(),Vector3.RIGHT)
 		tfs = tfs.rotated(tfs.basis.x,-PI/2)
 		transform.basis = tfs.basis.slerp(transform.basis,0.95)
+
+func notify(vis):
+	set_process(vis)
+	visible = vis
+	$MeshInstance/StaticBody/CollisionShape.disabled = !vis
+		

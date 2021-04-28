@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://models/Opel_Truck_low.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://Scripts/opal_truck.gd" type="Script" id=2]
 [ext_resource path="res://Textures/Opel_Truck_low_color.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/VisibilityNotifier.tscn" type="PackedScene" id=4]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_texture = ExtResource( 3 )
@@ -50,3 +51,5 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0 )
 enabled = true
 cast_to = Vector3( 0, -10, 0 )
 collision_mask = 727040
+
+[node name="VisibilityNotifier" parent="." instance=ExtResource( 4 )]

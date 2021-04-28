@@ -10,6 +10,7 @@ var delay = 2.0
 var target_bank = 0
 
 func _ready():
+#	notify(false)
 #	translation = Vector3(rand_range(-10,10),0,rand_range(-10,10))
 	translation = Vector3(280,0,-1000)
 	R.FloorFinder.find_floor2(self)
@@ -18,6 +19,7 @@ func _ready():
 	plane.rotation.y = -0.2
 #	plane.rotation.y = randf()*TAU
 #	plane.rotation.z = rand_range(-PI/3, PI/3)
+	$VisibilityNotifier.aabb = $MeshInstance.mesh.get_aabb()
 
 func _process(delta):
 	if translation.y < -1000:
@@ -43,3 +45,8 @@ func _process(delta):
 	else:
 		plane.rotation.x += delta / 2
 	plane.rotation.x = clamp(plane.rotation.x, -PI/2, PI/4)
+
+func notify(vis):
+	set_process(vis)
+	visible = vis
+	$MeshInstance/StaticBody/CollisionShape.disabled = !vis
