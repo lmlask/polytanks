@@ -49,7 +49,8 @@ func _ready():
 	
 	#Create a plane used for terrain
 	map_thread.start(self,"create_mesh", fine_size)
-	var _mesh = create_mesh(rough_size)
+	var _mesh = create_mesh(fine_size)
+	_mesh = create_mesh(rough_size)
 
 func load_files():
 	var file = File.new()
@@ -148,15 +149,22 @@ func clear_map():
 	for _wait in range(10): #Bad solution to possibly fix a weird bug
 		yield(get_tree(),"idle_frame")
 
-func load_map(i,_pos): #Need to add a location
+func load_map(i,pos): #Need to add a location
 	clear_map()
 	map = i
 	MapNode = R.terrain.instance() #only have the one map
 	call_deferred("add_child",MapNode)
-#	generate_map(tilemesh[rough_size])
-#	check_area(pos)
-#	map.get_node("DirectionalLight").show()
+#	add_child(MapNode)
+	MapNode.load_image(map)
+	generate_map(tilemesh[rough_size])
+	check_area(pos)
+#	update_tile([Vector3(0,0,0),fine_size])
+	maptiles_size[Vector3(0,0,0)] = fine_size
+	MapNode.update_tile(tilemesh[fine_size],maptiles[Vector3(0,0,0)])
+	
 	add_items()
+#	map.get_node("DirectionalLight").show()
+	
 	#Dont expand on this. the map itself should do this
 #	if map == 1 and false: #fix later
 #		for i in range(10):

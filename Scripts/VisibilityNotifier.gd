@@ -27,9 +27,7 @@ func _on_VisibilityNotifier_screen_exited():
 		notify(false)
 
 func notify(vis):
-	print("visibility",vis)
 	get_parent().visible = vis
-	print(get_parent().get_parent().name)
 	if get_parent().has_node("StaticBody/CollisionShape"):
 		get_parent().get_node("StaticBody/CollisionShape").disabled = !vis #get_node is NOT a good idea, fix it
 	

@@ -38,7 +38,7 @@ func _process(_delta):
 		reset_tank(vehicle)
 
 	#add upto 50 planes and vehicles
-	if randf() < 0.01 and false: #Randome plane random direction
+	if randf() < 0.01: #Randome plane random direction
 		if R.VPlanes.get_child_count() < 50:
 			var stuka = R.Stuka.instance()
 			R.VPlanes.add_child(stuka)

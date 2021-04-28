@@ -43,8 +43,10 @@ var inprogress = false
 # Called when the node enters the scene tree for the first time.
 
 func _ready():
-	if height_map:
-		image = load(height_map[R.Map.map][0]).get_data()
+	pass
+func load_image(map):
+	if height_map and not R.Map.map == -1:
+		image = load(height_map[map][0]).get_data()
 		image.lock()
 		img_loaded = true
 #		imgdata = image.get_data()
@@ -149,9 +151,13 @@ func get_noise(tile, vec2):
 	vec2 = (vec2+vec_offset)/R.Map.fine_size+Vector2(1024,1024)
 	vec2 = Vector2(clamp(vec2.x,0,2047),clamp(vec2.y,0,2047))
 #	image.lock()
-	var col = image.get_pixelv(vec2)
+	if not R.Map.map == -1:
+		var col = image.get_pixelv(vec2)
+		n = n*(1-col.a)+col.r*col.a
+	else:
+		n *= 3
 #	image.unlock()
-	n = n*(1-col.a)+col.r*col.a
+		
 #		print(n,"-",col.r,"-",col.a)
 	n *= 1.75
 	return n*n*height_factor
