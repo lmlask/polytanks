@@ -74,7 +74,7 @@ func _input(event):
 		if Input.is_key_pressed(KEY_F5) and selected:
 			if selected.has_method("show_cam"):
 				selected.show_cam()
-				selected.connect("tree_exited",self,"unselect")
+				var _err = selected.connect("tree_exited",self,"unselect")
 	if event is InputEventMouseMotion:
 		if GameState.mouseHidden:
 	#		rotate_y(event.relative.x/100.0)
@@ -149,7 +149,7 @@ func _process(delta):
 			R.FloorFinder.find_floor2(selected)
 		
 	timer += delta
-	if timer > delay:
+	if timer > delay and $Camera.current:
 		timer -= delay
 		R.Map.check_area(global_transform.origin)
 	if is_painting:

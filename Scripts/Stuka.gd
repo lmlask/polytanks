@@ -58,6 +58,8 @@ func show_cam():
 	GameState.hide_mouse()
 
 func notify(vis):
+	if cam.current and not vis:
+		return
 	set_process(vis)
 	visible = vis
 	$MeshInstance/StaticBody/CollisionShape.disabled = !vis

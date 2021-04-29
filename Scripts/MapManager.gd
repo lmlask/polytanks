@@ -7,7 +7,12 @@ var map = null
 var maptiles = {}
 var maptiles_size = {}
 var prev_tile = Vector3.INF
-var tile_offset = [Vector3(0,0,0),Vector3(1,0,0),Vector3(0,0,1),Vector3(-1,0,0),Vector3(0,0,-1),Vector3(1,0,1),Vector3(-1,0,1),Vector3(1,0,-1),Vector3(-1,0,-1)]
+var tile_offset = [Vector3(1,0,0),Vector3(0,0,1),Vector3(-1,0,0),Vector3(0,0,-1),Vector3(1,0,1),Vector3(-1,0,1),Vector3(1,0,-1),Vector3(-1,0,-1)]
+var tran_offset = [[Vector3(1,0,2),Vector3(0,0,2),Vector3(-1,0,2)],[Vector3(2,0,1),Vector3(2,0,0),Vector3(2,0,-1)],
+					[Vector3(1,0,-2),Vector3(0,0,-2),Vector3(-1,0,-2)],[Vector3(-2,0,1),Vector3(-2,0,0),Vector3(-2,0,-1)]]
+var rough_offset = [Vector3(2,0,2),Vector3(-2,0,2),Vector3(2,0,-2),Vector3(-2,0,-2),
+					Vector3(1,0,3),Vector3(0,0,3),Vector3(-1,0,3),Vector3(3,0,1),Vector3(3,0,0),Vector3(3,0,-1),
+					Vector3(1,0,-3),Vector3(0,0,-3),Vector3(-1,0,-3),Vector3(-3,0,1),Vector3(-3,0,0),Vector3(-3,0,-1)]
 var mesh10:ArrayMesh = ArrayMesh.new()
 var mesh25:ArrayMesh = ArrayMesh.new()
 var mesh100:ArrayMesh = ArrayMesh.new()
@@ -15,9 +20,13 @@ var MapNode = null
 var thread_update = Thread.new()
 var map_thread = Thread.new()
 var mutex = Mutex.new()
-var fine_size = 5
-var rough_size = 250
+var fine_size = 25
+var rough_size = 100
+var map_size = 5
 var tilemesh = {}
+var terrainMeshs = [] #0=rough, 1=fine, Then each side
+var terrainTiles = {}
+enum tileRes {ROUGH, FINE, A,B,C,D}
 var sites:Dictionary #0=Name
 var sitesID:int = 0
 var site_selected:int = -1
@@ -48,9 +57,14 @@ func _ready():
 #	load_map(0,Vector3.ZERO)
 	
 	#Create a plane used for terrain
-	map_thread.start(self,"create_mesh", fine_size)
-	var _mesh = create_mesh(fine_size)
-	_mesh = create_mesh(rough_size)
+#	map_thread.start(self,"create_mesh", fine_size)
+	terrainMeshs.append(create_mesh(rough_size))
+	terrainMeshs.append(create_mesh(fine_size))
+	terrainMeshs.append(create_tran_mesh(fine_size, rough_size)) #Correct
+#	terrainMeshs.append(create_tran_mesh(200, 500)) #testing
+	terrainMeshs.append(rotate_mesh(terrainMeshs[2]))
+	terrainMeshs.append(rotate_mesh(terrainMeshs[3]))
+	terrainMeshs.append(rotate_mesh(terrainMeshs[4]))
 
 func load_files():
 	var file = File.new()
@@ -72,6 +86,65 @@ func load_files():
 	locsID = file.get_32()
 	locations = file.get_var()
 	file.close()
+	
+func create_tran_mesh(fine, rough):
+	var vertices = PoolVector3Array()
+	var UVs = PoolVector2Array()
+	var Idx = PoolIntArray()
+	for i in range(0,1000+1,fine):
+		vertices.push_back(Vector3(i, 0, 0))
+		UVs.push_back(Vector2(i/1000.0, 0))
+	for z in range(rough,1000+1,rough):
+		for x in range(0,1000+1,rough):
+			vertices.push_back(Vector3(x, 0, z))
+			UVs.push_back(Vector2(x/1000.0, z/1000.0))
+	var row = 1000/fine+1
+	var rowr = 1000/rough+1
+	var prev = row
+#	print(vertices)
+	for i in range(0,(1000/fine)):
+		var v = row+round(float(i)*fine/rough)
+		if not prev == v:
+			Idx.push_back(i)
+			Idx.push_back(v)
+			Idx.push_back(prev)
+			prev = v
+		Idx.push_back(i)
+		Idx.push_back(i+1)
+		Idx.push_back(v)
+	for y in range(0,(1000/rough)-1):
+		for x in range(0,(1000/rough)):
+			Idx.push_back(x+row+y*rowr)
+			Idx.push_back(x+row+y*rowr+1)
+			Idx.push_back(x+row+(y+1)*rowr)
+			Idx.push_back(x+row+y*rowr+1)
+			Idx.push_back(x+row+(y+1)*rowr+1)
+			Idx.push_back(x+row+(y+1)*rowr)
+#	print(Idx)
+	var mesh = ArrayMesh.new()
+	var arrays = []
+	arrays.resize(ArrayMesh.ARRAY_MAX)
+	arrays[ArrayMesh.ARRAY_VERTEX] = vertices
+	arrays[ArrayMesh.ARRAY_TEX_UV] = UVs
+	arrays[ArrayMesh.ARRAY_INDEX] = Idx
+	# Create the Mesh.
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+#	mutex.lock()
+#	tilemesh[size] = mesh
+#	mutex.unlock()
+#	emit_signal("flat_terrain_completed")
+	return mesh
+
+func rotate_mesh(meshx):
+	var mesh = meshx.duplicate()
+	var mdt = MeshDataTool.new()
+	mdt.create_from_surface(mesh, 0)
+	for i in range(mdt.get_vertex_count()):
+		var vertex = mdt.get_vertex(i)
+		mdt.set_vertex(i, Vector3(1000-vertex.z,0.0,vertex.x))
+	mesh.surface_remove(0)
+	mdt.commit_to_surface(mesh)
+	return mesh
 	
 func create_mesh(size)->ArrayMesh:
 	var vertices = PoolVector3Array()
@@ -115,9 +188,9 @@ func create_mesh(size)->ArrayMesh:
 	arrays[ArrayMesh.ARRAY_INDEX] = Idx
 	# Create the Mesh.
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
-	mutex.lock()
-	tilemesh[size] = mesh
-	mutex.unlock()
+#	mutex.lock()
+#	tilemesh[size] = mesh
+#	mutex.unlock()
 #	emit_signal("flat_terrain_completed")
 	return mesh
 
@@ -141,6 +214,7 @@ func clear_map():
 	map = null
 	prev_tile = Vector3.INF
 	mutex.lock()
+	terrainTiles.clear()
 	maptiles.clear()
 	maptiles_size.clear()
 	mutex.unlock()
@@ -156,11 +230,11 @@ func load_map(i,pos): #Need to add a location
 	call_deferred("add_child",MapNode)
 #	add_child(MapNode)
 	MapNode.load_image(map)
-	generate_map(tilemesh[rough_size])
-	check_area(pos)
+	process_tile(Vector3(0,0,0),tileRes.ROUGH) 
+#	check_area(pos)
 #	update_tile([Vector3(0,0,0),fine_size])
-	maptiles_size[Vector3(0,0,0)] = fine_size
-	MapNode.update_tile(tilemesh[fine_size],maptiles[Vector3(0,0,0)])
+#	maptiles_size[Vector3(0,0,0)] = fine_size
+#	MapNode.update_tile(tilemesh[fine_size],maptiles[Vector3(0,0,0)])
 	
 	add_items()
 #	map.get_node("DirectionalLight").show()
@@ -174,7 +248,26 @@ func load_map(i,pos): #Need to add a location
 #				house.translation.x += 15 * j
 #				map.add_child(house)
 
-	
+func process_tile(pos, level):
+	var grid = R.pos2grid(pos)
+	var delete = null
+#	mutex.lock()
+	if terrainTiles.has(grid):
+		if terrainTiles[grid][0] == level:
+#			print("tile %s at level %s"  %[grid,level])
+			return
+		delete = terrainTiles[grid][1]
+	else:
+		terrainTiles[grid] = [null,null]
+	terrainTiles[grid][1] = MapNode.add_tile(grid,terrainMeshs[level])
+	terrainTiles[grid][0] = level
+	if delete:
+		delete.queue_free()
+#	maptiles[pos] = MapNode.add_tile(pos,terrainMeshs[0])
+#	maptiles_size[pos] = rough_size
+#	mutex.unlock()
+	emit_signal("terrain_completed", grid)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if GameState.EnvCycle:
@@ -190,6 +283,28 @@ func _process(delta):
 	
 	
 func check_area(pos):
+#	print("check_area ",pos)
+	process_tile(pos,tileRes.FINE)
+#	return
+	for i in tile_offset:
+		process_tile(pos+i*1000,tileRes.FINE)
+	var tran_side = 0
+	for j in tran_offset:
+#		print("offset",R.pos2grid(pos+i*1000))
+		for i in j:
+			match tran_side:
+				0:
+					process_tile(pos+i*1000,tileRes.A)
+				1:
+					process_tile(pos+i*1000,tileRes.D)
+				2:
+					process_tile(pos+i*1000,tileRes.C)
+				3:
+					process_tile(pos+i*1000,tileRes.B)
+		tran_side += 1
+	for i in rough_offset:
+		process_tile(pos+i*1000,tileRes.ROUGH)
+	return
 	var size = fine_size
 	if not tilemesh.has(size):
 		return
@@ -205,6 +320,8 @@ func check_area(pos):
 		return
 #	return
 	for i in tile_offset:
+		process_tile(pos+i*1000,tileRes.TRAN)
+		return
 		if not maptiles.has(center+i):
 			mutex.lock()
 			maptiles_size[center+i] = rough_size
@@ -234,12 +351,12 @@ func update_tile(data):
 	emit_signal("terrain_completed",pos)
 	thread_update.call_deferred("wait_to_finish")
 	
-func terrain_complete(data):
-#	print("terrain complete", data)
-	var pos = R.ManVehicle.vehicle.global_transform.origin
-	var grid = (pos/1000).snapped(Vector3(1,10,1))
-	if data == grid:
-		print("resetting vehicle")
+func terrain_complete(grid):
+#	print("terrain complete", grid)
+#	var pos = R.ManVehicle.vehicle.global_transform.origin
+#	var grid = (pos/1000).snapped(Vector3(1,10,1))
+	if GameState.InGame:
+#		print("resetting vehicle")
 		R.ManVehicle.reset_tank(R.ManVehicle.vehicle) #maybe reset tank should be in a base class for all tanks
 	for i in LocsNode.get_children():
 #		print(i.name)
@@ -250,8 +367,7 @@ func terrain_complete(data):
 #		for i in j.get_node("Center").get_children():
 			if i.is_in_group("item"): #Fix this up, sort buildings/items or group them something better then "item"
 				grid = (i.global_transform.origin/1000).snapped(Vector3(1,10,1))
-				if grid == data:
-					R.FloorFinder.find_floor2(i)
+				R.FloorFinder.find_floor2(i)
 #	for i in SitesNode.get_children():
 #		R.FloorFinder.find_floor2(i)
 
@@ -265,13 +381,13 @@ func terrain_complete(data):
 #			mutex.unlock()
 		
 func generate_map(mesh):
-	for x in range(-5,5):
-		for y in range(-5,5):
-			var pos = Vector3(x,0,y)
-			mutex.lock()
-			maptiles[pos] = MapNode.add_tile(pos,mesh)
-			maptiles_size[pos] = rough_size
-			mutex.unlock()
+#	for x in range(-5,5):
+#		for y in range(-5,5):
+	var pos = Vector3(0,0,0)
+	mutex.lock()
+	maptiles[pos] = MapNode.add_tile(pos,mesh)
+	maptiles_size[pos] = rough_size
+	mutex.unlock()
 
 #func _exit_tree():
 #	if thread_update.is_active():

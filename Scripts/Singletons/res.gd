@@ -67,3 +67,6 @@ onready var Items = {0:[VWKWagen,"K Wagen"],
 #	4:[Rock02,"Rock 02"],
 #	5:[Bush01,"Bush 01"]
 #	}
+
+func pos2grid(pos:Vector3) -> Vector3:
+	return (pos/1000).snapped(Vector3(1,10,1))

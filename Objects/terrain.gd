@@ -81,6 +81,7 @@ func update_tile(mesh,tile_node):
 	mutex.unlock()
 	
 func create_tile_mesh(tile, meshx):
+		
 #	tile_pos = (tile.translation/1000).snapped(Vector3(1,10,1))
 #	for i in flats:
 #		if tile_pos == i and R.Map.map == 2:
@@ -93,8 +94,6 @@ func create_tile_mesh(tile, meshx):
 	mdt.create_from_surface(mesh, 0)
 	for i in range(mdt.get_vertex_count()):
 		var vertex = mdt.get_vertex(i)
-#		if i < 3:
-#			print(vertex)
 		vertex.y = get_noise(tile, Vector2(vertex.x, vertex.z))
 #		vertex.y += noise.get_noise_2d((vertex.x+translation.x)/20, (vertex.z+translation.z)/20)*250
 		mdt.set_vertex(i, vertex)
@@ -150,7 +149,7 @@ func add_buildings(pos, Buidling, bpos):
 func get_noise(tile, vec2):
 	var vec_offset = Vector2(tile.translation.x,tile.translation.z)
 	var n = noise.get_noise_2dv(vec2+vec_offset)/10.0+0.05
-	vec2 = (vec2+vec_offset)/R.Map.fine_size+Vector2(1024,1024)
+	vec2 = (vec2+vec_offset)/R.Map.map_size+Vector2(1024,1024)
 	vec2 = Vector2(clamp(vec2.x,0,2047),clamp(vec2.y,0,2047))
 #	image.lock()
 	if not R.Map.map == -1:

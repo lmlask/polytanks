@@ -9,6 +9,6 @@ func _ready():
 
 func _process(delta):
 	timer += delta
-	if timer > delay:
+	if timer > delay and self.current:
 		timer -= delay
 		R.Map.check_area(global_transform.origin)
