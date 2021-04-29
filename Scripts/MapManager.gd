@@ -230,7 +230,7 @@ func load_map(i,pos): #Need to add a location
 	call_deferred("add_child",MapNode)
 #	add_child(MapNode)
 	MapNode.load_image(map)
-	process_tile(Vector3(0,0,0),tileRes.ROUGH) 
+	process_tile(Vector3(0,0,0),tileRes.FINE) 
 #	check_area(pos)
 #	update_tile([Vector3(0,0,0),fine_size])
 #	maptiles_size[Vector3(0,0,0)] = fine_size
@@ -357,7 +357,8 @@ func terrain_complete(grid):
 #	var grid = (pos/1000).snapped(Vector3(1,10,1))
 	if GameState.InGame:
 #		print("resetting vehicle")
-		R.ManVehicle.reset_tank(R.ManVehicle.vehicle) #maybe reset tank should be in a base class for all tanks
+		pass
+#		R.ManVehicle.reset_tank(R.ManVehicle.vehicle) #maybe reset tank should be in a base class for all tanks
 	for i in LocsNode.get_children():
 #		print(i.name)
 		if i.is_in_group("loc"):

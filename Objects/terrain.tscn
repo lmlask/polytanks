@@ -15,6 +15,7 @@ code = "shader_type spatial;
 
 uniform vec4 color1: hint_color;
 uniform vec4 color2: hint_color;
+uniform vec4 color_steep: hint_color;
 uniform float max_grass_height = 2.0;
 uniform float min_snow_height = 18.0;
 uniform float slope_factor = 8.0;
@@ -81,7 +82,7 @@ void fragment(){
 	//vec3 snow_mixin = mix(snow, dirt_mixin, slope);
 	//vec3 mixin = mix(grass_mixin, snow_mixin, snow_mix);
 	
-	vec3 mixin = mix(grass, vec3(0.0), slope);
+	vec3 mixin = mix(grass, color_steep.rgb, slope);
 
 	mixin = round(mixin*32.0)/32.0;
 
@@ -102,8 +103,9 @@ noise = SubResource( 2 )
 
 [sub_resource type="ShaderMaterial" id=4]
 shader = SubResource( 1 )
-shader_param/color1 = Color( 0.490196, 0.215686, 0.0588235, 1 )
-shader_param/color2 = Color( 0.678431, 0.278431, 0.0627451, 1 )
+shader_param/color1 = Color( 0.71, 0.51617, 0.2627, 1 )
+shader_param/color2 = Color( 0.68, 0.443133, 0.4216, 1 )
+shader_param/color_steep = Color( 0.24, 0.1176, 0.1176, 1 )
 shader_param/max_grass_height = 250.0
 shader_param/min_snow_height = 500.0
 shader_param/slope_factor = 1.5

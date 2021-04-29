@@ -63,6 +63,9 @@ func reset_tank(v): #should be part of the vehicle
 func start():
 	R.Map.load_map(GameState.map,start_pos[GameState.tank])
 	vehicle = R.VTPzIV.instance()
+	yield(get_tree(),"idle_frame")
+	R.ManVehicle.reset_tank(R.ManVehicle.vehicle)
+
 	if tanks.size() > 0:
 #		for i in tanks: #handled by mapmanager
 #			i.queue_free() #delete intro tanks
