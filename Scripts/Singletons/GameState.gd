@@ -24,6 +24,8 @@ var WindView = false
 var EnvCycle = false
 var CamActive = null
 
+var view_location:Vector3
+
 func _ready() -> void:
 		pass
 #	gameRoot.add_child(DebugUI) #make optional

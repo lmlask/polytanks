@@ -83,6 +83,8 @@ __meta__ = {
 [node name="TerrainMMI" type="Node" parent="Map"]
 script = ExtResource( 18 )
 
+[node name="Tiles" type="Node" parent="Map"]
+
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0

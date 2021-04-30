@@ -55,8 +55,8 @@ func _on_Join_pressed():
 func _on_Host_pressed():
 #	Start.disabled = true
 	gameRoot.NetworkManager.setup_host()
-	for i in R.Map.MapNode.height_map:
-		Map.add_item(R.Map.MapNode.height_map[i][1],i)
+	for i in R.height_map:
+		Map.add_item(R.height_map[i][1],i)
 	Map.show()
 
 func set_status(msg):

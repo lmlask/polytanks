@@ -8,11 +8,15 @@ var maptiles = {}
 var maptiles_size = {}
 var prev_tile = Vector3.INF
 var tile_offset = [Vector3(1,0,0),Vector3(0,0,1),Vector3(-1,0,0),Vector3(0,0,-1),Vector3(1,0,1),Vector3(-1,0,1),Vector3(1,0,-1),Vector3(-1,0,-1)]
-var tran_offset = [[Vector3(1,0,2),Vector3(0,0,2),Vector3(-1,0,2)],[Vector3(2,0,1),Vector3(2,0,0),Vector3(2,0,-1)],
-					[Vector3(1,0,-2),Vector3(0,0,-2),Vector3(-1,0,-2)],[Vector3(-2,0,1),Vector3(-2,0,0),Vector3(-2,0,-1)]]
-var rough_offset = [Vector3(2,0,2),Vector3(-2,0,2),Vector3(2,0,-2),Vector3(-2,0,-2),
-					Vector3(1,0,3),Vector3(0,0,3),Vector3(-1,0,3),Vector3(3,0,1),Vector3(3,0,0),Vector3(3,0,-1),
-					Vector3(1,0,-3),Vector3(0,0,-3),Vector3(-1,0,-3),Vector3(-3,0,1),Vector3(-3,0,0),Vector3(-3,0,-1)]
+#var tran_offset = [[Vector3(1,0,2),Vector3(0,0,2),Vector3(-1,0,2)],[Vector3(2,0,1),Vector3(2,0,0),Vector3(2,0,-1)],
+#					[Vector3(1,0,-2),Vector3(0,0,-2),Vector3(-1,0,-2)],[Vector3(-2,0,1),Vector3(-2,0,0),Vector3(-2,0,-1)]]
+#var rough_offset = [Vector3(2,0,2),Vector3(-2,0,2),Vector3(2,0,-2),Vector3(-2,0,-2),
+#					Vector3(1,0,3),Vector3(0,0,3),Vector3(-1,0,3),Vector3(3,0,1),Vector3(3,0,0),Vector3(3,0,-1),
+#					Vector3(1,0,-3),Vector3(0,0,-3),Vector3(-1,0,-3),Vector3(-3,0,1),Vector3(-3,0,0),Vector3(-3,0,-1)]
+#var tile_offset = [Vector3(0,0,1)]
+var tran_offset = [Vector3(0,0,2)]
+var rough_offset = [Vector3(0,0,3)]
+
 var mesh10:ArrayMesh = ArrayMesh.new()
 var mesh25:ArrayMesh = ArrayMesh.new()
 var mesh100:ArrayMesh = ArrayMesh.new()
@@ -20,13 +24,15 @@ var MapNode = null
 var thread_update = Thread.new()
 var map_thread = Thread.new()
 var mutex = Mutex.new()
-var fine_size = 25
+var fine_size = 16
 var rough_size = 100
-var map_size = 5
-var tilemesh = {}
-var terrainMeshs = [] #0=rough, 1=fine, Then each side
-var terrainTiles = {}
-enum tileRes {ROUGH, FINE, A,B,C,D}
+var map_size = 4
+var tilemesh = {} #Should be obsolete
+var terrainMeshs = {0:[],1:[],2:[],3:[],4:[]} #Center
+var terrainNodes = {}
+
+var terrainTiles = {} #obsolete
+enum tileRes {ROUGH, FINE, A,B,C,D}#obsolete
 var sites:Dictionary #0=Name
 var sitesID:int = 0
 var site_selected:int = -1
@@ -58,13 +64,27 @@ func _ready():
 	
 	#Create a plane used for terrain
 #	map_thread.start(self,"create_mesh", fine_size)
-	terrainMeshs.append(create_mesh(rough_size))
-	terrainMeshs.append(create_mesh(fine_size))
-	terrainMeshs.append(create_tran_mesh(fine_size, rough_size)) #Correct
-#	terrainMeshs.append(create_tran_mesh(200, 500)) #testing
-	terrainMeshs.append(rotate_mesh(terrainMeshs[2]))
-	terrainMeshs.append(rotate_mesh(terrainMeshs[3]))
-	terrainMeshs.append(rotate_mesh(terrainMeshs[4]))
+	var terrain_size = fine_size
+	for i in range(7):
+		terrainMeshs[0].append(create_mesh(terrain_size))
+		terrainMeshs[1].append(create_tran_mesh(terrain_size, terrain_size*2)) #Correct
+		terrainMeshs[2].append(rotate_mesh(terrainMeshs[1][i])) #Correct
+		terrainMeshs[3].append(rotate_mesh(terrainMeshs[2][i])) #Correct
+		terrainMeshs[4].append(rotate_mesh(terrainMeshs[3][i])) #Correct
+		terrain_size = terrain_size*2
+#	terrainMeshs.append(create_tran_mesh(fine_size, rough_size)) #Correct
+#	terrainMeshs.append(create_tran_mesh(fine_size, rough_size)) #Correct
+#	terrainMeshs.append(create_tran_mesh(fine_size, rough_size)) #Correct
+	
+#	terrainMeshs.append(create_mesh(rough_size))
+#	terrainMeshs.append(create_mesh(rough_size))
+#	terrainMeshs.append(create_mesh(rough_size))
+##	terrainMeshs.append(create_mesh(rough_size))
+
+#	terrainMeshs.append(create_tran_mesh(fine_size, rough_size)) #Correct
+#	terrainMeshs.append(rotate_mesh(terrainMeshs[2]))
+#	terrainMeshs.append(rotate_mesh(terrainMeshs[3]))
+#	terrainMeshs.append(rotate_mesh(terrainMeshs[4]))
 
 func load_files():
 	var file = File.new()
@@ -91,18 +111,18 @@ func create_tran_mesh(fine, rough):
 	var vertices = PoolVector3Array()
 	var UVs = PoolVector2Array()
 	var Idx = PoolIntArray()
-	for i in range(0,1000+1,fine):
+	for i in range(0,1024+1,fine):
 		vertices.push_back(Vector3(i, 0, 0))
-		UVs.push_back(Vector2(i/1000.0, 0))
-	for z in range(rough,1000+1,rough):
-		for x in range(0,1000+1,rough):
+		UVs.push_back(Vector2(i/1024.0, 0))
+	for z in range(rough,1024+1,rough):
+		for x in range(0,1024+1,rough):
 			vertices.push_back(Vector3(x, 0, z))
-			UVs.push_back(Vector2(x/1000.0, z/1000.0))
-	var row = 1000/fine+1
-	var rowr = 1000/rough+1
+			UVs.push_back(Vector2(x/1024.0, z/1024.0))
+	var row = 1024/fine+1
+	var rowr = 1024/rough+1
 	var prev = row
 #	print(vertices)
-	for i in range(0,(1000/fine)):
+	for i in range(0,(1024/fine)):
 		var v = row+round(float(i)*fine/rough)
 		if not prev == v:
 			Idx.push_back(i)
@@ -112,8 +132,8 @@ func create_tran_mesh(fine, rough):
 		Idx.push_back(i)
 		Idx.push_back(i+1)
 		Idx.push_back(v)
-	for y in range(0,(1000/rough)-1):
-		for x in range(0,(1000/rough)):
+	for y in range(0,(1024/rough)-1):
+		for x in range(0,(1024/rough)):
 			Idx.push_back(x+row+y*rowr)
 			Idx.push_back(x+row+y*rowr+1)
 			Idx.push_back(x+row+(y+1)*rowr)
@@ -141,7 +161,7 @@ func rotate_mesh(meshx):
 	mdt.create_from_surface(mesh, 0)
 	for i in range(mdt.get_vertex_count()):
 		var vertex = mdt.get_vertex(i)
-		mdt.set_vertex(i, Vector3(1000-vertex.z,0.0,vertex.x))
+		mdt.set_vertex(i, Vector3(1024-vertex.z,0.0,vertex.x))
 	mesh.surface_remove(0)
 	mdt.commit_to_surface(mesh)
 	return mesh
@@ -150,10 +170,10 @@ func create_mesh(size)->ArrayMesh:
 	var vertices = PoolVector3Array()
 	var UVs = PoolVector2Array()
 	var Idx = PoolIntArray()
-	for z in range(0,1000+1,size):
-		for x in range(0,1000+1,size):
+	for z in range(0,1024+1,size):
+		for x in range(0,1024+1,size):
 			vertices.push_back(Vector3(x, 0, z))
-			UVs.push_back(Vector2(x/1000.0, z/1000.0))
+			UVs.push_back(Vector2(x/1024.0, z/1024.0))
 #			vertices.push_back(Vector3(x+size, 0, z))
 #			UVs.push_back(Vector2((x+size)/1000.0, z/1000.0))
 #			vertices.push_back(Vector3(x, 0, z+size))
@@ -164,9 +184,9 @@ func create_mesh(size)->ArrayMesh:
 #			UVs.push_back(Vector2((x+size)/1000.0, (z+size)/1000.0))
 #			vertices.push_back(Vector3(x, 0, z+size))
 #			UVs.push_back(Vector2(x/1000.0, (z+size)/1000.0))
-	var row = 1000/size+1
-	for y in range(0,(1000/size)):
-		for x in range(0,(1000/size)):
+	var row = 1024/size+1
+	for y in range(0,(1024/size)):
+		for x in range(0,(1024/size)):
 #		if size == rough_size:
 #			print(j,"-",row)
 			Idx.push_back(x+y*row)
@@ -211,12 +231,15 @@ func clear_map():
 	for i in R.VPlanes.get_children():
 		R.VPlanes.remove_child(i)
 		i.queue_free()
+	for i in $Tiles.get_children():
+		i.queue_free()
 	map = null
 	prev_tile = Vector3.INF
 	mutex.lock()
 	terrainTiles.clear()
 	maptiles.clear()
 	maptiles_size.clear()
+	terrainNodes.clear()
 	mutex.unlock()
 #	remove_items()
 	remove_locations()
@@ -224,19 +247,35 @@ func clear_map():
 		yield(get_tree(),"idle_frame")
 
 func load_map(i,pos): #Need to add a location
+	var grid = R.pos2grid(pos)
 	clear_map()
 	map = i
-	MapNode = R.terrain.instance() #only have the one map
-	call_deferred("add_child",MapNode)
+	R.load_image(map)
+	process_tile(grid,0)
+	add_items()
+	
+
+func process_tile(pos, level):
+	var grid = R.pos2grid(pos)
+	var MapNode = null
+	if terrainNodes.has(grid):
+		MapNode = terrainNodes[grid]
+	else:
+		MapNode = R.terrain.instance() #only have the one map
+		$Tiles.call_deferred("add_child",MapNode)
+		terrainNodes[grid] = MapNode
+		MapNode.set_pos(grid)
+	MapNode.level = level
+	
 #	add_child(MapNode)
-	MapNode.load_image(map)
-	process_tile(Vector3(0,0,0),tileRes.FINE) 
+#	MapNode.load_image(map)
+#	process_tile(Vector3(0,0,0),tileRes.FINE) 
 #	check_area(pos)
 #	update_tile([Vector3(0,0,0),fine_size])
 #	maptiles_size[Vector3(0,0,0)] = fine_size
 #	MapNode.update_tile(tilemesh[fine_size],maptiles[Vector3(0,0,0)])
 	
-	add_items()
+	
 #	map.get_node("DirectionalLight").show()
 	
 	#Dont expand on this. the map itself should do this
@@ -248,7 +287,8 @@ func load_map(i,pos): #Need to add a location
 #				house.translation.x += 15 * j
 #				map.add_child(house)
 
-func process_tile(pos, level):
+func process_tile2(pos, level): #obsolete
+	return
 	var grid = R.pos2grid(pos)
 	var delete = null
 #	mutex.lock()
@@ -259,7 +299,7 @@ func process_tile(pos, level):
 		delete = terrainTiles[grid][1]
 	else:
 		terrainTiles[grid] = [null,null]
-	terrainTiles[grid][1] = MapNode.add_tile(grid,terrainMeshs[level])
+#	terrainTiles[grid][1] = MapNode.add_tile(grid,terrainMeshsC[level])
 	terrainTiles[grid][0] = level
 	if delete:
 		delete.queue_free()
@@ -283,33 +323,42 @@ func _process(delta):
 	
 	
 func check_area(pos):
-#	print("check_area ",pos)
-	process_tile(pos,tileRes.FINE)
 #	return
+#	print("check_area ",pos)
+	var grid = R.pos2grid(pos)
+	if grid == prev_tile:
+		return
+	process_tile(pos,0)
+	prev_tile = grid
+	print("process tiles")
+	get_tree().call_group("terrain","update_tile",grid)
+	return
 	for i in tile_offset:
-		process_tile(pos+i*1000,tileRes.FINE)
-	var tran_side = 0
-	for j in tran_offset:
-#		print("offset",R.pos2grid(pos+i*1000))
-		for i in j:
-			match tran_side:
-				0:
-					process_tile(pos+i*1000,tileRes.A)
-				1:
-					process_tile(pos+i*1000,tileRes.D)
-				2:
-					process_tile(pos+i*1000,tileRes.C)
-				3:
-					process_tile(pos+i*1000,tileRes.B)
-		tran_side += 1
-	for i in rough_offset:
-		process_tile(pos+i*1000,tileRes.ROUGH)
+		process_tile(pos+i*1024,0)
+#	var tran_side = 0
+	return
+	for i in tran_offset:
+		process_tile(pos+i*1024,0)
+##		print("offset",R.pos2grid(pos+i*1000))
+#		for i in j:
+#			match tran_side:
+#				0:
+#					process_tile(pos+i*1024,tileRes.A)
+#				1:
+#					process_tile(pos+i*1024,tileRes.D)
+#				2:
+#					process_tile(pos+i*1024,tileRes.C)
+#				3:
+#					process_tile(pos+i*1024,tileRes.B)
+#		tran_side += 1
+#	for i in rough_offset:
+#		process_tile(pos+i*1000,tileRes.ROUGH)
 	return
 	var size = fine_size
 	if not tilemesh.has(size):
 		return
 	pos.y = 0
-	var center = (pos/1000).snapped(Vector3(1,10,1))
+	var center = (pos/1024).snapped(Vector3(1,10,1))
 	if center == prev_tile:
 		return
 	prev_tile = center
@@ -320,7 +369,7 @@ func check_area(pos):
 		return
 #	return
 	for i in tile_offset:
-		process_tile(pos+i*1000,tileRes.TRAN)
+		process_tile(pos+i*1024,tileRes.TRAN)
 		return
 		if not maptiles.has(center+i):
 			mutex.lock()

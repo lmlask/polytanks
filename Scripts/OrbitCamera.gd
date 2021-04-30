@@ -56,6 +56,8 @@ func _process(delta) -> void:
 	global_transform.basis = Basis.IDENTITY
 	_cam.set_translation(_cam.translation.linear_interpolate(Vector3(0,camYOffset,_curZoom),delta * camLerpSpeed))
 	# set the position of the rig to follow the target
+	if _cam.current:
+		GameState.view_location = translation #easy fix, fix it
 
 	return
 #	set_translation(_camTarget.global_transform.origin)
