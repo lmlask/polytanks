@@ -3,6 +3,8 @@
 [sub_resource type="Shader" id=1]
 code = "shader_type spatial;
 uniform vec2 offset;
+uniform vec3 albedo;
+
 float height(vec2 pos) {
   //float h = wave(position);
   return cos((pos.x+offset.y)*0.001) * sin((pos.y+offset.y)*0.001)*500.0;
@@ -15,9 +17,10 @@ void vertex() {
 }
 
 void fragment() {
-	ALBEDO = vec3(0.42, 0.38, 0.24);
+	ALBEDO = albedo;
 }"
 
 [resource]
 shader = SubResource( 1 )
 shader_param/offset = 0.0
+shader_param/albedo = Vector3( 0.326, 0.302, 0.212 )

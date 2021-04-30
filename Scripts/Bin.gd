@@ -111,18 +111,6 @@ func find_empty_pos():
 			return i
 	return null
 
-func find_next_empty_pos():
-	for i in range(positions_array.find(active_pos)+1, ammo_code.length()):
-		if ammo_code[i] == '0':
-			return positions_array[i]
-	return null
-	
-func find_prev_empty_pos():
-	for i in range(positions_array.find(active_pos)-1, -1, -1):
-		if ammo_code[i] == '0':
-			return positions_array[i]
-	return null
-
 func decode(i):
 	if i == "0":
 		return GameState.Ammo.None
@@ -154,15 +142,19 @@ func encode(i):
 func prev_shell():
 	if owner.get_node("Players/Loader/Camera").holding_shell == false:
 		var curr_index = positions_array.find(active_pos)
-		if (curr_index - 1) >= 0 and positions_array[curr_index - 1] != null:
+		while (curr_index > 0 and ammo_code[curr_index - 1] == '0'):
+			curr_index = curr_index - 1
+		if (curr_index > 0 and ammo_code[curr_index - 1] != '0'):
 			lower(active_pos)
 			active_pos = positions_array[curr_index - 1]
 			lift(active_pos)
 	else:
-		var prev_pos = find_prev_empty_pos()
-		if active and prev_pos and active_pos.get_child(0):
+		var curr_index = positions_array.find(active_pos)
+		while (curr_index > 0 and ammo_code[curr_index - 1] != '0'):
+			curr_index = curr_index - 1
+		if active and curr_index > 0 and ammo_code[curr_index - 1] == '0':
 			active_pos.get_child(0).queue_free()
-			active_pos = prev_pos
+			active_pos = positions_array[curr_index - 1]
 			var shell_scene = ammo_types[owner.get_node("Players/Loader/Camera").held_shell_type].instance()
 			shell_scene.material_override = transp_mat
 			active_pos.call_deferred("add_child", shell_scene)
@@ -170,16 +162,19 @@ func prev_shell():
 func next_shell():
 	if owner.get_node("Players/Loader/Camera").holding_shell == false:
 		var curr_index = positions_array.find(active_pos)
-		if ((curr_index + 1) < ammo_code.length()) and positions_array[curr_index + 1] != null:
+		while curr_index + 1 < ammo_code.length() and ammo_code[curr_index + 1] == '0':
+			curr_index = curr_index + 1
+		if active and curr_index + 1 < ammo_code.length() and ammo_code[curr_index + 1] != '0':
 			lower(active_pos)
 			active_pos = positions_array[curr_index + 1]
 			lift(active_pos)
 	else:
-		var next_pos = find_next_empty_pos()
-		if active and next_pos and active_pos.get_child(0):
+		var curr_index = positions_array.find(active_pos)
+		while (curr_index + 1 < ammo_code.length() and ammo_code[curr_index + 1] != '0'):
+			curr_index = curr_index + 1
+		if active and curr_index + 1 < ammo_code.length() and ammo_code[curr_index + 1] == '0':
 			active_pos.get_child(0).queue_free()
-			active_pos = next_pos
-			print(positions_array.find(next_pos))
+			active_pos = positions_array[curr_index + 1]
 			var shell_scene = ammo_types[owner.get_node("Players/Loader/Camera").held_shell_type].instance()
 			shell_scene.material_override = transp_mat
 			active_pos.call_deferred("add_child", shell_scene)
@@ -199,13 +194,11 @@ func lower(pos):
 func remove_shell(pos):
 	#references
 	owner.get_node("Players/Loader/Camera").held_shell_type = decode(ammo_code[positions_array.find(pos)])
-	active_pos = pos
 	var curr_shell = pos.get_child(0)
 
 	#set ammo code to reflect empty pos
 	ammo_code[positions_array.find(pos)] = '0'
-	#set shell array to reflect empty pos
-	positions_array[positions_array.find(pos)] = null
+
 	#set holding_shell
 	owner.get_node("Players/Loader/Camera").holding_shell = true
 
