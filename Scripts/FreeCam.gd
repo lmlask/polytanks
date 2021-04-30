@@ -152,6 +152,7 @@ func _process(delta):
 	if timer > delay and $Camera.current:
 		timer -= delay
 		R.Map.check_area(global_transform.origin)
+		GameState.view_location = global_transform.origin #easy fix, fix it
 	if is_painting:
 		R.TerrainMMI.paint(paint_pos)
 
@@ -167,7 +168,7 @@ func _unhandled_key_input(event): #Trying something different
 		$Camera.current = true
 		global_transform = GameState.CamActive._cam.global_transform #ehhhh _cam?
 		panel.hide()
-		MapLabel.text = "Map: " + R.Map.MapNode.height_map[R.Map.map][1] + "-" + str(R.Map.map)
+		MapLabel.text = "Map: " + R.height_map[R.Map.map][1] + "-" + str(R.Map.map)
 		R.Map.locations_visibile(true)
 
 func _on_Save_pressed():

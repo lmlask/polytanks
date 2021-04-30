@@ -68,5 +68,15 @@ onready var Items = {0:[VWKWagen,"K Wagen"],
 #	5:[Bush01,"Bush 01"]
 #	}
 
+var heightMap = Image.new()
+var height_map = {0:["res://Textures/greyalpha-16bit.exr","Test map"],
+	1:["res://Textures/flat.exr","Flat map"],
+	2:["res://Textures/likethis.exr","Like this map"]}
+
 func pos2grid(pos:Vector3) -> Vector3:
-	return (pos/1000).snapped(Vector3(1,10,1))
+	return (pos/1024).snapped(Vector3(1,1024,1))
+	
+func load_image(map):
+	if not map == -1:
+		heightMap = load(height_map[map][0]).get_data()
+		heightMap.lock()
