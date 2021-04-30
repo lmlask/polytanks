@@ -84,25 +84,24 @@ func _process(_delta):
 	if active == false and last_active == true:
 		just_inactive = true
 	
-	if !holding:
 	#Bin you just looked to, while holding nothing
-		if just_active:
-			if activate_first_filled_pos():
-				lift(active_pos)
-		
-		#Bin you just unlooked to, while holding nothing
-		elif just_inactive:
-			lower(active_pos)
+	if just_active and !holding:
+		if activate_first_filled_pos():
+			lift(active_pos)
 	
-	elif holding:
-		#Bin you just looked to, holding a shell
-		if just_active:
-			if activate_first_empty_pos():
-				show_ghost(active_pos)
-		
-		#Bin you just unlooked to, holding a shell
-		elif just_inactive:
-			hide_ghost(active_pos)
+	#Bin you just unlooked to, while holding nothing
+	elif just_inactive and !holding:
+		lower(active_pos)
+	
+	#Bin you just looked to, holding a shell
+	if just_active and holding:
+		if activate_first_empty_pos():
+			show_ghost(active_pos)
+	
+	#Bin you just unlooked to, holding a shell
+	#BUG: hides shell when unlooking from any filled bin
+	elif just_inactive and holding and bin_not_filled():
+		hide_ghost(active_pos)
 	
 	#IMPORTANT:
 	#Bin you just took from: can be in the remove_shell function
@@ -202,6 +201,16 @@ func activate_first_empty_pos():
 		#all filled.
 		return false
 
+func bin_not_filled():
+	var curr_index = 0
+	while curr_index + 1 < ammo_code.length() and ammo_code[curr_index] != '0':
+		curr_index = curr_index + 1
+	if ammo_code[curr_index] == '0':
+		return true
+	else:
+		#all filled.
+		return false
+
 #shell animating and visual funcs
 func lift(pos):
 	var curr_shell = pos.get_child(0)
@@ -259,7 +268,8 @@ func interact():
 	if owner.get_node("Players/Loader/Camera").holding_shell == false:
 		remove_shell(active_pos)
 	else:
-		add_shell(active_pos)
+		if bin_not_filled():
+			add_shell(active_pos)
 
 func get_crosshair_tex():
 	if owner.get_node("Players/Loader/Camera").holding_shell:

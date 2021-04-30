@@ -41,9 +41,10 @@ func _process(_delta):
 		turretCon.eledir = turretCon.eledir/6
 
 	if Input.is_action_just_pressed("ui_select"):
-		turretCon.fire(get_tree().get_network_unique_id(),shell_number,true)
-		owner.owner.VehicleMan.rpc("fire", str(GameState.tank), shell_number)
-		shell_number += 1
+		if owner.owner.get_node("TurretController").can_fire:
+			turretCon.fire(get_tree().get_network_unique_id(),shell_number,true)
+			owner.owner.VehicleMan.rpc("fire", str(GameState.tank), shell_number)
+			shell_number += 1
 
 func manageCamera():
 	if Input.is_action_just_pressed("external_cam"):

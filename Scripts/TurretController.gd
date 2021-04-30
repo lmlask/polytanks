@@ -28,6 +28,8 @@ var timer:float = 0.0
 var was_playing = false
 var ele_was_playing = false
 
+var can_fire = true
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.

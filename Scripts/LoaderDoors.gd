@@ -8,16 +8,18 @@ onready var tween = owner.get_node("Interior/Tween")
 onready var lock = owner.get_node("Visuals/Turret/TurretDoorLoaderFront/LoaderDoorLock")
 onready var lever_coll = get_parent().get_node("DoorLever/CollisionShape")
 onready var slit_coll = get_parent().get_node("LoaderSideport/CollisionShape")
+onready var loader_camera = owner.get_node("Players/Loader/Camera")
 
 var indicator = "hand"
 
 func interact():
-	if get_parent().get_node("DoorLever").state == "closed":
-		if state == "closed":
-			lock.rotate_object_local(Vector3.UP, deg2rad(-60))
-			state = "opening"
-		elif state == "open":
-			state = "closing"
+	if loader_camera.holding_shell == false:
+		if get_parent().get_node("DoorLever").state == "closed":
+			if state == "closed":
+				lock.rotate_object_local(Vector3.UP, deg2rad(-60))
+				state = "opening"
+			elif state == "open":
+				state = "closing"
 
 func _process(delta):
 	if state == "opening":
