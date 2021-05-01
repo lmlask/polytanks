@@ -61,40 +61,38 @@ func set_pos(grid):
 	translation = (grid)*1024-Vector3(512,0,512)
 
 func update_tile(grid):
-#	print("updating tile ",R.pos2grid(translation))
 	if grid == R.pos2grid(translation):
 #		print("Center, do nothing")
 		level = 0
 		direction = 0
 		return
 	var rel_grid = R.pos2grid(translation)-grid
-#	print("relative ",rel_grid)
 	if abs(rel_grid.x) == abs(rel_grid.z):
 		level = floor((abs(rel_grid.x))/2)
 		direction = 0
 		return
-	if rel_grid.z < grid.z and abs(rel_grid.x) <= abs(rel_grid.z): #Left
+	if rel_grid.z < 0 and abs(rel_grid.x) <= abs(rel_grid.z): #Left
 		level = floor((abs(rel_grid.z)-1)/2)
 		if int(abs(rel_grid.z)-1)%2 == 1:
 			direction = 3
 		else:
 			direction = 0
 		return
-	if rel_grid.x > grid.x and abs(rel_grid.z) <= abs(rel_grid.x): #UP
+	if rel_grid.x > 0 and abs(rel_grid.z) <= abs(rel_grid.x): #UP
 		level = floor((abs(rel_grid.x)-1)/2)
 		if int(abs(rel_grid.x)-1)%2 == 1:
 			direction = 4
 		else:
 			direction = 0
 		return
-	if rel_grid.z > grid.z and abs(rel_grid.x) <= abs(rel_grid.z): #Right
+	if rel_grid.z > 0 and abs(rel_grid.x) <= abs(rel_grid.z): #Right
 		level = floor((abs(rel_grid.z)-1)/2)
 		if int(abs(rel_grid.z)-1)%2 == 1:
 			direction = 1
 		else:
 			direction = 0
 		return
-	if rel_grid.x < grid.x and abs(rel_grid.z) <= abs(rel_grid.x): #UP
+	if rel_grid.x < 0 and abs(rel_grid.z) <= abs(rel_grid.x): #UP
 		level = floor((abs(rel_grid.x)-1)/2)
 		if int(abs(rel_grid.x)-1)%2 == 1:
 			direction = 2
@@ -106,7 +104,6 @@ func _process(delta):
 	timer += delta
 	if timer > 1.0:
 		timer = 0.0
-		
 #		var grid = R.pos2grid(translation)
 #		if grid == R.pos2grid(GameState.view_location):
 #			for i in range(1,5):

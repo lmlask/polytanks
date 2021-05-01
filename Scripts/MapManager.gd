@@ -263,7 +263,7 @@ func process_tile(pos, level):
 	var MapNode = null
 	if terrainNodes.has(grid):
 		MapNode = terrainNodes[grid]
-		print(grid)
+#		print(pos,grid)
 	else:
 		MapNode = R.terrain.instance() #only have the one map
 		$Tiles.call_deferred("add_child",MapNode)
@@ -411,21 +411,24 @@ func terrain_complete(grid):
 #	print("terrain complete", grid)
 #	var pos = R.ManVehicle.vehicle.global_transform.origin
 #	var grid = (pos/1000).snapped(Vector3(1,10,1))
-	if TerrainState == State.START and GameState.InGame:
-		TerrainState = State.TANK
-#		print("resetting vehicle")
-#		pass
-		R.ManVehicle.reset_tank(R.ManVehicle.vehicle) #maybe reset tank should be in a base class for all tanks
-		for i in tile_offset:
-			process_tile(grid+i*1024,R.Map.terrainMeshs[0].size()-1)
-	if TerrainState == State.TANK:
-		for x in range(-4,5):
-			for y in range(-4,5):
-				if abs(x) > 1 or abs(y) > 1:
-					process_tile(Vector3(x,0,y)*1024,R.Map.terrainMeshs[0].size()-1)
-		TerrainState = State.MAP
-#	if	TerrainState == State.MAP:
-#		print($Tiles.get_child_count())
+	if not TerrainState == State.COMPLETE:
+		if TerrainState == State.START and GameState.InGame:
+			TerrainState = State.TANK
+	#		print("resetting vehicle")
+	#		pass
+			R.ManVehicle.reset_tank(R.ManVehicle.vehicle) #maybe reset tank should be in a base class for all tanks
+			for i in tile_offset:
+				process_tile(grid+i*1024,R.Map.terrainMeshs[0].size()-1)
+		if TerrainState == State.TANK:
+			for x in range(-4,5):
+				for y in range(-4,5):
+					if abs(x) > 1 or abs(y) > 1:
+						process_tile(Vector3(x,0,y)*1024,R.Map.terrainMeshs[0].size()-1)
+			TerrainState = State.MAP
+		if	TerrainState == State.MAP:
+			if $Tiles.get_child_count() == 81:
+				TerrainState = State.COMPLETE
+				get_tree().call_group("terrain","update_tile",R.pos2grid(GameState.view_location))
 	for i in LocsNode.get_children():
 #		print(i.name)
 		if i.is_in_group("loc"):
