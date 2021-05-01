@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Objects/FPCamera.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Scripts/LoaderInput.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/PanzerIV/LoaderInput.gd" type="Script" id=2]
 [ext_resource path="res://Objects/LoaderCamera.gd" type="Script" id=3]
 
 [node name="Loader" type="Spatial"]

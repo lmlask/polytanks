@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Textures/Camionetta02_low_color.png" type="Texture" id=1]
-[ext_resource path="res://Scripts/opal_truck.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/OpelTruck.gd" type="Script" id=2]
 [ext_resource path="res://models/Camionetta_Gun_Truck_low.obj" type="ArrayMesh" id=3]
 [ext_resource path="res://Scenes/VisibilityNotifier.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scripts/VehicleCamera.gd" type="Script" id=5]
