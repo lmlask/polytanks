@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scenes/Lobby.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/MapManager.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Scenes/Roles.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scenes/GUI.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Scenes/FreeCam.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scripts/Paint.gd" type="Script" id=10]
 [ext_resource path="res://Scripts/gameRoot.gd" type="Script" id=13]
 [ext_resource path="res://Scripts/NetworkManager.gd" type="Script" id=15]
 [ext_resource path="res://Scripts/TerrainMMI.gd" type="Script" id=18]
@@ -84,6 +85,9 @@ __meta__ = {
 script = ExtResource( 18 )
 
 [node name="Tiles" type="Node" parent="Map"]
+
+[node name="Paint" type="Node" parent="Map"]
+script = ExtResource( 10 )
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
 anchor_left = 1.0

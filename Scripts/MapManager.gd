@@ -24,12 +24,14 @@ var MapNode = null
 var thread_update = Thread.new()
 var map_thread = Thread.new()
 var mutex = Mutex.new()
-var fine_size = 16
+var fine_size = 16 #change array size and clamp interrain
 var rough_size = 100
 var map_size = 4
 var tilemesh = {} #Should be obsolete
 var terrainMeshs = {0:[],1:[],2:[],3:[],4:[]} #Center
 var terrainNodes = {}
+enum State {START, TANK, MAP, COMPLETE}
+var TerrainState = State.START
 
 var terrainTiles = {} #obsolete
 enum tileRes {ROUGH, FINE, A,B,C,D}#obsolete
@@ -43,7 +45,6 @@ var locsID:int = 0
 onready var LocsNode = $Locations
 onready var ItemsNode = $Items
 var buildings_added = false #change this
-signal terrain_completed
 
 
 var time_of_day:float = 1.0
@@ -56,7 +57,7 @@ func _ready():
 	$DirectionalLight.rotation.x = -0.5
 	$DirectionalLight.light_energy = 1
 
-	var _err = connect("terrain_completed", self, "terrain_complete", [], CONNECT_DEFERRED)
+	
 #	maps[0] = preload("res://Objects/TestLevel.tscn")
 #	maps[1] = preload("res://Objects/CityLevel.tscn")
 #	maps[2] = preload("res://Objects/hills map.tscn")
@@ -65,7 +66,7 @@ func _ready():
 	#Create a plane used for terrain
 #	map_thread.start(self,"create_mesh", fine_size)
 	var terrain_size = fine_size
-	for i in range(7):
+	for i in range(7): #change here
 		terrainMeshs[0].append(create_mesh(terrain_size))
 		terrainMeshs[1].append(create_tran_mesh(terrain_size, terrain_size*2)) #Correct
 		terrainMeshs[2].append(rotate_mesh(terrainMeshs[1][i])) #Correct
@@ -161,7 +162,9 @@ func rotate_mesh(meshx):
 	mdt.create_from_surface(mesh, 0)
 	for i in range(mdt.get_vertex_count()):
 		var vertex = mdt.get_vertex(i)
+		var vertex_uv = mdt.get_vertex_uv(i)
 		mdt.set_vertex(i, Vector3(1024-vertex.z,0.0,vertex.x))
+		mdt.set_vertex_uv(i, Vector2(1-vertex_uv.y,vertex_uv.x))
 	mesh.surface_remove(0)
 	mdt.commit_to_surface(mesh)
 	return mesh
@@ -240,6 +243,7 @@ func clear_map():
 	maptiles.clear()
 	maptiles_size.clear()
 	terrainNodes.clear()
+	TerrainState = State.START
 	mutex.unlock()
 #	remove_items()
 	remove_locations()
@@ -256,13 +260,16 @@ func load_map(i,pos): #Need to add a location
 	
 
 func process_tile(pos, level):
+#	print(pos)
 	var grid = R.pos2grid(pos)
 	var MapNode = null
 	if terrainNodes.has(grid):
 		MapNode = terrainNodes[grid]
+#		print(pos,grid)
 	else:
 		MapNode = R.terrain.instance() #only have the one map
 		$Tiles.call_deferred("add_child",MapNode)
+		var _err = MapNode.connect("terrain_completed", self, "terrain_complete", [], CONNECT_DEFERRED)
 		terrainNodes[grid] = MapNode
 		MapNode.set_pos(grid)
 	MapNode.level = level
@@ -326,11 +333,12 @@ func check_area(pos):
 #	return
 #	print("check_area ",pos)
 	var grid = R.pos2grid(pos)
+#	print(grid)
 	if grid == prev_tile:
 		return
 	process_tile(pos,0)
 	prev_tile = grid
-	print("process tiles")
+#	print("process tiles")
 	get_tree().call_group("terrain","update_tile",grid)
 	return
 	for i in tile_offset:
@@ -401,13 +409,28 @@ func update_tile(data):
 	thread_update.call_deferred("wait_to_finish")
 	
 func terrain_complete(grid):
+#	print("grid", grid)
 #	print("terrain complete", grid)
 #	var pos = R.ManVehicle.vehicle.global_transform.origin
 #	var grid = (pos/1000).snapped(Vector3(1,10,1))
-	if GameState.InGame:
-#		print("resetting vehicle")
-		pass
-#		R.ManVehicle.reset_tank(R.ManVehicle.vehicle) #maybe reset tank should be in a base class for all tanks
+	if not TerrainState == State.COMPLETE:
+		if TerrainState == State.START and GameState.InGame:
+			TerrainState = State.TANK
+	#		print("resetting vehicle")
+	#		pass
+			R.ManVehicle.reset_tank(R.ManVehicle.vehicle) #maybe reset tank should be in a base class for all tanks
+			for i in tile_offset:
+				process_tile(grid+i*1024,R.Map.terrainMeshs[0].size()-1)
+		if TerrainState == State.TANK:
+			for x in range(-4,5):
+				for y in range(-4,5):
+					if abs(x) > 1 or abs(y) > 1:
+						process_tile(Vector3(x,0,y)*1024,R.Map.terrainMeshs[0].size()-1)
+			TerrainState = State.MAP
+		if	TerrainState == State.MAP:
+			if $Tiles.get_child_count() == 81:
+				TerrainState = State.COMPLETE
+				get_tree().call_group("terrain","update_tile",R.pos2grid(GameState.view_location))
 	for i in LocsNode.get_children():
 #		print(i.name)
 		if i.is_in_group("loc"):

@@ -15,6 +15,7 @@ var level = 7
 var prev_level = -1
 var direction = 0
 var prev_dir = 0
+signal terrain_completed
 
 
 var timer:float = 0.0
@@ -54,48 +55,54 @@ var inprogress = false
 # Called when the node enters the scene tree for the first time.
 
 func _ready():
-	pass
+	$Tile.material_override = $Tile.material_override.duplicate()
+	set_paint()
+	
+func set_paint():
+	print("set texture")
+	$Tile.material_override.set_shader_param("paint",R.Paint.tex)
+	var offset:Vector2 = Vector2(translation.x,translation.z)/4.5+Vector2(1024,1024)
+#	offset = Vector2(clamp(offset.x,0,2048),clamp(offset.y,0,2048))/2048
+	$Tile.material_override.set_shader_param("offset",offset/2048)
 
 func set_pos(grid):
 	translation = (grid)*1024-Vector3(512,0,512)
 
 func update_tile(grid):
-#	print("updating tile ",R.pos2grid(translation))
 	if grid == R.pos2grid(translation):
 #		print("Center, do nothing")
 		level = 0
 		direction = 0
 		return
 	var rel_grid = R.pos2grid(translation)-grid
-#	print("relative ",rel_grid)
 	if abs(rel_grid.x) == abs(rel_grid.z):
-		level = (abs(rel_grid.x))/2
+		level = floor((abs(rel_grid.x))/2)
 		direction = 0
 		return
-	if rel_grid.z < grid.z and abs(rel_grid.x) <= abs(rel_grid.z): #Left
-		level = (abs(rel_grid.z)-1)/2
+	if rel_grid.z < 0 and abs(rel_grid.x) <= abs(rel_grid.z): #Left
+		level = floor((abs(rel_grid.z)-1)/2)
 		if int(abs(rel_grid.z)-1)%2 == 1:
 			direction = 3
 		else:
 			direction = 0
 		return
-	if rel_grid.x > grid.x and abs(rel_grid.z) <= abs(rel_grid.x): #UP
-		level = (abs(rel_grid.x)-1)/2
-		if int(abs(rel_grid.x)-1)%2:
+	if rel_grid.x > 0 and abs(rel_grid.z) <= abs(rel_grid.x): #UP
+		level = floor((abs(rel_grid.x)-1)/2)
+		if int(abs(rel_grid.x)-1)%2 == 1:
 			direction = 4
 		else:
 			direction = 0
 		return
-	if rel_grid.z > grid.z and abs(rel_grid.x) <= abs(rel_grid.x): #Right
-		level = (abs(rel_grid.z)-1)/2
-		if int(abs(rel_grid.z)-1)%2:
+	if rel_grid.z > 0 and abs(rel_grid.x) <= abs(rel_grid.z): #Right
+		level = floor((abs(rel_grid.z)-1)/2)
+		if int(abs(rel_grid.z)-1)%2 == 1:
 			direction = 1
 		else:
 			direction = 0
 		return
-	if rel_grid.x < grid.x and abs(rel_grid.z) <= abs(rel_grid.x): #UP
-		level = (abs(rel_grid.x)-1)/2
-		if int(abs(rel_grid.x)-1)%2:
+	if rel_grid.x < 0 and abs(rel_grid.z) <= abs(rel_grid.x): #UP
+		level = floor((abs(rel_grid.x)-1)/2)
+		if int(abs(rel_grid.x)-1)%2 == 1:
 			direction = 2
 		else:
 			direction = 0
@@ -105,7 +112,6 @@ func _process(delta):
 	timer += delta
 	if timer > 1.0:
 		timer = 0.0
-		
 #		var grid = R.pos2grid(translation)
 #		if grid == R.pos2grid(GameState.view_location):
 #			for i in range(1,5):
@@ -116,13 +122,15 @@ func _process(delta):
 #			if R.Map.terrainNodes.has(grid+tile_offset[direction]) and not direction == 0:
 #				R.Map.terrainNodes[grid+tile_offset[direction]].direction = direction
 #				R.Map.terrainNodes[grid+tile_offset[direction]].level = level-1
-		level = clamp(level,0,6)
+		level = clamp(level,0,R.Map.terrainMeshs[0].size()-1)
 		if not prev_level == level or not prev_dir == direction:
 			prev_level = level
 			prev_dir = direction
 			var mesh = create_tile_mesh(self,R.Map.terrainMeshs[direction][level])
 			$Tile.mesh = mesh
 			$Tile/StaticBody/CollisionShape.shape = mesh.create_trimesh_shape()
+			emit_signal("terrain_completed", R.pos2grid(translation))
+#			print("terain complete.")
 			
 			
 #func load_image(map):
