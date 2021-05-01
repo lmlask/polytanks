@@ -13,6 +13,7 @@ onready var VWheeled = Root.get_node("Vehicles/Wheeled") #V for Vehciels ??? may
 onready var NoiseTex = Map.get_node("NoiseTexture")
 onready var Lobby = Root.get_node("Lobby")
 onready var TerrainMMI = Map.get_node("TerrainMMI")
+onready var Paint = Map.get_node("Paint")
 
 var sitesfile = "res://MapData/Sites.dat"
 var itemsfile = "res://MapData/Items.dat"

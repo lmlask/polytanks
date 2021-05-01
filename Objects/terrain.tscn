@@ -11,6 +11,8 @@
 code = "shader_type spatial;
 //render_mode diffuse_toon;
 
+uniform sampler2D paint;
+uniform vec2 offset;
 uniform vec4 color1: hint_color;
 uniform vec4 color2: hint_color;
 uniform vec4 color_steep: hint_color;
@@ -83,6 +85,10 @@ void fragment(){
 	vec3 mixin = mix(grass, color_steep.rgb, slope);
 
 	mixin = round(mixin*32.0)/32.0;
+	
+	vec4 paintc = vec4(texture(paint, UV/vec2(9.0)+offset));
+	
+	mixin = mix(grass, paintc.rgb, paintc.a);
 
 	ALBEDO = mixin;
 	NORMALMAP = dnoise;
@@ -101,6 +107,7 @@ noise = SubResource( 2 )
 
 [sub_resource type="ShaderMaterial" id=4]
 shader = SubResource( 1 )
+shader_param/offset = null
 shader_param/color1 = Color( 0.71, 0.51617, 0.2627, 1 )
 shader_param/color2 = Color( 0.68, 0.443133, 0.4216, 1 )
 shader_param/color_steep = Color( 0.24, 0.1872, 0.1872, 1 )

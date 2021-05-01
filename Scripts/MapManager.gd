@@ -162,7 +162,9 @@ func rotate_mesh(meshx):
 	mdt.create_from_surface(mesh, 0)
 	for i in range(mdt.get_vertex_count()):
 		var vertex = mdt.get_vertex(i)
+		var vertex_uv = mdt.get_vertex_uv(i)
 		mdt.set_vertex(i, Vector3(1024-vertex.z,0.0,vertex.x))
+		mdt.set_vertex_uv(i, Vector2(1-vertex_uv.y,vertex_uv.x))
 	mesh.surface_remove(0)
 	mdt.commit_to_surface(mesh)
 	return mesh

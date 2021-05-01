@@ -25,6 +25,7 @@ var rot_speed = 150.0
 var paint = false
 var is_painting = false
 var paint_pos = Vector3.ZERO
+var pressure:float = 0.0
 
 var timer = 0.0
 var delay = 0.25
@@ -84,6 +85,9 @@ func _input(event):
 			var result = get_ground(event.position)
 			if result.has("collider"):
 				paint_pos = result.position
+				if event.relative == Vector2(0,0):
+					pressure = event.pressure
+				
 			
 #			var position = event.position
 #			var from = $Camera.project_ray_origin(position)
@@ -97,8 +101,10 @@ func _input(event):
 		move.x = Input.get_action_strength("ui_left") - Input.get_action_strength("ui_right")
 		move.y = Input.get_action_strength("gear_down") - Input.get_action_strength("gear_up")
 		if Input.is_action_pressed("reset_vehicle"): #same action does multiple things
+			if paint:
+				R.Paint.update_texture()
 			paint = !paint
-			print("tree paint mode: ",paint)
+			print("Paint mode: ",paint)
 	elif event is InputEventMouseButton:
 		if event.is_action_pressed("cam_zoom_in"):
 			move_speed = min(move_speed * 1.5, 500.0)
@@ -118,6 +124,7 @@ func _input(event):
 					is_painting = true
 		elif Input.is_action_just_released("action"):
 			is_painting = false
+			R.Paint.update_texture()
 					
 
 func unselect():
@@ -129,7 +136,7 @@ func unselect():
 
 func get_ground(position):
 	var from = $Camera.project_ray_origin(position)
-	var to = from + $Camera.project_ray_normal(position) * 5000
+	var to = from + $Camera.project_ray_normal(position) * 10000
 	var space_state = get_world().direct_space_state
 	return space_state.intersect_ray(from,to)
 
@@ -155,7 +162,7 @@ func _process(delta):
 		R.Map.check_area(global_transform.origin)
 		GameState.view_location = global_transform.origin #easy fix, fix it
 	if is_painting:
-		R.TerrainMMI.paint(paint_pos)
+		R.Paint.paint(paint_pos,pressure)
 
 
 func _unhandled_key_input(event): #Trying something different

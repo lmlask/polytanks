@@ -55,7 +55,15 @@ var inprogress = false
 # Called when the node enters the scene tree for the first time.
 
 func _ready():
-	pass
+	$Tile.material_override = $Tile.material_override.duplicate()
+	set_paint()
+	
+func set_paint():
+	print("set texture")
+	$Tile.material_override.set_shader_param("paint",R.Paint.tex)
+	var offset:Vector2 = Vector2(translation.x,translation.z)/4.5+Vector2(1024,1024)
+#	offset = Vector2(clamp(offset.x,0,2048),clamp(offset.y,0,2048))/2048
+	$Tile.material_override.set_shader_param("offset",offset/2048)
 
 func set_pos(grid):
 	translation = (grid)*1024-Vector3(512,0,512)
