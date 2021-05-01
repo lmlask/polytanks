@@ -10,7 +10,6 @@ onready var barrel = owner.get_node("Visuals/Turret/gun/gunMesh/barrel")
 onready var muzzleSound = owner.get_node("Visuals/Turret/gun/gunMesh/barrel/gunSoundExterior")
 onready var crankslow = preload("res://Sfx/crank_slow.wav")
 onready var crankfast = preload("res://Sfx/crank_fast.wav")
-
 export var shell_scene = preload("res://Projectiles/PanzerIV/Projectile.tscn")
 
 var traverse_multiplier = 0.4 
@@ -28,15 +27,12 @@ var timer:float = 0.0
 var was_playing = false
 var ele_was_playing = false
 
-var can_fire = true
+#These two vars MUST be correct and are set by the GunRig node
+var loaded = true
+var locked = true
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-	
 func _process(delta):
-	
-	#Lerp lever, control mode
+	#Control mode
 	if traverse_mode == "power":
 			traverse_multiplier = 2
 			accel_speed = 1
@@ -59,7 +55,7 @@ func _process(delta):
 	
 	if owner.auto:
 		timer += delta #for auto firing during intro
-		var firetime = randf() + 5.0
+		var firetime = randf() + 3.5
 		if timer > firetime:
 			timer -= firetime
 			fire()
@@ -72,23 +68,22 @@ func toggleTraverseMode():
 	owner.get_node("Interior/TurretInterior/Dynamic/LeverTraverse").toggle()
 	
 func fire(id = 0, number = 0, host = false):
-	#spawning shell
-	var shell = shell_scene.instance()
-	shell.name = str(id,"-",number)
-	shell.host = host
-	
-	if GameState.ShellCam and GameState.InGame and host:
-		shell.shellcam(GameState.ShellCam)
-	add_child(shell)
-	shell.global_transform = turret.get_node("gun/gunMesh/barrel/projectile_spawner").global_transform
-	
-	#barrel recoil anim
-	barrel.recoil()
-	
-	#sound
-	muzzleSound.play()
-	
-	#recoil physics
-	var point = barrel.get_node("projectile_spawner").global_transform.origin
-	owner.apply_impulse(owner.global_transform.basis.xform(owner.to_local(point)), Vector3(0, 25, 0))
-	
+		#spawning shell
+		var shell = shell_scene.instance()
+		shell.name = str(id,"-",number)
+		shell.host = host
+		
+		if GameState.ShellCam and GameState.InGame and host:
+			shell.shellcam(GameState.ShellCam)
+		add_child(shell)
+		shell.global_transform = turret.get_node("gun/gunMesh/barrel/projectile_spawner").global_transform
+		
+		#barrel recoil anim
+		barrel.recoil()
+		
+		#sound
+		muzzleSound.play()
+		
+		#recoil physics
+		var point = barrel.get_node("projectile_spawner").global_transform.origin
+		owner.apply_impulse(owner.global_transform.basis.xform(owner.to_local(point)), Vector3(0, 25, 0))

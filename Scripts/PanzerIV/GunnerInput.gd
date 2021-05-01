@@ -41,7 +41,7 @@ func _process(_delta):
 		turretCon.eledir = turretCon.eledir/6
 
 	if Input.is_action_just_pressed("ui_select"):
-		if owner.owner.get_node("TurretController").can_fire:
+		if owner.owner.get_node("TurretController").loaded and owner.owner.get_node("TurretController").locked:
 			turretCon.fire(get_tree().get_network_unique_id(),shell_number,true)
 			owner.owner.VehicleMan.rpc("fire", str(GameState.tank), shell_number)
 			shell_number += 1
