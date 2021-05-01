@@ -129,6 +129,6 @@ material_override = SubResource( 4 )
 skin = SubResource( 5 )
 
 [node name="StaticBody" type="StaticBody" parent="Tile"]
-collision_layer = 524289
+collision_layer = 524288
 
 [node name="CollisionShape" type="CollisionShape" parent="Tile/StaticBody"]

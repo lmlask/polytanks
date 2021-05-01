@@ -111,7 +111,8 @@ func _input(event):
 				if not paint:
 					if selected:
 						R.Map.update_item(selected)
-					selected = result.collider.owner
+					if not result.collider.owner.is_in_group("terrain"):
+						selected = result.collider.owner
 					
 				else:
 					is_painting = true
