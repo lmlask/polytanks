@@ -416,13 +416,14 @@ func terrain_complete(grid):
 	if not TerrainState == State.COMPLETE:
 		if TerrainState == State.START and GameState.InGame:
 			TerrainState = State.TANK
+			TerrainState = State.COMPLETE #Comment out to load full map
 	#		print("resetting vehicle")
 	#		pass
 			R.ManVehicle.reset_tank(R.ManVehicle.vehicle) #maybe reset tank should be in a base class for all tanks
 			for i in tile_offset:
 				process_tile(grid+i*1024,R.Map.terrainMeshs[0].size()-1)
 		if TerrainState == State.TANK:
-			for x in range(-4,5):
+			for x in range(-4,5): #
 				for y in range(-4,5):
 					if abs(x) > 1 or abs(y) > 1:
 						process_tile(Vector3(x,0,y)*1024,R.Map.terrainMeshs[0].size()-1)

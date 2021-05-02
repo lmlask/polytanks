@@ -17,7 +17,7 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color( 0, 0, 0, 1 )
 
-[node name="FreeCam" type="Spatial"]
+[node name="Editor" type="Spatial"]
 script = ExtResource( 1 )
 
 [node name="Camera" type="Camera" parent="."]
@@ -26,12 +26,12 @@ far = 10000.0
 [node name="Editor" type="CanvasLayer" parent="."]
 
 [node name="Panel" type="Panel" parent="Editor"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 0.890869
-margin_right = 0.890869
 custom_styles/panel = ExtResource( 4 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -339,6 +339,40 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="PaintPanel" type="Panel" parent="Editor"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorPicker" type="ColorPicker" parent="Editor/PaintPanel"]
+margin_left = 938.0
+margin_top = 28.0
+margin_right = 1246.0
+margin_bottom = 490.0
+
+[node name="Mode" type="Button" parent="Editor/PaintPanel"]
+margin_left = 596.0
+margin_top = 225.0
+margin_right = 741.0
+margin_bottom = 280.0
+custom_fonts/font = ExtResource( 2 )
+toggle_mode = true
+text = "Road"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Editor/PaintPanel"]
+margin_left = 428.0
+margin_top = 228.0
+margin_right = 589.0
+margin_bottom = 277.0
+custom_fonts/font = ExtResource( 2 )
+text = "Mode:"
+
 [connection signal="pressed" from="Editor/Panel/HBoxContainer/VSplitContainer/HSplitContainer/SiteAdd" to="." method="_on_SiteAdd_pressed"]
 [connection signal="gui_input" from="Editor/Panel/HBoxContainer/VSplitContainer/ScrollContainer/VBoxContainer/SiteButton" to="Editor/Panel/HBoxContainer/VSplitContainer/ScrollContainer/VBoxContainer/SiteButton" method="_on_Button_gui_input"]
 [connection signal="pressed" from="Editor/Panel/HBoxContainer/VSplitContainer2/HSplitContainer/ItemAdd" to="." method="_on_ItemAdd_pressed"]
@@ -352,3 +386,4 @@ __meta__ = {
 [connection signal="pressed" from="Editor/Menu/VBoxContainer/Delete" to="Editor/Menu" method="_on_Delete_pressed"]
 [connection signal="pressed" from="Editor/Menu/VBoxContainer/Cancel" to="Editor/Menu" method="_on_Cancel_pressed"]
 [connection signal="item_selected" from="Editor/ItemsButton" to="." method="_on_ItemsButton_item_selected"]
+[connection signal="toggled" from="Editor/PaintPanel/Mode" to="." method="_on_Mode_toggled"]

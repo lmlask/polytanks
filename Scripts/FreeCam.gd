@@ -1,6 +1,7 @@
 extends Spatial
 
 onready var panel = $Editor/Panel
+onready var paintPanel = $Editor/PaintPanel
 onready var menu = $Editor/Menu
 onready var site_button = $Editor/Panel/HBoxContainer/VSplitContainer/ScrollContainer/VBoxContainer/SiteButton
 onready var item_button = $Editor/Panel/HBoxContainer/VSplitContainer2/ScrollContainer/VBoxContainer/ItemButton
@@ -8,6 +9,7 @@ onready var loc_button = $Editor/Panel/HBoxContainer/VSplitContainer3/ScrollCont
 onready var MapLabel = $Editor/Panel/Map
 onready var SiteLabel = $Editor/Panel/Site
 onready var ItemsButton = $Editor/ItemsButton
+onready var PaintColor = paintPanel.get_node("ColorPicker")
 
 #onready var terrainmmi = [] #To be fixed later, POC
 
@@ -22,9 +24,11 @@ var site = null
 
 var move_speed = 25.0
 var rot_speed = 150.0
-var paint = false
-var is_painting = false
+var paint = true #default to be false for not placing items
+var is_painting = false 
 var paint_pos = Vector3.ZERO
+var paint_event
+var paintMode = false #default is to be true painting
 var pressure:float = 0.0
 
 var timer = 0.0
@@ -34,6 +38,7 @@ var delay = 0.25
 
 func _ready():
 	panel.hide()
+	paintPanel.hide()
 	$Editor/Enabled.hide()
 	set_process(false)
 	set_process_input(false)
@@ -53,10 +58,13 @@ func _ready():
 	
 	
 func _input(event):
-	if enabled and not panel.visible and not event.is_action_pressed("ui_cancel"): #only exists to not handle showing mouse so you can exit game
+	if enabled and not panel.visible and not paintPanel.visible and not event.is_action_pressed("ui_cancel"): #only exists to not handle showing mouse so you can exit game
 		get_tree().set_input_as_handled()
 	if Input.is_action_just_pressed("F4"):
-		panel.visible = !panel.visible
+		if not paint:
+			panel.visible = !panel.visible
+		else:
+			paintPanel.visible = !paintPanel.visible
 		GameState.show_mouse()
 #		R.Map.update_locations()
 #		R.Map.update_items()
@@ -85,8 +93,8 @@ func _input(event):
 			var result = get_ground(event.position)
 			if result.has("collider"):
 				paint_pos = result.position
-				if event.relative == Vector2(0,0):
-					pressure = event.pressure
+#				if event.relative == Vector2(0,0):
+#					pressure = event.pressure
 				
 			
 #			var position = event.position
@@ -120,8 +128,12 @@ func _input(event):
 					if not result.collider.owner.is_in_group("terrain"):
 						selected = result.collider.owner
 					
-				else:
-					is_painting = true
+				elif not paintPanel.visible:
+					if paintMode:
+						is_painting = true
+					elif result.collider.owner.is_in_group("terrain"):
+						R.Paint.road(result.position,event)
+					
 		elif Input.is_action_just_released("action"):
 			is_painting = false
 			R.Paint.update_texture()
@@ -162,7 +174,10 @@ func _process(delta):
 		R.Map.check_area(global_transform.origin)
 		GameState.view_location = global_transform.origin #easy fix, fix it
 	if is_painting:
-		R.Paint.paint(paint_pos,pressure)
+		if paintMode:
+			R.Paint.paint(paint_pos)
+		else:
+			R.Paint.road(paint_pos)
 
 
 func _unhandled_key_input(event): #Trying something different
@@ -243,3 +258,11 @@ func _on_LocAdd_pressed():
 	var o = transform.origin - transform.basis.z * 100
 	R.Map.locations[R.Map.locsID] = [R.Map.map, R.Map.site_selected, default, Vector2(o.x,o.z),0]
 #	print(R.Map.locations[R.Map.locsID])
+
+func _on_Mode_toggled(button_pressed):
+	paintMode = button_pressed
+	if paintMode:
+		paintPanel.get_node("Mode").text = "Paint"
+	else:
+		paintPanel.get_node("Mode").text = "Road"
+	print(paintMode)

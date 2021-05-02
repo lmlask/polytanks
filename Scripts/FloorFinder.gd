@@ -47,11 +47,11 @@ func find_floor2(building:Spatial, rot = false): #for items, changed default to 
 #		var grid = (building.owner.transform.origin/1000).snapped(Vector3(1,10,1))
 #		building.translation += Vector3(500,0,500)-grid*1000
 
-func floor_at_point(pos):
+func floor_at_point(pos,offset:float=0.0):
 	ray.translation =  pos + Vector3(0,500,0)
 	ray.force_raycast_update()
 	if ray.is_colliding():
-		return ray.get_collision_point()
+		return ray.get_collision_point()+Vector3(0,offset,0)
 
 func set_xform(tank,tsf):
 #	tsf.origin += tsf.basis.y/5

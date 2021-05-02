@@ -59,7 +59,6 @@ func _ready():
 	set_paint()
 	
 func set_paint():
-	print("set texture")
 	$Tile.material_override.set_shader_param("paint",R.Paint.tex)
 	var offset:Vector2 = Vector2(translation.x,translation.z)/4.5+Vector2(1024,1024)
 #	offset = Vector2(clamp(offset.x,0,2048),clamp(offset.y,0,2048))/2048
@@ -186,6 +185,18 @@ func create_tile_mesh(tile, meshx):
 		vertex.y = get_noise(tile, Vector2(vertex.x, vertex.z))
 #		vertex.y += noise.get_noise_2d((vertex.x+translation.x)/20, (vertex.z+translation.z)/20)*250
 		mdt.set_vertex(i, vertex)
+		
+#	mesh.surface_remove(0)
+#	mdt.commit_to_surface(mesh)
+#	var st = SurfaceTool.new()
+#	st.create_from(mesh,0)
+#	st.generate_normals()
+#	st.generate_tangents()
+#	mesh.surface_remove(0)
+#	st.commit(mesh)
+#	mesh.regen_normalmaps()
+#	return mesh
+
 	for i in range(mdt.get_face_count()):
 		# Get the index in the vertex array.
 		var a = mdt.get_face_vertex(i, 0)
@@ -203,24 +214,15 @@ func create_tile_mesh(tile, meshx):
 		mdt.set_vertex_normal(a, n + mdt.get_vertex_normal(a))
 		mdt.set_vertex_normal(b, n + mdt.get_vertex_normal(b))
 		mdt.set_vertex_normal(c, n + mdt.get_vertex_normal(c))
-#		print("vertex-A",n, " - ", mdt.get_vertex_normal(a), " - ", mdt.get_face_normal(i))
-#		print("vertex-B",n, " - ", mdt.get_vertex_normal(b), " - ", mdt.get_face_normal(i))
-#		print("vertex-C",n, " - ", mdt.get_vertex_normal(c), " - ", mdt.get_face_normal(i))
-#		mdt.set_vertex_normal(a, n + mdt.get_face_normal(i))
-#		mdt.set_vertex_normal(b, n + mdt.get_face_normal(i))
-#		mdt.set_vertex_normal(c, n + mdt.get_face_normal(i))
-		
 		
 	# Run through vertices one last time to normalize normals and
 	# set color to normal.
 	for i in range(mdt.get_vertex_count()):
 		var v = mdt.get_vertex_normal(i).normalized()
 		mdt.set_vertex_normal(i, v)
-
-
+		mdt.set_vertex_color(i, Color(v.x, v.y, v.z))
 	
 	mesh.surface_remove(0)
-	var mesh1 = ArrayMesh.new()
 	mdt.commit_to_surface(mesh)
 #	var st = SurfaceTool.new()
 #	st.create_from(mesh,0)
@@ -228,6 +230,7 @@ func create_tile_mesh(tile, meshx):
 #	var mesh2 = ArrayMesh.new()
 #	mesh.surface_remove(0)
 #	st.commit(mesh)
+#	mesh.regen_normalmaps()
 	return mesh
 	mdt.create_from_surface(mesh, 0)
 	print(mdt.get_face_count())
