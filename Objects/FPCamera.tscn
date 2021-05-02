@@ -6,9 +6,9 @@
 
 [node name="FPCamera" type="Spatial"]
 script = ExtResource( 1 )
-role = "driver"
 
 [node name="OuterGimbal" type="Spatial" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
 
 [node name="InnerGimbal" type="Spatial" parent="OuterGimbal"]
 

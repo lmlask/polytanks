@@ -22,6 +22,7 @@ var locsfile = "res://MapData/Locs.dat"
 onready var terrain = preload("res://Objects/terrain.tscn")
 onready var CamExt = preload("res://Objects/ExternalCamera.tscn")
 onready var VTPzIV = preload("res://Tanks/PzIV/PanzerIV.tscn") #Name/sort it better. Put in a dictionary dictionary, Scene Vehicle Tank ?
+onready var VWCamionetta = preload("res://WheeledVehicles/Camionetta/Camionetta.tscn")
 
 onready var VWKWagen = preload("res://models/Kubelwagen.tscn")
 onready var MHouse = preload("res://models/house.tscn") #Model House
