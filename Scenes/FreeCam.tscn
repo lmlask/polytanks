@@ -348,10 +348,10 @@ __meta__ = {
 }
 
 [node name="ColorPicker" type="ColorPicker" parent="Editor/PaintPanel"]
-margin_left = 938.0
-margin_top = 28.0
-margin_right = 1246.0
-margin_bottom = 490.0
+margin_left = 942.0
+margin_top = 32.0
+margin_right = 1250.0
+margin_bottom = 494.0
 
 [node name="Mode" type="Button" parent="Editor/PaintPanel"]
 margin_left = 596.0

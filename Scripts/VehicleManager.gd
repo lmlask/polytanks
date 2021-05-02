@@ -39,11 +39,11 @@ func _process(_delta):
 
 	#add upto 50 planes and vehicles
 	if randf() < 0.01: #Randome plane random direction
-		if R.VPlanes.get_child_count() < 20:
+		if R.VPlanes.get_child_count() < 200:
 			var stuka = R.Stuka.instance()
 			R.VPlanes.add_child(stuka)
 		
-		if R.VWheeled.get_child_count() < 20:
+		if R.VWheeled.get_child_count() < 200:
 			var truck
 			if randf() > 0.5:
 				truck = R.OpalTruck.instance()

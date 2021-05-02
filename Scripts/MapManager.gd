@@ -24,7 +24,7 @@ var MapNode = null
 var thread_update = Thread.new()
 var map_thread = Thread.new()
 var mutex = Mutex.new()
-var fine_size = 16 #change array size and clamp interrain
+var fine_size = 16 #change array size
 var rough_size = 100
 var map_size = 4
 var tilemesh = {} #Should be obsolete
@@ -421,7 +421,7 @@ func terrain_complete(grid):
 	#		pass
 			R.ManVehicle.reset_tank(R.ManVehicle.vehicle) #maybe reset tank should be in a base class for all tanks
 			for i in tile_offset:
-				process_tile(grid+i*1024,R.Map.terrainMeshs[0].size()-1)
+				process_tile(grid+i*1024,R.Map.terrainMeshs[0].size()-2)
 		if TerrainState == State.TANK:
 			for x in range(-4,5): #
 				for y in range(-4,5):
