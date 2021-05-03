@@ -62,6 +62,7 @@ func set_xform(tank,tsf):
 		while tankrays.is_colliding():
 			tsf.origin += tsf.basis.y/5
 			tank.transform = tsf
+			
 			tankrays.force_raycast_update()
 #	tank.transform = tsf
 	

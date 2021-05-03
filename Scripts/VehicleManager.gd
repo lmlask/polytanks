@@ -5,7 +5,7 @@ export(NodePath) var vehiclePath
 #onready var vehicle_scene = load("res://Tanks/PzIV/PanzerIV.tscn") #Should be dynamic
 onready var FloorFinder = $FloorFinder
 onready var NM = get_node("../NetworkManager")
-onready var vehicle:PanzerIV# = vehicle_scene.instance()
+onready var vehicle# = vehicle_scene.instance()
 #onready var other_vehicle : RigidBody = vehicle_scene.instance()
 var vehicleStartTransform : Transform
 var tanks = []
