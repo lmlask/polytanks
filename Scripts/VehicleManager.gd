@@ -63,6 +63,7 @@ func reset_tank(v): #should be part of the vehicle
 func start():
 	R.Map.load_map(GameState.map,start_pos[GameState.tank])
 	vehicle = R.VTPzIV.instance()
+#	vehicle = R.VWCamionetta.instance()
 	yield(get_tree(),"idle_frame")
 	R.ManVehicle.reset_tank(R.ManVehicle.vehicle)
 
@@ -72,7 +73,7 @@ func start():
 		tanks.clear()
 	GameState.setup_debug() #fix this, make it optional
 	vehicle.external_only = false
-	R.VTanks.add_child(vehicle)
+	R.VPlayers.add_child(vehicle)
 	
 #	get_parent().remove_child(camrig) #fix it
 	var cam = R.CamExt.instance()
@@ -118,12 +119,12 @@ remote func get_remote_tanks():
 
 remote func add_tank(_t,tid):
 #	print("starting remote tank")
-	if R.VTanks.has_node(str(tid)): #Dont add tank if one exists
+	if R.VPlayers.has_node(str(tid)): #Dont add tank if one exists
 		return
 	print(tid, GameState.tank)
 	if not tid == GameState.tank: #if adding tank is the current drivers tank do no add
 		var tank = R.VTPzIV.instance()
-		R.VTanks.add_child(tank)
+		R.VPlayers.add_child(tank)
 #		tank.name = str(get_tree().get_rpc_sender_id())
 		tank.name = str(tid)
 		tank.auto = false
@@ -148,7 +149,7 @@ func load_intro_tanks():
 func add_intro_tank():
 	if tanks.size() < 5: #only add tanks when tanks exists, ie game has started
 		var tank = R.VTPzIV.instance()
-		R.VTanks.add_child(tank)
+		R.VPlayers.add_child(tank)
 #		tank.rotate_y(-PI/2)
 		tank.VehicleMan = self
 		FloorFinder.find_floor(tank)
@@ -162,17 +163,17 @@ func add_intro_tank():
 #Re-write it later once different things are added
 
 remote func set_tur(tr,te,id): #set turrent rotation, change to work like tank transform
-	if R.VTanks.has_node(id):
-		R.VTanks.get_node(id).Turret.rotation = tr
-		R.VTanks.get_node(id).Gun.rotation = te
+	if R.VPlayers.has_node(id):
+		R.VPlayers.get_node(id).Turret.rotation = tr
+		R.VPlayers.get_node(id).Gun.rotation = te
 
 remote func set_pos(t,id): #needs a re-wrtie all this
 #	var sid = str(get_tree().get_rpc_sender_id())
 #	sid = str(GameState.tank)
-	if R.VTanks.has_node(str(id)):
-		R.VTanks.get_node(str(id)).next_transform(t)
+	if R.VPlayers.has_node(str(id)):
+		R.VPlayers.get_node(str(id)).next_transform(t)
 #	other_vehicle.transform = t
 	
 remote func fire(id,number):
-	R.VTanks.get_node(id).get_node("TurretController").fire(get_tree().get_rpc_sender_id(),number,false)
+	R.VPlayers.get_node(id).get_node("TurretController").fire(get_tree().get_rpc_sender_id(),number,false)
 

@@ -66,7 +66,7 @@ func _ready():
 	#Create a plane used for terrain
 #	map_thread.start(self,"create_mesh", fine_size)
 	var terrain_size = fine_size
-	for i in range(7): #change here
+	for i in range(6): #change here
 		terrainMeshs[0].append(create_mesh(terrain_size))
 		terrainMeshs[1].append(create_tran_mesh(terrain_size, terrain_size*2)) #Correct
 		terrainMeshs[2].append(rotate_mesh(terrainMeshs[1][i])) #Correct
@@ -225,8 +225,8 @@ func clear_map():
 	if MapNode:
 		remove_child(MapNode)
 		MapNode.queue_free()
-	for i in R.VTanks.get_children():
-		R.VTanks.remove_child(i)
+	for i in R.VPlayers.get_children():
+		R.VPlayers.remove_child(i)
 		i.free()
 	for i in R.VWheeled.get_children():
 		R.VWheeled.remove_child(i)
