@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Materials/Toon/Vehicles/Camionetta/Camionetta.tres" type="Material" id=1]
 [ext_resource path="res://BlenderFiles/Default.material" type="Material" id=2]
@@ -6,7 +6,8 @@
 [ext_resource path="res://WheeledVehicles/Camionetta/EngineController.gd" type="Script" id=4]
 [ext_resource path="res://Scripts/RaycastDriver.gd" type="Script" id=5]
 [ext_resource path="res://Scripts/WheeledVehicleController.gd" type="Script" id=6]
-[ext_resource path="res://Scripts/Camionetta/WheelAnimator.gd" type="Script" id=7]
+[ext_resource path="res://Scripts/WheelAnimator.gd" type="Script" id=7]
+[ext_resource path="res://WheeledVehicles/Camionetta/SteeringWheel.gd" type="Script" id=8]
 
 [sub_resource type="ArrayMesh" id=1]
 surfaces/0 = {
@@ -232,27 +233,25 @@ surfaces/0 = {
 
 [node name="Camionetta" type="RigidBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.224121, 0 )
-mass = 5.0
+mass = 25.0
 script = ExtResource( 6 )
 enginePower = 100.0
 
 [node name="EngineController" type="Node" parent="."]
 script = ExtResource( 4 )
 state = "OFF WARM"
-maxEnginePower = 100.0
+maxEnginePower = 500.0
 minRPM = 0.4
-forward_gears = 5
+forward_gears = 4
 reverse_gears = 1
 turnModifier = 0.95
 gearTopSpeeds = {
--1: 8,
+-1: 10,
 0: 0,
-1: 5,
-2: 8,
-3: 14,
-4: 20,
-5: 30,
-6: 50
+1: 10,
+2: 20,
+3: 30,
+4: 60
 }
 
 [node name="Players" type="Spatial" parent="."]
@@ -294,6 +293,7 @@ material/0 = ExtResource( 1 )
 transform = Transform( 1, 0, 0, 0, 0.905558, -0.424223, 0, 0.424223, 0.905558, 0.0055849, 1.24714, 1.1569 )
 mesh = SubResource( 5 )
 material/0 = ExtResource( 1 )
+script = ExtResource( 8 )
 
 [node name="windscreen" type="MeshInstance" parent="Visuals"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.005584, 1.35666, 1.3884 )
@@ -332,16 +332,32 @@ shape = SubResource( 12 )
 [node name="RaysWheels" type="Spatial" parent="."]
 
 [node name="FL_ray" type="RayCast" parent="RaysWheels"]
-transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 1, 0.4, 1.52023 )
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 1, 0.271017, 1.52023 )
 enabled = true
 cast_to = Vector3( 0, -0.5, 0 )
+collision_mask = 524288
+collide_with_areas = true
 script = ExtResource( 5 )
-maxForce = 400.0
-springForce = 200.0
-stifness = 1.0
-damping = 0.065
-Xtraction = 0.25
-Ztraction = 0.08
+maxForce = 500.0
+springForce = 400.0
+stifness = 0.95
+damping = 0.2
+gearTorqueMods = {
+-1: 0.7,
+0: 0.2,
+1: 1,
+2: 0.7,
+3: 0.4,
+4: 0.2
+}
+gearSlideMods = {
+-1: 1,
+0: 0.1,
+1: 1,
+2: 0.7,
+3: 0.5,
+4: 0.3
+}
 
 [node name="wheel_FL" type="MeshInstance" parent="RaysWheels/FL_ray"]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.0220782, 0.0127685, 0.00016284 )
@@ -351,15 +367,32 @@ script = ExtResource( 7 )
 wheelOffset = Vector3( 0, 0.28, 0 )
 
 [node name="RL_ray" type="RayCast" parent="RaysWheels"]
-transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 1, 0.4, -1.47683 )
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 1, 0.271017, -1.47683 )
 enabled = true
 cast_to = Vector3( 0, -0.5, 0 )
+collision_mask = 524288
+collide_with_areas = true
 script = ExtResource( 5 )
-springForce = 150.0
+maxForce = 500.0
+springForce = 400.0
 stifness = 0.95
-damping = 0.065
-Xtraction = 0.25
-Ztraction = 0.08
+damping = 0.2
+gearTorqueMods = {
+-1: 0.7,
+0: 0.2,
+1: 1,
+2: 0.7,
+3: 0.4,
+4: 0.2
+}
+gearSlideMods = {
+-1: 1,
+0: 0.1,
+1: 1,
+2: 0.7,
+3: 0.5,
+4: 0.3
+}
 
 [node name="wheel_RL" type="MeshInstance" parent="RaysWheels/RL_ray"]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.0520491, 0.0127685, 0.00219995 )
@@ -369,15 +402,32 @@ script = ExtResource( 7 )
 wheelOffset = Vector3( 0, 0.28, 0 )
 
 [node name="FR_ray" type="RayCast" parent="RaysWheels"]
-transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, -1, 0.4, 1.52023 )
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, -1, 0.271017, 1.52023 )
 enabled = true
 cast_to = Vector3( 0, -0.5, 0 )
+collision_mask = 524288
+collide_with_areas = true
 script = ExtResource( 5 )
-springForce = 150.0
+maxForce = 500.0
+springForce = 400.0
 stifness = 0.95
-damping = 0.065
-Xtraction = 0.25
-Ztraction = 0.08
+damping = 0.2
+gearTorqueMods = {
+-1: 0.7,
+0: 0.2,
+1: 1,
+2: 0.7,
+3: 0.4,
+4: 0.2
+}
+gearSlideMods = {
+-1: 1,
+0: 0.1,
+1: 1,
+2: 0.7,
+3: 0.5,
+4: 0.3
+}
 
 [node name="wheel_FR" type="MeshInstance" parent="RaysWheels/FR_ray"]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0220782, 0.0127685, 0.000162899 )
@@ -387,15 +437,32 @@ script = ExtResource( 7 )
 wheelOffset = Vector3( 0, 0.28, 0 )
 
 [node name="RR_ray" type="RayCast" parent="RaysWheels"]
-transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, -1, 0.4, -1.47683 )
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, -1, 0.271017, -1.47683 )
 enabled = true
 cast_to = Vector3( 0, -0.5, 0 )
+collision_mask = 524288
+collide_with_areas = true
 script = ExtResource( 5 )
-springForce = 150.0
+maxForce = 500.0
+springForce = 400.0
 stifness = 0.95
-damping = 0.065
-Xtraction = 0.25
-Ztraction = 0.08
+damping = 0.2
+gearTorqueMods = {
+-1: 0.7,
+0: 0.2,
+1: 1,
+2: 0.7,
+3: 0.4,
+4: 0.2
+}
+gearSlideMods = {
+-1: 1,
+0: 0.1,
+1: 1,
+2: 0.7,
+3: 0.5,
+4: 0.3
+}
 
 [node name="wheel_RR" type="MeshInstance" parent="RaysWheels/RR_ray"]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0520492, 0.0127685, 0.00219995 )

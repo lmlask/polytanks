@@ -16,7 +16,7 @@ var parentBody : RigidBody
 var previousDistance : float = abs(cast_to.y)
 var previousHit : Vector3 = Vector3()
 
-var gearTorqueMods = {
+export var gearTorqueMods = {
 			-1 : 0.7,
 			0 : 0.2,
 			1 : 1,
@@ -27,7 +27,7 @@ var gearTorqueMods = {
 			6 : 0.14
 		}
 		
-var gearSlideMods = {
+export var gearSlideMods = {
 			-1 : 1,
 			0 : 0.1,
 			1 : 1,
