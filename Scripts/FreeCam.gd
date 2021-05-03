@@ -59,7 +59,7 @@ func _ready():
 	
 func _input(event):
 	if enabled and not panel.visible and not paintPanel.visible and not event.is_action_pressed("ui_cancel"): #only exists to not handle showing mouse so you can exit game
-		get_tree().set_input_as_handled()
+		get_tree().set_input_as_handled() 
 	if Input.is_action_just_pressed("F4"):
 		if not paint:
 			panel.visible = !panel.visible
