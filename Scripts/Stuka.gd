@@ -58,6 +58,7 @@ func show_cam():
 	GameState.hide_mouse()
 
 func notify(vis):
+	return
 	if cam.current and not vis:
 		return
 	set_process(vis)

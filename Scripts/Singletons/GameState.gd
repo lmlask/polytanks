@@ -80,7 +80,7 @@ remote func restart():
 #	rpc_id(1, "disconnect_id", get_tree().get_network_unique_id())
 #	get_tree().network_peer = null
 	for i in DriverID:
-		R.VTanks.get_node(str(i)).queue_free() #fix all this stuff
+		R.VPlayers.get_node(str(i)).queue_free() #fix all this stuff
 	gameRoot.get_node("DebugUI").queue_free()
 #	R.Map.load_map(0, Vector3.ZERO)
 	R.ManVehicle.load_intro_tanks()

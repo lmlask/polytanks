@@ -66,7 +66,7 @@ script = ExtResource( 6 )
 
 [node name="DownRay" type="RayCast" parent="."]
 enabled = true
-cast_to = Vector3( 0, -100, 0 )
+cast_to = Vector3( 0, -25, 0 )
 collision_mask = 532480
 
 [node name="VisibilityNotifier" parent="." instance=ExtResource( 5 )]

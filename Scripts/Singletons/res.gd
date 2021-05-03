@@ -7,7 +7,7 @@ onready var ManVehicle:ManagerVehicle = Root.get_node("VehicleManager")
 onready var FloorFinder:FF = ManVehicle.get_node("FloorFinder")
 onready var ManNetwork = Root.get_node("NetworkManager")
 onready var GUI = Root.get_node("ViewportContainer/View/GUI")
-onready var VTanks = Root.get_node("Vehicles/Tanks") #V for Vehciels ??? maybe N for Node NVTanks
+onready var VPlayers = Root.get_node("Vehicles/Players") #V for Vehciels ??? maybe N for Node NVTanks
 onready var VPlanes = Root.get_node("Vehicles/Planes") #V for Vehciels ??? maybe N for Node NVTanks
 onready var VWheeled = Root.get_node("Vehicles/Wheeled") #V for Vehciels ??? maybe N for Node NVTanks
 onready var NoiseTex = Map.get_node("NoiseTexture")
@@ -78,6 +78,8 @@ var height_map = {0:["res://Textures/greyalpha-16bit.exr","Test map"],
 
 func pos2grid(pos:Vector3) -> Vector3:
 	return (pos/1024).snapped(Vector3(1,1024,1))
+func v3xz(v:Vector3)->Vector2:
+	return Vector2(v.x,v.z)
 	
 func load_image(map):
 	if not map == -1:
