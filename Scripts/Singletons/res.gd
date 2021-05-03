@@ -78,6 +78,8 @@ var height_map = {0:["res://Textures/greyalpha-16bit.exr","Test map"],
 
 func pos2grid(pos:Vector3) -> Vector3:
 	return (pos/1024).snapped(Vector3(1,1024,1))
+func v3xz(v:Vector3)->Vector2:
+	return Vector2(v.x,v.z)
 	
 func load_image(map):
 	if not map == -1:
