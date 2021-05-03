@@ -1,13 +1,14 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Materials/Toon/Vehicles/Camionetta/Camionetta.tres" type="Material" id=1]
 [ext_resource path="res://BlenderFiles/Default.material" type="Material" id=2]
 [ext_resource path="res://WheeledVehicles/Camionetta/Driver.tscn" type="PackedScene" id=3]
-[ext_resource path="res://WheeledVehicles/Camionetta/EngineController.gd" type="Script" id=4]
+[ext_resource path="res://Scripts/Camionetta/EngineController.gd" type="Script" id=4]
 [ext_resource path="res://Scripts/RaycastDriver.gd" type="Script" id=5]
 [ext_resource path="res://Scripts/WheeledVehicleController.gd" type="Script" id=6]
 [ext_resource path="res://Scripts/WheelAnimator.gd" type="Script" id=7]
-[ext_resource path="res://WheeledVehicles/Camionetta/SteeringWheel.gd" type="Script" id=8]
+[ext_resource path="res://Scripts/Camionetta/SteeringWheel.gd" type="Script" id=8]
+[ext_resource path="res://WheeledVehicles/Camionetta/Commander.tscn" type="PackedScene" id=9]
 
 [sub_resource type="ArrayMesh" id=1]
 surfaces/0 = {
@@ -264,8 +265,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.05073, -0.560147 )
 [node name="Loader" type="Spatial" parent="Players"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.618257, 1.49435, -0.445154 )
 
-[node name="Commander" type="Spatial" parent="Players"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573849, 1.67941, 0.107006 )
+[node name="Commander" parent="Players" instance=ExtResource( 9 )]
 
 [node name="Visuals" type="Spatial" parent="."]
 
@@ -338,10 +338,9 @@ cast_to = Vector3( 0, -0.5, 0 )
 collision_mask = 524288
 collide_with_areas = true
 script = ExtResource( 5 )
-maxForce = 500.0
+maxForce = 600.0
 springForce = 400.0
-stifness = 0.95
-damping = 0.2
+stifness = 0.5
 gearTorqueMods = {
 -1: 0.7,
 0: 0.2,
@@ -373,10 +372,9 @@ cast_to = Vector3( 0, -0.5, 0 )
 collision_mask = 524288
 collide_with_areas = true
 script = ExtResource( 5 )
-maxForce = 500.0
+maxForce = 600.0
 springForce = 400.0
-stifness = 0.95
-damping = 0.2
+stifness = 0.5
 gearTorqueMods = {
 -1: 0.7,
 0: 0.2,
@@ -408,10 +406,9 @@ cast_to = Vector3( 0, -0.5, 0 )
 collision_mask = 524288
 collide_with_areas = true
 script = ExtResource( 5 )
-maxForce = 500.0
+maxForce = 600.0
 springForce = 400.0
-stifness = 0.95
-damping = 0.2
+stifness = 0.5
 gearTorqueMods = {
 -1: 0.7,
 0: 0.2,
@@ -443,10 +440,9 @@ cast_to = Vector3( 0, -0.5, 0 )
 collision_mask = 524288
 collide_with_areas = true
 script = ExtResource( 5 )
-maxForce = 500.0
+maxForce = 600.0
 springForce = 400.0
-stifness = 0.95
-damping = 0.2
+stifness = 0.5
 gearTorqueMods = {
 -1: 0.7,
 0: 0.2,
@@ -470,3 +466,11 @@ mesh = SubResource( 16 )
 material/0 = ExtResource( 1 )
 script = ExtResource( 7 )
 wheelOffset = Vector3( 0, 0.28, 0 )
+
+[node name="Interior" type="Spatial" parent="."]
+
+[node name="Tween" type="Tween" parent="Interior"]
+
+[node name="DriverClickables" type="Spatial" parent="Interior"]
+
+[node name="CommanderClickables" type="Spatial" parent="Interior"]

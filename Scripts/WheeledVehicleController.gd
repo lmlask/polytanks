@@ -4,6 +4,8 @@ extends RigidBody
 export var enginePower : float = 280.0
 export var steeringAngle : float = 20.0
 
+
+onready var tween = get_node("Interior/Tween")
 onready var engine = $EngineController
 # currently, raycast driver expects this array to exist in the controller script
 var rayElements : Array = []
@@ -12,6 +14,7 @@ var frontRightWheel : RayCast
 var frontLeftWheel : RayCast
 
 var speed
+var turning_dir
 
 var rnd_power
 var rnd_turn
@@ -39,26 +42,36 @@ func next_transform(t:Transform):
 	prev_xform = transform
 	
 func handle4WheelDrive(delta) -> void:
+	var dir = 0
 	for ray in rayElements:
-		var dir = 0
-		if Input.is_action_pressed("ui_up"):
-			dir += 1
-		if Input.is_action_pressed("ui_down"):
-			dir -= 1
+		if engine.clutch == 0:
+			if engine.gear >= 0:
+				dir = 1 
+			elif engine.gear == -1:
+				dir = -1
 		
 		drivePerRay = engine.enginePower / rayElements.size()
-		
-
-		# steering, set wheels initially straight
-		frontLeftWheel.rotation_degrees.y = 0.0
-		frontRightWheel.rotation_degrees.y = 0.0
-		# if input provided, steer
-		if Input.is_action_pressed("ui_left"):
-			frontLeftWheel.rotation_degrees.y = steeringAngle
-			frontRightWheel.rotation_degrees.y = steeringAngle
-		if Input.is_action_pressed("ui_right"):
-			frontLeftWheel.rotation_degrees.y = -steeringAngle
-			frontRightWheel.rotation_degrees.y = -steeringAngle
+		if !turning_dir:
+			if frontLeftWheel.rotation_degrees.y < 0:
+				frontLeftWheel.rotation_degrees.y += steeringAngle*delta/4
+				frontRightWheel.rotation_degrees.y += steeringAngle*delta/4
+			else:
+				frontLeftWheel.rotation_degrees.y += -steeringAngle*delta/4
+				frontRightWheel.rotation_degrees.y += -steeringAngle*delta/4
+		if turning_dir and turning_dir == "left":
+			if frontLeftWheel.rotation_degrees.y >= steeringAngle:
+				frontLeftWheel.rotation_degrees.y = steeringAngle
+				frontRightWheel.rotation_degrees.y = steeringAngle
+			else:
+				frontLeftWheel.rotation_degrees.y += steeringAngle*delta/4
+				frontRightWheel.rotation_degrees.y += steeringAngle*delta/4
+		elif turning_dir and turning_dir == "right":
+			if frontLeftWheel.rotation_degrees.y <= -steeringAngle:
+				frontLeftWheel.rotation_degrees.y = -steeringAngle
+				frontRightWheel.rotation_degrees.y = -steeringAngle
+			else:
+				frontLeftWheel.rotation_degrees.y += -steeringAngle*delta/4
+				frontRightWheel.rotation_degrees.y += -steeringAngle*delta/4
 		
 		ray.applyDriveForce(dir * global_transform.basis.z * drivePerRay)
 
