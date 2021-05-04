@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Spatial",
+"class": "Editor",
+"language": "GDScript",
+"path": "res://Scripts/FreeCam.gd"
+}, {
+"base": "Spatial",
 "class": "FF",
 "language": "GDScript",
 "path": "res://Scripts/FloorFinder.gd"
@@ -45,6 +50,7 @@ _global_script_classes=[ {
 "path": "res://Scripts/gameRoot.gd"
 } ]
 _global_script_class_icons={
+"Editor": "",
 "FF": "",
 "Intro": "",
 "ManagerVehicle": "",

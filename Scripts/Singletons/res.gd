@@ -14,7 +14,7 @@ onready var NoiseTex = Map.get_node("NoiseTexture")
 onready var Lobby = Root.get_node("Lobby")
 onready var TerrainMMI = Map.get_node("TerrainMMI")
 onready var Paint = Map.get_node("Paint")
-onready var Editor = Root.get_node("Editor")
+onready var Editor:Editor = Root.get_node("Editor")
 
 var sitesfile = "res://MapData/Sites.dat"
 var itemsfile = "res://MapData/Items.dat"
@@ -71,6 +71,8 @@ onready var Items = {0:[VWKWagen,"K Wagen"],
 #	5:[Bush01,"Bush 01"]
 #	}
 
+var tilefull = Vector3(1024,0,1024)
+var tilehalf = tilefull/2
 var heightMap = Image.new()
 var height_map = {0:["res://Textures/greyalpha-16bit.exr","Test map"],
 	1:["res://Textures/flat.exr","Flat map"],
