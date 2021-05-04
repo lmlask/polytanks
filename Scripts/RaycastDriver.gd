@@ -12,33 +12,13 @@ export var Ztraction : float = 0.15
 var instantLinearVelocity : Vector3
 
 # private variables
-var parentBody : RigidBody
 var previousDistance : float = abs(cast_to.y)
 var previousHit : Vector3 = Vector3()
 
-export var gearTorqueMods = {
-			-1 : 0.7,
-			0 : 0.2,
-			1 : 1,
-			2 : 0.7,
-			3 : 0.4,
-			4 : 0.3,
-			5 : 0.2, 
-			6 : 0.14
-		}
-		
-export var gearSlideMods = {
-			-1 : 1,
-			0 : 0.1,
-			1 : 1,
-			2 : 0.8,
-			3 : 0.6,
-			4 : 0.4,
-			5 : 0.3, 
-			6 : 0.2
-		}
-
+onready var parentBody = owner
 onready var engine = owner.get_node("EngineController")
+onready var gearTorqueMods : Dictionary
+onready var gearSlideMods : Dictionary
 
 # function for applying drive force to parent body (if grounded)
 func applyDriveForce(force : Vector3) -> void:
@@ -48,8 +28,8 @@ func applyDriveForce(force : Vector3) -> void:
 		
 
 func _ready() -> void:
-	# setup references (only need to get once, should be more efficient?)
-	parentBody = owner
+	gearSlideMods = engine.gearSlideMods
+	gearTorqueMods = engine.gearTorqueMods
 	add_exception(parentBody)
 	
 func _physics_process(delta) -> void:
