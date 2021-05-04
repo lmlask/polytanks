@@ -3,7 +3,7 @@ extends Node
 
 var img = Image.new()
 var tex = ImageTexture.new()
-var road = []
+var line = []
 onready var FlatG = $FlatGeometry
 onready var ControlG = $ControlGeometry
 
@@ -30,13 +30,13 @@ func paint(pos):
 			col += temp
 			img.set_pixelv(imgpos+Vector2(x,y),col)
 
-func road(a,b):
-	var node = R.Map.terrainNodes[Vector3(0,0,0)]
-	road.append(a)
+func area(a):
+	line.append(a)
 	
-	if road.size() == 2:
-		add_road(road)
-		road.clear()
+	if line.size() == 2:
+		var node = R.Map.terrainNodes[R.pos2grid(line[0])]
+		node.add_area(line)
+		line.clear()
 
 func add_road(line):
 	line[0] = line[0]+R.tilehalf

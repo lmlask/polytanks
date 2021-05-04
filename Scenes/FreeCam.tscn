@@ -339,19 +339,34 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ModeLabel" type="Label" parent="Editor"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -136.5
+margin_top = 29.0
+margin_right = 135.5
+margin_bottom = 54.0
+custom_fonts/font = ExtResource( 7 )
+text = "Mode: Flat  Area"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="PaintPanel" type="Panel" parent="Editor"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_styles/panel = ExtResource( 4 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="ColorPicker" type="ColorPicker" parent="Editor/PaintPanel"]
-margin_left = 942.0
-margin_top = 32.0
-margin_right = 1250.0
-margin_bottom = 494.0
+margin_left = 946.0
+margin_top = 36.0
+margin_right = 1254.0
+margin_bottom = 498.0
 
 [node name="Mode" type="Button" parent="Editor/PaintPanel"]
 margin_left = 596.0
@@ -360,7 +375,7 @@ margin_right = 741.0
 margin_bottom = 280.0
 custom_fonts/font = ExtResource( 2 )
 toggle_mode = true
-text = "Road"
+text = "Area"
 __meta__ = {
 "_edit_use_anchors_": false
 }

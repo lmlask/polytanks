@@ -5,7 +5,7 @@ extends Spatial
 # var b = "text"
 #var mat:Material = preload("res://Objects/hills map.tres")
 var noise = R.NoiseTex.texture.noise
-var flat = false
+var flatareas = []
 var terrainMeshsC = [] #Center
 var terrainMeshs0 = [] #Edge 
 var terrainMeshs1 = [] #Edge
@@ -16,6 +16,7 @@ var prev_level = -1
 var direction = 0
 var prev_dir = 0
 signal terrain_completed
+onready var FlatG = $FlatGeometry
 
 var timer:float = 0.0
 var tile_offset = [Vector3(0,0,0),Vector3(1,0,0),Vector3(0,0,1),Vector3(-1,0,0),Vector3(0,0,-1)]
@@ -85,6 +86,7 @@ func update_tile(grid):
 		return
 
 func _process(delta):
+#	print(flatareas)
 	timer += delta
 	if timer > 1.0:
 		timer = 0.0
@@ -93,6 +95,7 @@ func _process(delta):
 			prev_level = level
 			prev_dir = direction
 			var mesh = create_tile_mesh(R.Map.terrainMeshs[direction][level])
+			processs_all_areas()
 			emit_signal("terrain_completed", R.pos2grid(translation))
 #			print("terain complete.")
 
@@ -176,3 +179,103 @@ func get_noise(vec2):
 #		print(n,"-",col.r,"-",col.a)
 	n *= 1.75
 	return n*n*height_factor
+
+func add_area(line,width=10):
+	flatareas.append([line[0], line[1],width])
+	process_area(line,width)
+
+func processs_all_areas():
+	FlatG.clear()
+	if not flatareas.empty():
+		for i in flatareas:
+			process_area([i[0],i[1]],i[2])
+
+func process_area(line,width):
+	line[0] = line[0]-translation
+	line[1] = line[1]-translation
+	var G = Geometry
+#	var node = $Tile.Map.terrainNodes[Vector3(0,0,0)]
+	var line_vec = (line[1]-line[0]).normalized()
+	var dist = line[0].distance_to(line[1])
+	var tang = Transform.looking_at(line_vec,Vector3.UP).basis.x
+	var rs1 = line[0]+tang*width
+	var rs2 = line[0]-tang*width
+	var re1 = line[1]+tang*width
+	var re2 = line[1]-tang*width
+	var area:PoolVector3Array
+	area = [rs1,rs2,re1,re2]
+
+	FlatG.begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
+	for p in area:
+		FlatG.add_vertex(p+Vector3(0,0.1,0))
+	FlatG.end()
+#	return
+	
+#	if road_rect.size() == 6:
+#		road_rect.remove(0)
+#		road_rect.remove(0)
+	#does not belong here, for POC
+	var rect:PoolVector2Array
+	rect.append(R.v3xz(area[0]))
+	rect.append(R.v3xz(area[1]))
+	rect.append(R.v3xz(area[2]))
+	rect.append(R.v3xz(area[3]))
+#	rect.append(Vector2(road_rect[1].x,road_rect[1].z))
+#	var rect1 = G.offset_polygon_2d(rect,20)
+	if not G.is_polygon_clockwise(rect):
+		var t = rect[0]
+		rect[0] = rect[1]
+		rect[1] = t
+	if not G.is_polygon_clockwise(rect):
+		print("***Potential problem not fixed")
+#	else:
+#		print("good")
+#	print(rect)
+	
+	var mesh = $Tile.mesh.duplicate()
+	var mdt = MeshDataTool.new()
+	mdt.create_from_surface(mesh, 0)
+	for i in range(mdt.get_edge_count()):
+		var e0 = mdt.get_edge_vertex(i, 0)
+		var e1 = mdt.get_edge_vertex(i, 1)
+		var v0 = mdt.get_vertex(e0)
+		var v1 = mdt.get_vertex(e1)
+		var point = {}
+		
+		for z in range(2):
+			for j in [[rs1,re1],[rs2,re2],[rs1,rs2],[re1,re2]]:
+				if G.segment_intersects_segment_2d(R.v3xz(v0),R.v3xz(v1),R.v3xz(j[0]),R.v3xz(j[1])):
+					var y = G. get_closest_points_between_segments(v0,v1,j[0],j[1])[1].y
+					v0 = Vector3(v0.x,y,v0.z)
+					v1 = Vector3(v1.x,y,v1.z)
+					mdt.set_vertex(e0,v0)
+					mdt.set_vertex(e1,v1)
+					
+		for z in range(3):
+			if G.is_point_in_polygon(R.v3xz(v0),rect) or G.is_point_in_polygon(R.v3xz(v1),rect):
+				var y0 = G.get_closest_point_to_segment(v0,line[0],line[1]).y
+				var y1 = G.get_closest_point_to_segment(v1,line[0],line[1]).y
+				v0 = Vector3(v0.x,y0,v0.z)
+				v1 = Vector3(v1.x,y1,v1.z)
+				mdt.set_vertex(e0,v0)
+				mdt.set_vertex(e1,v1)
+#
+#		if G.segment_intersects_segment_2d(R.v3xz(v0),R.v3xz(v1),rect[0],rect[1]):
+#			v0 = Vector3(v0.x,(road_rect[0]-node.translation).y,v0.z)
+#			v1 = Vector3(v1.x,(road_rect[0]-node.translation).y,v1.z)
+#			mdt.set_vertex(e0,v0)
+#			mdt.set_vertex(e1,v1)
+#		if G.segment_intersects_segment_2d(R.v3xz(v0),R.v3xz(v1),rect[2],rect[3]):
+#			v0 = Vector3(v0.x,(road_rect[2]-node.translation).y,v0.z)
+#			v1 = Vector3(v1.x,(road_rect[2]-node.translation).y,v1.z)
+#			mdt.set_vertex(e0,v0)
+#			mdt.set_vertex(e1,v1)
+			
+	mesh.surface_remove(0)
+	mdt.commit_to_surface(mesh)
+	create_tile_mesh(mesh,false)
+#	node.get_node("Tile").mesh = roadmesh
+	
+#	road_rect[0] = road_rect[road_rect.size()-2]
+#	road_rect[1] = road_rect[road_rect.size()-1]
+#	road_rect.resize(0)

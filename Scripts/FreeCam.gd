@@ -11,6 +11,7 @@ onready var MapLabel = $Editor/Panel/Map
 onready var SiteLabel = $Editor/Panel/Site
 onready var ItemsButton = $Editor/ItemsButton
 onready var PaintColor = paintPanel.get_node("ColorPicker")
+onready var ModeLabel = $Editor/ModeLabel
 
 #onready var terrainmmi = [] #To be fixed later, POC
 
@@ -41,6 +42,7 @@ func _ready():
 	panel.hide()
 	paintPanel.hide()
 	$Editor/Enabled.hide()
+	ModeLabel.hide()
 	set_process(false)
 	set_process_input(false)
 	
@@ -58,9 +60,7 @@ func _ready():
 #		i.multimesh.instance_count = 9999
 	
 	
-func _input(event):
-	if enabled and not panel.visible and not paintPanel.visible and not event.is_action_pressed("ui_cancel") and not paint: #only exists to not handle showing mouse so you can exit game
-		get_tree().set_input_as_handled() 
+func _input(event): 
 	if Input.is_action_just_pressed("F4"):
 		if not paint:
 			panel.visible = !panel.visible
@@ -70,8 +70,10 @@ func _input(event):
 #		R.Map.update_locations()
 #		R.Map.update_items()
 	if Input.is_action_just_pressed("F3"):
+		get_tree().set_input_as_handled()
 		enabled = false
 		$Editor/Enabled.hide()
+		ModeLabel.hide()
 		set_process(enabled)
 		set_process_input(enabled)
 		GameState.CamActive._cam.current = true #would imply _cam is consistant for all cams
@@ -112,8 +114,10 @@ func _input(event):
 		if Input.is_action_pressed("reset_vehicle"): #same action does multiple things
 			if paint:
 				R.Paint.update_texture()
+				ModeLabel.text = "Mode:Sites"
+			else:
+				_on_Mode_toggled(paintMode)
 			paint = !paint
-			print("Paint mode: ",paint)
 	elif event is InputEventMouseButton:
 		if event.is_action_pressed("cam_zoom_in"):
 			move_speed = min(move_speed * 1.5, 500.0)
@@ -133,12 +137,14 @@ func _input(event):
 					if paintMode:
 						is_painting = true
 					elif result.collider.owner.is_in_group("terrain"):
-						R.Paint.road(result.position,event)
+						R.Paint.area(result.position)
 					
 		elif Input.is_action_just_released("action"):
 			is_painting = false
 			R.Paint.update_texture()
-					
+	
+	if enabled and not panel.visible and not paintPanel.visible and not event.is_action_pressed("ui_cancel") and not paint: #only exists to not handle showing mouse so you can exit game
+		get_tree().set_input_as_handled()
 
 func unselect():
 	selected = null
@@ -186,6 +192,7 @@ func _unhandled_key_input(event): #Trying something different
 		print("F3 pressed")
 		enabled = true
 		$Editor/Enabled.show()
+		ModeLabel.show()
 		set_process(enabled)
 		set_process_input(enabled)
 		GameState.hide_mouse()
@@ -264,6 +271,8 @@ func _on_Mode_toggled(button_pressed):
 	paintMode = button_pressed
 	if paintMode:
 		paintPanel.get_node("Mode").text = "Paint"
+		ModeLabel.text = "Mode:Painting"
 	else:
-		paintPanel.get_node("Mode").text = "Road"
-	print(paintMode)
+		paintPanel.get_node("Mode").text = "Area"
+		ModeLabel.text = "Mode:Flat Area"
+	
