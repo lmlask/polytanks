@@ -6,7 +6,8 @@ var tex = ImageTexture.new()
 var line = []
 onready var FlatG = $FlatGeometry
 onready var ControlG = $ControlGeometry
-
+var selected_handle
+var move_speed = 20
 
 func _ready():
 	img.create(2048,2048,false,Image.FORMAT_RGBA8)
@@ -31,14 +32,37 @@ func paint(pos):
 			img.set_pixelv(imgpos+Vector2(x,y),col)
 
 func area(a):
-	line.append(a)
-	
+	var node = R.Map.terrainNodes[R.pos2grid(a)]
+	line.append(node.add_handle(a))
 	if line.size() == 2:
-		var node = R.Map.terrainNodes[R.pos2grid(line[0])]
 		node.add_area(line)
 		line.clear()
 
+func handle_select(handle):
+	if selected_handle:
+		update_area(selected_handle)
+	selected_handle = handle.get_parent()
+	
+func _input(event):
+	if R.Editor.paint and R.Editor.enabled and not R.Editor.paintPanel.visible:
+		if event is InputEventKey:
+			if Input.is_action_just_released("ui_accept"):
+				update_area(selected_handle)
+				selected_handle = null
+				get_tree().set_input_as_handled()
+
+func update_area(handle):
+	handle.owner.update_handle(handle)
+	
+
+func _process(delta):
+	if selected_handle and not GameState.mouseHidden:
+		selected_handle.transform.origin -= selected_handle.transform.basis.z * R.Editor.move.z * delta * move_speed
+		selected_handle.transform.origin -= selected_handle.transform.basis.x * R.Editor.move.x * delta * move_speed
+		selected_handle.transform.origin -= selected_handle.transform.basis.y * R.Editor.move.y * delta * move_speed
+
 func add_road(line):
+	print("obsolete")
 	line[0] = line[0]+R.tilehalf
 	line[1] = line[1]+R.tilehalf
 	var G = Geometry
@@ -142,9 +166,7 @@ func add_road(line):
 #	road_rect[1] = road_rect[road_rect.size()-1]
 #	road_rect.resize(0)
 
-func _input(event):
-	if R.Editor.paint and R.Editor.enabled and not event.is_action_pressed("ui_cancel"):
-		get_tree().set_input_as_handled()
+
 	
 func update_texture():
 	img.unlock()

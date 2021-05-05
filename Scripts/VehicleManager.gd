@@ -34,8 +34,11 @@ func _process(_delta):
 			rpc("set_tur", vehicle.Turret.rotation,vehicle.Gun.rotation, str(GameState.tank) )
 #		add_random_tank()
 		timer -= 0.1
+		if vehicle.translation.y < -100:
+			vehicle.translation.y = 1000
 	if Input.is_action_just_pressed("reset_vehicle"):
 		reset_tank(vehicle)
+	
 
 	#add upto 50 planes and vehicles
 	if randf() < 0.01: #Randome plane random direction

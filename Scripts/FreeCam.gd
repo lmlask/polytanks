@@ -36,6 +36,8 @@ var pressure:float = 0.0
 var timer = 0.0
 var delay = 0.25
 
+signal editor_state
+
 #var sites = {} #to be loaded from a file
 
 func _ready():
@@ -60,8 +62,11 @@ func _ready():
 #		i.multimesh.instance_count = 9999
 	
 	
-func _input(event): 
+func _input(event):
+	if not enabled:
+		return
 	if Input.is_action_just_pressed("F4"):
+		get_tree().set_input_as_handled()
 		if not paint:
 			panel.visible = !panel.visible
 		else:
@@ -72,6 +77,7 @@ func _input(event):
 	if Input.is_action_just_pressed("F3"):
 		get_tree().set_input_as_handled()
 		enabled = false
+		emit_signal("editor_state",enabled)
 		$Editor/Enabled.hide()
 		ModeLabel.hide()
 		set_process(enabled)
@@ -84,6 +90,7 @@ func _input(event):
 		return
 	if event is InputEventKey:
 		if Input.is_key_pressed(KEY_F5) and selected:
+			get_tree().set_input_as_handled()
 			if selected.has_method("show_cam"):
 				selected.show_cam()
 				var _err = selected.connect("tree_exited",self,"unselect")
@@ -130,20 +137,25 @@ func _input(event):
 				if not paint:
 					if selected:
 						R.Map.update_item(selected)
-					if not result.collider.owner.is_in_group("terrain"):
-						selected = result.collider.owner
+					if not result.collider.owner == null:
+						if not result.collider.owner.is_in_group("terrain"):
+							selected = result.collider.owner
+					print(result)
 					
 				elif not paintPanel.visible:
 					if paintMode:
 						is_painting = true
-					elif result.collider.owner.is_in_group("terrain"):
-						R.Paint.area(result.position)
+					elif not result.collider.owner == null:
+						if result.collider.owner.is_in_group("terrain"):
+							R.Paint.area(result.position)
+					elif result.collider.is_in_group("area_handle"):
+						R.Paint.handle_select(result.collider)
 					
 		elif Input.is_action_just_released("action"):
 			is_painting = false
 			R.Paint.update_texture()
 	
-	if enabled and not panel.visible and not paintPanel.visible and not event.is_action_pressed("ui_cancel") and not paint: #only exists to not handle showing mouse so you can exit game
+	if enabled and not (panel.visible or paintPanel.visible or event.is_action_pressed("ui_cancel") or paint): #only exists to not handle showing mouse so you can exit game
 		get_tree().set_input_as_handled()
 
 func unselect():
@@ -191,6 +203,7 @@ func _unhandled_key_input(event): #Trying something different
 	if event.is_action_pressed("F3") and not event.echo and not enabled:
 		print("F3 pressed")
 		enabled = true
+		emit_signal("editor_state",enabled)
 		$Editor/Enabled.show()
 		ModeLabel.show()
 		set_process(enabled)

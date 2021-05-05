@@ -32,9 +32,17 @@ var mutex = Mutex.new()
 var inprogress = false
 # Called when the node enters the scene tree for the first time.
 
+
 func _ready():
 	$Tile.material_override = $Tile.material_override.duplicate()
 	set_paint()
+	R.Editor.connect("editor_state", self, "editor")
+
+func editor(data):
+#	print("From editor", data)
+	FlatG.visible = data
+	for j in $ControlNodes.get_children():
+		j.visible = data
 	
 func set_paint():
 	$Tile.material_override.set_shader_param("paint",R.Paint.tex)
@@ -181,16 +189,43 @@ func get_noise(vec2):
 	return n*n*height_factor
 
 func add_area(line,width=10):
-	flatareas.append([line[0], line[1],width])
-	process_area(line,width)
+	var midway = width_loc([line[1].translation,line[0].translation],width)
+	var node = add_handle(midway)
+	flatareas.append([line[0], line[1],width,node])
+	process_area([line[0].translation,line[1].translation],width,node)
+
+func width_loc(line,width):
+	var line_vec = (line[1]-line[0])/2
+	var tang = Transform.looking_at(line_vec,Vector3.UP).basis.x
+	return line[0]+line_vec+tang*width
+	
+	
+func add_handle(loc):
+	var handle = $MeshInstance.duplicate()
+	$ControlNodes.add_child(handle)
+	handle.owner = self
+	handle.translation = loc
+	handle.show()
+	return handle
+
+func update_handle(handle):
+	print("terrain node update handle", handle)
+	for i in flatareas:
+		if i[3] == handle:
+			var midway = width_loc([i[0].translation,i[1].translation],0)
+			var dist = i[3].translation.distance_to(midway)
+			i[2] = dist
+	create_tile_mesh(R.Map.terrainMeshs[direction][level])
+	processs_all_areas()
 
 func processs_all_areas():
 	FlatG.clear()
 	if not flatareas.empty():
 		for i in flatareas:
-			process_area([i[0],i[1]],i[2])
+			process_area([i[0].translation,i[1].translation],i[2], i[3])
 
-func process_area(line,width):
+func process_area(line,width,node):
+	node.translation = width_loc([line[0],line[1]],width)
 	line[0] = line[0]-translation
 	line[1] = line[1]-translation
 	var G = Geometry
@@ -279,3 +314,7 @@ func process_area(line,width):
 #	road_rect[0] = road_rect[road_rect.size()-2]
 #	road_rect[1] = road_rect[road_rect.size()-1]
 #	road_rect.resize(0)
+
+
+func _on_Area_mouse_entered():
+	print("mouse entered")

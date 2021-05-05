@@ -32,14 +32,14 @@ func _process(delta):
 		delay = rand_range(2,5)
 		target_bank = rand_range(-PI/3, PI/3)
 	plane.rotation.z = lerp(plane.rotation.z,target_bank, delta/2)	
-	plane.rotation.y -= plane.rotation.z/250
+	plane.rotation.y -= plane.rotation.z/150 #rotational speed
 	life -= delta
 	if life < 0:
 		var explo = R.Explosion.instance()
 		get_parent().add_child(explo)
 		explo.translation = translation
 		queue_free()
-	translation += plane.transform.basis.z * delta * 50
+	translation += plane.transform.basis.z * delta * 250 #Forawrd Speed
 	if FwdRay.is_colliding():
 		plane.rotation.x -= delta / 2
 	elif DownRay.is_colliding():
@@ -50,7 +50,7 @@ func _process(delta):
 		if agl < 0:
 			life = 0
 	else:
-		plane.rotation.x += delta / 2
+		plane.rotation.x += delta / 2 #Pitch speed
 	plane.rotation.x = clamp(plane.rotation.x, -PI/2, PI/4)
 
 func show_cam():
