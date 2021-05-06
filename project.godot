@@ -281,6 +281,7 @@ next_shell={
 3d_physics/layer_17="buildings"
 3d_render/layer_18="env_items"
 3d_physics/layer_18="env_items"
+3d_physics/layer_19="handles"
 3d_render/layer_20="terrain"
 3d_physics/layer_20="terrain"
 

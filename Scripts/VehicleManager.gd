@@ -66,7 +66,8 @@ func reset_tank(v): #should be part of the vehicle
 func start():
 	R.Map.load_map(GameState.map,start_pos[GameState.tank])
 #	vehicle = R.VTPzIV.instance()
-	vehicle = R.VWCamionetta.instance()
+#	vehicle = R.VWCamionetta.instance()
+	vehicle = R.Lobby.Vehicle.instance()
 	yield(get_tree(),"idle_frame")
 	R.ManVehicle.reset_tank(R.ManVehicle.vehicle)
 

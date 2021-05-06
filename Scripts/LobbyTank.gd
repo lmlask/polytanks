@@ -2,9 +2,8 @@ extends VBoxContainer
 
 var Tank = 0
 
-func _ready():
-	pass # Replace with function body.
 
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -27,9 +26,11 @@ remotesync func select(tank, role):
 	
 remotesync func disable_role(tank,role):
 	if Tank == tank:
+		$Vehicle.disabled = true
 		match role:
 			GameState.Role.Driver:
 				$Driver.disabled = true
+				$Vehicle.disabled = false
 			GameState.Role.Gunner:
 				$Gunner.disabled = true
 			GameState.Role.Commander:
@@ -50,3 +51,7 @@ func _on_Loader_pressed():
 
 func _on_Radioman_pressed():
 	rpc("select", Tank, GameState.Role.Radioman)
+
+
+func _on_Vehicle_item_selected(index):
+	owner.Vehicle = R.Vehicles[index][0]

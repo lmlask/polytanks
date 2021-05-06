@@ -22,6 +22,7 @@ var locsfile = "res://MapData/Locs.dat"
 #Scenes
 onready var terrain = preload("res://Objects/terrain.tscn")
 onready var CamExt = preload("res://Objects/ExternalCamera.tscn")
+
 onready var VTPzIV = preload("res://Tanks/PzIV/PanzerIV.tscn") #Name/sort it better. Put in a dictionary dictionary, Scene Vehicle Tank ?
 onready var VWCamionetta = preload("res://WheeledVehicles/Camionetta/Camionetta.tscn")
 
@@ -48,6 +49,9 @@ onready var SiteCentre = preload("res://models/SiteCenter.tscn")
 onready var DebugUI = preload("res://Scenes/DebugUI.tscn")
 
 onready var Explosion = preload("res://Scenes/Explosion.tscn")
+
+onready var Vehicles = {0:[VTPzIV,"Panzer"],
+	1:[VWCamionetta,"Camionetta"]}
 
 onready var Items = {0:[VWKWagen,"K Wagen"],
 	2:[BerHouseT2, "Ber House T 2"],

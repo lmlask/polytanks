@@ -96,7 +96,7 @@ __meta__ = {
 [node name="LobbyGrid" type="GridContainer" parent="Panel/VBoxContainer"]
 margin_top = 116.0
 margin_right = 888.0
-margin_bottom = 460.0
+margin_bottom = 519.0
 grow_horizontal = 2
 focus_mode = 2
 columns = 5
@@ -108,7 +108,7 @@ __meta__ = {
 
 [node name="Tank1" type="VBoxContainer" parent="Panel/VBoxContainer/LobbyGrid"]
 margin_right = 328.0
-margin_bottom = 344.0
+margin_bottom = 403.0
 script = ExtResource( 4 )
 
 [node name="Label" type="Label" parent="Panel/VBoxContainer/LobbyGrid/Tank1"]
@@ -171,10 +171,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Vehicle" type="OptionButton" parent="Panel/VBoxContainer/LobbyGrid/Tank1"]
+margin_top = 348.0
+margin_right = 328.0
+margin_bottom = 403.0
+custom_fonts/font = ExtResource( 2 )
+disabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Map" type="OptionButton" parent="Panel/VBoxContainer"]
-margin_top = 464.0
+margin_top = 523.0
 margin_right = 888.0
-margin_bottom = 519.0
+margin_bottom = 578.0
 custom_fonts/font = ExtResource( 2 )
 text = "Hills"
 
@@ -186,3 +196,4 @@ text = "Hills"
 [connection signal="pressed" from="Panel/VBoxContainer/LobbyGrid/Tank1/Gunner" to="Panel/VBoxContainer/LobbyGrid/Tank1" method="_on_Gunner_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/LobbyGrid/Tank1/Loader" to="Panel/VBoxContainer/LobbyGrid/Tank1" method="_on_Loader_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/LobbyGrid/Tank1/Commander" to="Panel/VBoxContainer/LobbyGrid/Tank1" method="_on_Commander_pressed"]
+[connection signal="item_selected" from="Panel/VBoxContainer/LobbyGrid/Tank1/Vehicle" to="Panel/VBoxContainer/LobbyGrid/Tank1" method="_on_Vehicle_item_selected"]

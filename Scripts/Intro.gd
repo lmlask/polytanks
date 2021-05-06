@@ -10,6 +10,8 @@ onready var Start = $Panel/VBoxContainer/HBoxContainer/Start
 onready var Status = $Panel/VBoxContainer/Status
 onready var Map = $Panel/VBoxContainer/Map
 
+onready var Vehicle = R.Vehicles[0][0]
+
 func _ready():
 	
 	set_status("")
@@ -45,7 +47,7 @@ func setup_game():
 	if get_tree().is_network_server():
 		GameState.send_game_data()
 #	gameRoot.Map.load_map(GameState.map, gameRoot.VehicleManager.start[GameState.tank]) #load map in vehicle manager
-	gameRoot.VehicleManager.start()
+	R.ManVehicle.start()
 	
 
 func _on_Join_pressed():
