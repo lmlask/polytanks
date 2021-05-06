@@ -3,15 +3,9 @@ extends Node
 onready var engine = owner.owner.get_node("EngineController")
 onready var tank = owner.owner
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
 func _process(delta):
 	if not GameState.role == GameState.Role.Driver:
 		return
-
-#func _input(event): #_input, these functions should be called under input
 	manageCamera()
 	manageIgnition()
 	manageThrottleAndBrake(delta) #Do this another way
@@ -19,6 +13,8 @@ func _process(delta):
 	manageSteering()
 
 func _physics_process(delta):
+	if not GameState.role == GameState.Role.Driver:
+		return
 	manageSteeringPhysics()
 
 func manageCamera():

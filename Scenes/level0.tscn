@@ -14,23 +14,23 @@
 [ext_resource path="res://Scripts/NetworkManager.gd" type="Script" id=15]
 [ext_resource path="res://Scripts/TerrainMMI.gd" type="Script" id=18]
 
-[sub_resource type="OpenSimplexNoise" id=4]
+[sub_resource type="OpenSimplexNoise" id=1]
 octaves = 2
 period = 256.0
 persistence = 0.1
 
-[sub_resource type="NoiseTexture" id=5]
+[sub_resource type="NoiseTexture" id=2]
 width = 1000
 height = 1000
 seamless = true
-noise = SubResource( 4 )
+noise = SubResource( 1 )
 
 [sub_resource type="SpatialMaterial" id=3]
 render_priority = -81
 flags_transparent = true
 albedo_color = Color( 0, 0, 0, 0.298039 )
 
-[sub_resource type="SpatialMaterial" id=6]
+[sub_resource type="SpatialMaterial" id=4]
 render_priority = 127
 flags_no_depth_test = true
 params_point_size = 128.0
@@ -78,7 +78,7 @@ margin_left = -1055.62
 margin_top = -44.4471
 margin_right = -55.6216
 margin_bottom = 955.553
-texture = SubResource( 5 )
+texture = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -99,7 +99,7 @@ script = ExtResource( 10 )
 material_override = SubResource( 3 )
 
 [node name="ControlGeometry" type="ImmediateGeometry" parent="Map/Paint"]
-material_override = SubResource( 6 )
+material_override = SubResource( 4 )
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
 anchor_left = 1.0

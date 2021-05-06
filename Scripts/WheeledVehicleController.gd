@@ -3,7 +3,11 @@ extends RigidBody
 # control variables
 export var enginePower : float = 280.0
 export var steeringAngle : float = 20.0
+export var tur : NodePath
 
+#variables for RPC use
+onready var Turret = $Visuals/Turret
+onready var Gun = $Visuals/Turret/Gun
 
 onready var tween = get_node("Interior/Tween")
 onready var engine = $EngineController

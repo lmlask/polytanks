@@ -17,7 +17,6 @@ __meta__ = {
 
 [node name="Camera" parent="." instance=ExtResource( 2 )]
 script = ExtResource( 3 )
-role = ""
 max_movement = Vector2( 0.15, 0.2 )
 
 [node name="Tween" type="Tween" parent="."]
