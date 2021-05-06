@@ -1,8 +1,10 @@
 extends Node
-
+class_name Painter
 
 var img = Image.new()
 var tex = ImageTexture.new()
+var envimg = Image.new()
+var envtex = ImageTexture.new()
 var line = []
 onready var FlatG = $FlatGeometry
 onready var ControlG = $ControlGeometry
@@ -14,22 +16,33 @@ func _ready():
 	img.fill(Color(0,0,0,0))
 	tex.create_from_image(img)
 	img.lock()
+	envimg.create(2048,2048,false,Image.FORMAT_RGBA8)
+	envimg.fill(Color(0,0,0,0))
+	envtex.create_from_image(envimg)
+	envimg.lock()
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
 
-func paint(pos):
+func paint(pos, paintMode):
 	var imgpos = Vector2(pos.x,pos.z)/4.5+Vector2(1024,1024)
 #	print("Painting pos:",imgpos, pressure)
 	for x in range(-1,1):
 		for y in range(-1,1):
-			var col = img.get_pixelv(imgpos+Vector2(x,y))
-			var temp = (R.Editor.PaintColor.color-col)/100
-			col += Color(max(temp.r,0.005)*sign(temp.r),max(temp.g,0.005)*sign(temp.g),max(temp.b,0.005)*sign(temp.b),max(temp.a,0.005)*sign(temp.a))
+			var col = null
+			if paintMode == R.Editor.paintModes.TERRAIN:
+				col = img.get_pixelv(imgpos+Vector2(x,y))
+			if paintMode == R.Editor.paintModes.ENV:
+				col = envimg.get_pixelv(imgpos+Vector2(x,y))
+			var temp = (R.Editor.PaintColor.color-col)/5
+			col += Color(max(temp.r,0.01)*sign(temp.r),max(temp.g,0.01)*sign(temp.g),max(temp.b,0.01)*sign(temp.b),max(temp.a,0.01)*sign(temp.a))
 			col += temp
-			img.set_pixelv(imgpos+Vector2(x,y),col)
+			if paintMode == R.Editor.paintModes.TERRAIN:
+				img.set_pixelv(imgpos+Vector2(x,y),col)
+			if paintMode == R.Editor.paintModes.ENV:
+				envimg.set_pixelv(imgpos+Vector2(x,y),col)
 
 func area(a):
 	var node = R.Map.terrainNodes[R.pos2grid(a)]
@@ -166,11 +179,20 @@ func add_road(line):
 #	road_rect[1] = road_rect[road_rect.size()-1]
 #	road_rect.resize(0)
 
-
+func update_env():
+	envimg.unlock()
+	envtex.create_from_image(envimg) #needed?
+	envimg.lock()
+	var node = R.Map.terrainNodes[R.pos2grid(Vector3(0,0,0))]
+	node.process_env()
+#	get_tree().call_group("terrain","set_paint")
+#	$TextureRect.texture = tex
+	
 	
 func update_texture():
 	img.unlock()
 	tex.create_from_image(img)
+	img.lock()
 	get_tree().call_group("terrain","set_paint")
 #	$TextureRect.texture = tex
-	img.lock()
+	

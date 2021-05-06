@@ -17,6 +17,7 @@ var direction = 0
 var prev_dir = 0
 signal terrain_completed
 onready var FlatG = $FlatGeometry
+onready var EnvItems = $EnvItems
 
 var timer:float = 0.0
 var tile_offset = [Vector3(0,0,0),Vector3(1,0,0),Vector3(0,0,1),Vector3(-1,0,0),Vector3(0,0,-1)]
@@ -104,9 +105,24 @@ func _process(delta):
 			prev_dir = direction
 			var mesh = create_tile_mesh(R.Map.terrainMeshs[direction][level])
 			processs_all_areas()
+			process_env()
 			emit_signal("terrain_completed", R.pos2grid(translation))
 #			print("terain complete.")
 
+func process_env():
+	for i in EnvItems.get_children(): #LOLtech
+		i.queue_free()
+#	var loc:Vector2 = Vector2(0,0)/4.5+Vector2(1024,1024)
+	var pos
+	for x in range(1014,1034):
+		for y in range(1014,1034):
+			var col:Color = R.Paint.envimg.get_pixelv(Vector2(x,y))
+			if col.g > 0.5:
+				pos = (Vector2(x,y)-Vector2(1024,1024))*4.5
+				var ei =R.EnvItems[0][0].instance()
+				EnvItems.add_child(ei)
+				ei.translation = Vector3(pos.x+rand_range(-1,1),0,pos.y+rand_range(-1,1))
+				R.FloorFinder.find_floor2(ei,true)
 	
 func create_tile_mesh(meshx, useheightmap = true):
 	var mesh = meshx.duplicate()
@@ -217,6 +233,7 @@ func update_handle(handle):
 			i[2] = dist
 	create_tile_mesh(R.Map.terrainMeshs[direction][level])
 	processs_all_areas()
+	process_env()
 
 func processs_all_areas():
 	FlatG.clear()

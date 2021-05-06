@@ -13,7 +13,7 @@ onready var VWheeled = Root.get_node("Vehicles/Wheeled") #V for Vehciels ??? may
 onready var NoiseTex = Map.get_node("NoiseTexture")
 onready var Lobby = Root.get_node("Lobby")
 onready var TerrainMMI = Map.get_node("TerrainMMI")
-onready var Paint = Map.get_node("Paint")
+onready var Paint:Painter = Map.get_node("Paint")
 onready var Editor:Editor = Root.get_node("Editor")
 
 var sitesfile = "res://MapData/Sites.dat"
@@ -67,13 +67,13 @@ onready var Items = {0:[VWKWagen,"K Wagen"],
 	12:[Bush01, "Bush small"],
 	}
 
-#onready var EnvItems = {0:[Tree01,"Tree 01"], #all wrong
-#	1:[Tree02,"Tree 02"],
-#	2:[Tree03,"Tree 03"],
-#	3:[Rock01,"Rock 01"],
-#	4:[Rock02,"Rock 02"],
-#	5:[Bush01,"Bush 01"]
-#	}
+onready var EnvItems = {0:[Tree01,"Tree 01"], #all wrong
+	1:[Tree02,"Tree 02"],
+	2:[Tree03,"Tree 03"],
+	3:[Rock01,"Rock 01"],
+	4:[Rock02,"Rock 02"],
+	5:[Bush01,"Bush 01"]
+	}
 
 var tilefull = Vector3(1024,0,1024)
 var tilehalf = tilefull/2

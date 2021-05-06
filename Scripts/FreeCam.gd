@@ -30,7 +30,9 @@ var paint = true #default to be false for not placing items
 var is_painting = false 
 var paint_pos = Vector3.ZERO
 var paint_event
-var paintMode = false #default is to be true painting
+#var paintMode = false #default is to be true painting
+enum paintModes {AREA,TERRAIN,ENV}
+var paintMode = 0
 var pressure:float = 0.0
 
 var timer = 0.0
@@ -143,7 +145,7 @@ func _input(event):
 					print(result)
 					
 				elif not paintPanel.visible:
-					if paintMode:
+					if paintMode == paintModes.TERRAIN or paintMode == paintModes.ENV:
 						is_painting = true
 					elif not result.collider.owner == null:
 						if result.collider.owner.is_in_group("terrain"):
@@ -154,6 +156,7 @@ func _input(event):
 		elif Input.is_action_just_released("action"):
 			is_painting = false
 			R.Paint.update_texture()
+			R.Paint.update_env()
 	
 	if enabled and not (panel.visible or paintPanel.visible or event.is_action_pressed("ui_cancel") or paint): #only exists to not handle showing mouse so you can exit game
 		get_tree().set_input_as_handled()
@@ -193,8 +196,8 @@ func _process(delta):
 		R.Map.check_area(global_transform.origin)
 		GameState.view_location = global_transform.origin #easy fix, fix it
 	if is_painting:
-		if paintMode:
-			R.Paint.paint(paint_pos)
+		if paintMode == paintModes.TERRAIN or paintMode == paintModes.ENV:
+			R.Paint.paint(paint_pos,paintMode)
 		else:
 			R.Paint.road(paint_pos)
 
@@ -281,11 +284,8 @@ func _on_LocAdd_pressed():
 #	print(R.Map.locations[R.Map.locsID])
 
 func _on_Mode_toggled(button_pressed):
-	paintMode = button_pressed
-	if paintMode:
-		paintPanel.get_node("Mode").text = "Paint"
-		ModeLabel.text = "Mode:Painting"
-	else:
-		paintPanel.get_node("Mode").text = "Area"
-		ModeLabel.text = "Mode:Flat Area"
+	paintMode += 1
+	paintMode = wrapi(paintMode,0,3)
+	paintPanel.get_node("Mode").text = paintModes.keys()[paintMode]
+	ModeLabel.text = "Mode:" + paintModes.keys()[paintMode]
 	
