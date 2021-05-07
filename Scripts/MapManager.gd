@@ -261,13 +261,14 @@ func terrain_complete(grid):
 			R.ManVehicle.reset_tank(R.ManVehicle.vehicle) #maybe reset tank should be in a base class for all tanks
 			for i in tile_offset:
 #				process_tile(grid+i*1024,R.Map.terrainMeshs[0].size()-2)
-				process_tile(grid+i*1024,1)
+				process_tile(grid+i*1024,3)
 		if TerrainState == State.TANK:
 			for x in range(-4,5): #
 				for y in range(-4,5):
 					if abs(x) > 1 or abs(y) > 1:
 						process_tile(Vector3(x,0,y)*1024,R.Map.terrainMeshs[0].size()-1)
 			TerrainState = State.MAP
+#			TerrainState = State.COMPLETE #Comment out to load full map
 		if	TerrainState == State.MAP:
 			if $Tiles.get_child_count() == 81:
 				TerrainState = State.COMPLETE

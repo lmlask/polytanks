@@ -41,7 +41,7 @@ func _process(delta):
 		queue_free()
 	translation += plane.transform.basis.z * delta * 250 #Forawrd Speed
 	if FwdRay.is_colliding():
-		plane.rotation.x -= delta / 2
+		plane.rotation.x -= delta / 1 #Pitch speed
 	elif DownRay.is_colliding():
 		var agl = translation.y - DownRay.get_collision_point().y
 		if agl < agl_prev:
@@ -50,7 +50,7 @@ func _process(delta):
 		if agl < 0:
 			life = 0
 	else:
-		plane.rotation.x += delta / 2 #Pitch speed
+		plane.rotation.x += delta / 2 
 	plane.rotation.x = clamp(plane.rotation.x, -PI/2, PI/4)
 
 func show_cam():

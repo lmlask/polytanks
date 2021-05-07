@@ -57,7 +57,7 @@ func set_pos(grid):
 func update_tile(grid):
 	if grid == R.pos2grid(translation):
 		print("Center, fix border")
-		fix_border(grid)
+		fix_border(grid) #uncomment
 		level = 0
 		direction = 0
 		return
@@ -122,14 +122,15 @@ func fix_border(grid):
 	var down = {}
 	var j = 0
 	for tile in tile_offset:
-		var node = R.Map.terrainNodes[grid+R.pos2grid(tile)]
+		var node = R.Map.terrainNodes[grid+tile]
 		omdt[j].create_from_surface(node.get_node("Tile").mesh, 0)
 		j += 1
-	for i in omdt[2].get_vertex_count():
-		var v = omdt[2].get_vertex(i)
-		if v.x == 1024:
+	for i in omdt[0].get_vertex_count():
+		var v = omdt[0].get_vertex(i)
+		if v.x == 0:
 			down[v.z] = v.y
 	
+	print(down)
 	for i in cmdt.get_vertex_count():
 		var v = cmdt.get_vertex(i)
 		if v.x == 1024:
