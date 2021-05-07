@@ -113,6 +113,7 @@ func _process(delta):
 #			print("terain complete.")
 
 func fix_border(grid):
+	return
 	var mesh = $Tile.mesh
 	if mesh == null:
 		return
