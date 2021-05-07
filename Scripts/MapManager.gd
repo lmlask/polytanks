@@ -260,7 +260,8 @@ func terrain_complete(grid):
 	#		pass
 			R.ManVehicle.reset_tank(R.ManVehicle.vehicle) #maybe reset tank should be in a base class for all tanks
 			for i in tile_offset:
-				process_tile(grid+i*1024,R.Map.terrainMeshs[0].size()-2)
+#				process_tile(grid+i*1024,R.Map.terrainMeshs[0].size()-2)
+				process_tile(grid+i*1024,1)
 		if TerrainState == State.TANK:
 			for x in range(-4,5): #
 				for y in range(-4,5):
@@ -281,6 +282,8 @@ func terrain_complete(grid):
 			if i.is_in_group("item"): #Fix this up, sort buildings/items or group them something better then "item"
 				grid = (i.global_transform.origin/1000).snapped(Vector3(1,10,1))
 				R.FloorFinder.find_floor2(i)
+
+
 
 func show_locations():
 	while LocsNode.get_child_count():

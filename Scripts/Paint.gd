@@ -45,7 +45,11 @@ func paint(pos, paintMode):
 				envimg.set_pixelv(imgpos+Vector2(x,y),col)
 
 func area(a):
+	if line.size() == 1:
+		a.x = clamp(a.x,line[0].owner.translation.x,line[0].owner.translation.x+1023.9)
+		a.z = clamp(a.z,line[0].owner.translation.z,line[0].owner.translation.z+1023.9)
 	var node = R.Map.terrainNodes[R.pos2grid(a)]
+	print(node)
 	line.append(node.add_handle(a))
 	if line.size() == 2:
 		node.add_area(line)

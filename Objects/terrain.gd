@@ -20,7 +20,7 @@ onready var FlatG = $FlatGeometry
 onready var EnvItems = $EnvItems
 
 var timer:float = 0.0
-var tile_offset = [Vector3(0,0,0),Vector3(1,0,0),Vector3(0,0,1),Vector3(-1,0,0),Vector3(0,0,-1)]
+var tile_offset = [Vector3(1,0,0),Vector3(0,0,1),Vector3(-1,0,0),Vector3(0,0,-1)]
 
 var height_factor = 200
 
@@ -56,7 +56,8 @@ func set_pos(grid):
 
 func update_tile(grid):
 	if grid == R.pos2grid(translation):
-#		print("Center, do nothing")
+		print("Center, fix border")
+		fix_border(grid)
 		level = 0
 		direction = 0
 		return
@@ -103,12 +104,40 @@ func _process(delta):
 		if not prev_level == level or not prev_dir == direction:
 			prev_level = level
 			prev_dir = direction
-			var mesh = create_tile_mesh(R.Map.terrainMeshs[direction][level])
-			processs_all_areas()
+			create_tile_mesh(R.Map.terrainMeshs[direction][level])
+			processs_all_areas() #should generate normal after this step not before
+			gen_normals()
 			process_env()
+			$Tile/StaticBody/CollisionShape.shape = $Tile.mesh.create_trimesh_shape()
 			emit_signal("terrain_completed", R.pos2grid(translation))
 #			print("terain complete.")
 
+func fix_border(grid):
+	var mesh = $Tile.mesh
+	if mesh == null:
+		return
+	var cmdt = MeshDataTool.new()
+	var omdt = [MeshDataTool.new(),MeshDataTool.new(),MeshDataTool.new(),MeshDataTool.new()]
+	cmdt.create_from_surface(mesh, 0)
+	var down = {}
+	var j = 0
+	for tile in tile_offset:
+		var node = R.Map.terrainNodes[grid+R.pos2grid(tile)]
+		omdt[j].create_from_surface(node.get_node("Tile").mesh, 0)
+		j += 1
+	for i in omdt[2].get_vertex_count():
+		var v = omdt[2].get_vertex(i)
+		if v.x == 1024:
+			down[v.z] = v.y
+	
+	for i in cmdt.get_vertex_count():
+		var v = cmdt.get_vertex(i)
+		if v.x == 1024:
+			cmdt.set_vertex(i,Vector3(v.x,down[v.z],v.z))
+	mesh.surface_remove(0)
+	cmdt.commit_to_surface(mesh)
+	$Tile.mesh = mesh
+	
 func process_env():
 	for i in EnvItems.get_children(): #LOLtech
 		i.queue_free()
@@ -125,7 +154,7 @@ func process_env():
 				R.FloorFinder.find_floor2(ei,true)
 	
 func create_tile_mesh(meshx, useheightmap = true):
-	var mesh = meshx.duplicate()
+	var mesh = meshx.duplicate() #should update existing mesh if one exists and also cache meshs
 	var mdt = MeshDataTool.new()
 	mdt.create_from_surface(mesh, 0)
 	if useheightmap:
@@ -134,7 +163,14 @@ func create_tile_mesh(meshx, useheightmap = true):
 			vertex.y = get_noise(Vector2(vertex.x, vertex.z))
 #			vertex.y += noise.get_noise_2d((vertex.x+translation.x)/20, (vertex.z+translation.z)/20)*250
 			mdt.set_vertex(i, vertex)
-
+	mesh.surface_remove(0)
+	mdt.commit_to_surface(mesh)
+	$Tile.mesh = mesh
+	
+func gen_normals():
+	var mesh = $Tile.mesh
+	var mdt = MeshDataTool.new()
+	mdt.create_from_surface(mesh, 0)
 	for i in range(mdt.get_face_count()):
 		# Get the index in the vertex array.
 		var a = mdt.get_face_vertex(i, 0)
@@ -159,12 +195,12 @@ func create_tile_mesh(meshx, useheightmap = true):
 		var v = mdt.get_vertex_normal(i).normalized()
 		mdt.set_vertex_normal(i, v)
 		mdt.set_vertex_color(i, Color(v.x, v.y, v.z))
-	
 	mesh.surface_remove(0)
 	mdt.commit_to_surface(mesh)
 	$Tile.mesh = mesh
-	$Tile/StaticBody/CollisionShape.shape = mesh.create_trimesh_shape()
-	return mesh
+	
+	
+#	return mesh
 
 #should be called on check that map is loaded for site
 func add_sites(tile_pos):
@@ -231,9 +267,12 @@ func update_handle(handle):
 			var midway = width_loc([i[0].translation,i[1].translation],0)
 			var dist = i[3].translation.distance_to(midway)
 			i[2] = dist
-	create_tile_mesh(R.Map.terrainMeshs[direction][level])
-	processs_all_areas()
-	process_env()
+	prev_level = -1
+	
+#	create_tile_mesh(R.Map.terrainMeshs[direction][level])
+#	processs_all_areas()
+#	process_env()
+#	emit_signal("terrain_completed", R.pos2grid(translation))
 
 func processs_all_areas():
 	FlatG.clear()
@@ -284,7 +323,7 @@ func process_area(line,width,node):
 #		print("good")
 #	print(rect)
 	
-	var mesh = $Tile.mesh.duplicate()
+	var mesh = $Tile.mesh#.duplicate()
 	var mdt = MeshDataTool.new()
 	mdt.create_from_surface(mesh, 0)
 	for i in range(mdt.get_edge_count()):
@@ -325,7 +364,7 @@ func process_area(line,width,node):
 			
 	mesh.surface_remove(0)
 	mdt.commit_to_surface(mesh)
-	create_tile_mesh(mesh,false)
+#	create_tile_mesh(mesh,false)
 #	node.get_node("Tile").mesh = roadmesh
 	
 #	road_rect[0] = road_rect[road_rect.size()-2]
