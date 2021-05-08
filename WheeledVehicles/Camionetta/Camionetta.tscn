@@ -10,11 +10,11 @@
 [ext_resource path="res://Scripts/Camionetta/SteeringWheel.gd" type="Script" id=8]
 [ext_resource path="res://WheeledVehicles/Camionetta/Players/Commander.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Scripts/Camionetta/Windscreen.gd" type="Script" id=10]
-[ext_resource path="res://WheeledVehicles/Camionetta/AmmoStrip.gd" type="Script" id=11]
-[ext_resource path="res://BlenderFiles/WheeledVehicles/Material.material" type="Material" id=12]
-[ext_resource path="res://WheeledVehicles/Camionetta/Crank.gd" type="Script" id=13]
-[ext_resource path="res://BlenderFiles/WheeledVehicles/Material_003.material" type="Material" id=14]
-[ext_resource path="res://BlenderFiles/WheeledVehicles/Default.material" type="Material" id=15]
+[ext_resource path="res://Scripts/Camionetta/AmmoStrip.gd" type="Script" id=11]
+[ext_resource path="res://BlenderFiles/WheeledVehicles/Camionetta/Material.material" type="Material" id=12]
+[ext_resource path="res://Scripts/Camionetta/Crank.gd" type="Script" id=13]
+[ext_resource path="res://BlenderFiles/WheeledVehicles/Camionetta/Material_003.material" type="Material" id=14]
+[ext_resource path="res://BlenderFiles/WheeledVehicles/Camionetta/Default.material" type="Material" id=15]
 [ext_resource path="res://Projectiles/Camionetta/8mmAmmo.tscn" type="PackedScene" id=16]
 [ext_resource path="res://WheeledVehicles/Camionetta/Players/Gunner.tscn" type="PackedScene" id=17]
 [ext_resource path="res://Scripts/Camionetta/TurretController.gd" type="Script" id=18]
@@ -335,12 +335,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.224121, 0 )
 collision_layer = 5153
 mass = 25.0
 script = ExtResource( 6 )
-enginePower = 100.0
 
 [node name="EngineController" type="Node" parent="."]
 script = ExtResource( 4 )
 state = "OFF WARM"
-maxEnginePower = 500.0
+maxEnginePower = 600.0
 minRPM = 0.25
 forward_gears = 6
 reverse_gears = 1
@@ -353,11 +352,21 @@ gearTorqueMods = {
 -1: 0.7,
 0: 0.2,
 1: 1,
-2: 0.4,
-3: 0.3,
-4: 0.2,
-5: 0.1,
-6: 0.05
+2: 0.9,
+3: 0.8,
+4: 0.7,
+5: 0.6,
+6: 0.5
+}
+gearSlideMods = {
+-1: 1,
+0: 0.1,
+1: 1,
+2: 0.9,
+3: 0.8,
+4: 0.7,
+5: 0.6,
+6: 0.5
 }
 
 [node name="TurretController" type="Node" parent="."]

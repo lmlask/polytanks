@@ -7,7 +7,7 @@ onready var models = [$Model/HEModel, $Model/APCModel, $Model/APCRModel, $Model/
 var host = false
 remote var xform = null
 var timer:float = 0.0
-var shell_speed = 600
+export var shell_speed = 600
 
 func _ready():
 	pass
@@ -69,12 +69,6 @@ func _physics_process(delta):
 					print("hit")
 					col.hit(self)
 			life = -1
-	
-func shellcam(i):
-	$view.visible = i
-	$view/Viewport/Camera.visible = i
-	$RemoteTransform.update_position = i
-	$RemoteTransform.update_rotation = i
 	
 
 func _on_Area_area_entered(area):

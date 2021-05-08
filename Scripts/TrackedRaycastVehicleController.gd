@@ -17,7 +17,6 @@ var turning_dir = null
 #references
 #onready var role = $RoleController.role #probably not needed
 onready var engine = $EngineController
-onready var brakeForce = engine.brakeForce
 
 var rnd_power
 var rnd_turn

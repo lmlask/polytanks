@@ -1,10 +1,5 @@
 extends Node
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
 onready var turret = owner.get_node("Visuals/Turret")
 onready var barrel = owner.get_node("Visuals/Turret/gun/gunMesh/barrel")
 onready var muzzleSound = owner.get_node("Visuals/Turret/gun/gunMesh/barrel/gunSoundExterior")

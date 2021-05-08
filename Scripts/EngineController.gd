@@ -1,10 +1,8 @@
 extends Node
 
-var enginePower = 0
 export var state = "OFF" #should be an enum
 
 export var maxEnginePower : float
-export var brakeForce : float
 export var minRPM : float
 export var forward_gears : int
 export var reverse_gears : int
@@ -19,12 +17,12 @@ export var shutdown_time : float
 export var gearTopSpeeds = {
 	-1 : 8,
 	0 : 0,
-	1 : 5,
-	2 : 8,
-	3 : 14,
-	4 : 20,
-	5 : 30,
-	6 : 42 }
+	1 : 10,
+	2 : 20,
+	3 : 30,
+	4 : 40,
+	5 : 50,
+	6 : 60 }
 
 export var gearTorqueMods = {
 			-1 : 0.7,
@@ -48,6 +46,7 @@ export var gearSlideMods = {
 			6 : 0.2
 		}
 
+var enginePower = maxEnginePower
 var RPM = 0.25
 var maxRPM = 1.0
 var gear = 0
@@ -145,6 +144,6 @@ func manageEnginePower(_delta):
 		if clutch == 1 or gear == 0:
 			enginePower = 0
 		elif turning:
-			enginePower = maxEnginePower * turnModifier * throttle
+			enginePower = maxEnginePower * turnModifier * throttle  * 1/gearTorqueMods[gear]
 		else:
-			enginePower = maxEnginePower * throttle
+			enginePower = maxEnginePower * throttle  * 1/gearTorqueMods[gear]

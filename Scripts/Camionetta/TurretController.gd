@@ -6,10 +6,20 @@ onready var clip = owner.get_node("Visuals/Turret/Gun/AmmoStrip")
 onready var muzzleSound = owner.get_node("Visuals/Turret/Gun/MuzzleSound")
 onready var flash = owner.get_node("Visuals/Turret/Gun/Barrel/ProjectileSpawner/MuzzleFlash")
 
+export var shell_scene = preload("res://Projectiles/PanzerIV/Projectile.tscn")
+export var shellSpawnerPath : String = "Visuals/Turret/Gun/Barrel/ProjectileSpawner"
+
+var shellSpawner
+
 #export var shell_scene = preload("res://Projectiles/PanzerIV/Projectile.tscn")
 
+
+func _ready():
+	shellSpawner = owner.get_node(shellSpawnerPath)
+
+
 var traverse_multiplier = 5 
-var elevation_multiplier = 3 
+var elevation_multiplier = 6 
 
 var dir : float = 0
 var eledir : float = 0
@@ -39,32 +49,29 @@ func _process(delta):
 	turret.get_node("Gun").rotate(Vector3(1, 0, 0), ele_speed*delta)
 	
 	#Clamp
-	turret.get_node("Gun").rotation_degrees.x = clamp(turret.get_node("Gun").rotation_degrees.x, -17, 8) 
+	turret.get_node("Gun").rotation_degrees.x = clamp(turret.get_node("Gun").rotation_degrees.x, -45, 20) 
 	
 	if owner.auto:
 		timer += delta #for auto firing during intro
-		var firetime = randf() + 3.5
+		var firetime = randf()
 		if timer > firetime:
 			timer -= firetime
 			fire()
 
 func fire(id = 0, number = 0, host = false):
 	
-	#spawning shell
-#		var shell = shell_scene.instance()
-#		shell.name = str(id,"-",number)
-#		shell.host = host
-
-#		if GameState.ShellCam and GameState.InGame and host:
-#			shell.shellcam(GameState.ShellCam)
-#		add_child(shell)
-#		shell.global_transform = turret.get_node("gun/gunMesh/barrel/projectile_spawner").global_transform
-#
+	
 	if clip.hasAmmo():
 		can_fire = false
 		muzzleSound.play()
 		flash.restart()
 		clip.fireOne()
+		#spawning shell
+		var shell = shell_scene.instance()
+		shell.name = str(id,"-",number)
+		shell.host = host
+		add_child(shell)
+		shell.global_transform = shellSpawner.global_transform
 		#barrel recoil anim
 		barrel.recoil()
 		var point = barrel.get_node("ProjectileSpawner").global_transform.origin

@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Projectiles/PanzerIV/tracer.tres" type="Material" id=1]
+[ext_resource path="res://Scripts/shell_test.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/TracerDelay.gd" type="Script" id=9]
+
+[sub_resource type="CapsuleMesh" id=1]
+
+[node name="projectile" type="Spatial" groups=[
+"shell",
+]]
+script = ExtResource( 2 )
+shell_speed = 300
+
+[node name="Model" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
+
+[node name="RayCast" type="RayCast" parent="."]
+enabled = true
+cast_to = Vector3( 0, 0, 15 )
+collision_mask = 766979
+collide_with_areas = true
+
+[node name="Tracer" type="MeshInstance" parent="."]
+transform = Transform( 0.05, 0, 0, 0, 0.05, 0, 0, 0, 5, 0, 0, -7.5924 )
+visible = false
+cast_shadow = 0
+mesh = SubResource( 1 )
+material/0 = ExtResource( 1 )
+script = ExtResource( 9 )

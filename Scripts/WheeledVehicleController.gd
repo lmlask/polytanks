@@ -1,9 +1,7 @@
 extends RigidBody
 
 # control variables
-export var enginePower : float = 280.0
 export var steeringAngle : float = 20.0
-export var tur : NodePath
 
 #variables for RPC use
 onready var Turret = $Visuals/Turret
@@ -13,7 +11,6 @@ onready var tween = get_node("Interior/Tween")
 onready var engine = $EngineController
 # currently, raycast driver expects this array to exist in the controller script
 var rayElements : Array = []
-var drivePerRay : float = enginePower
 var frontRightWheel : RayCast
 var frontLeftWheel : RayCast
 
@@ -47,36 +44,35 @@ func next_transform(t:Transform):
 	
 func handle4WheelDrive(delta) -> void:
 	var dir = 0
-	for ray in rayElements:
-		if engine.clutch == 0:
+	if engine.clutch == 0:
 			if engine.gear >= 0:
 				dir = 1 
 			elif engine.gear == -1:
 				dir = -1
-		
-		drivePerRay = engine.enginePower / rayElements.size()
-		if !turning_dir:
-			if frontLeftWheel.rotation_degrees.y < 0:
-				frontLeftWheel.rotation_degrees.y += steeringAngle*delta/4
-				frontRightWheel.rotation_degrees.y += steeringAngle*delta/4
-			else:
-				frontLeftWheel.rotation_degrees.y += -steeringAngle*delta/4
-				frontRightWheel.rotation_degrees.y += -steeringAngle*delta/4
-		if turning_dir and turning_dir == "left":
-			if frontLeftWheel.rotation_degrees.y >= steeringAngle:
-				frontLeftWheel.rotation_degrees.y = steeringAngle
-				frontRightWheel.rotation_degrees.y = steeringAngle
-			else:
-				frontLeftWheel.rotation_degrees.y += steeringAngle*delta/4
-				frontRightWheel.rotation_degrees.y += steeringAngle*delta/4
-		elif turning_dir and turning_dir == "right":
-			if frontLeftWheel.rotation_degrees.y <= -steeringAngle:
-				frontLeftWheel.rotation_degrees.y = -steeringAngle
-				frontRightWheel.rotation_degrees.y = -steeringAngle
-			else:
-				frontLeftWheel.rotation_degrees.y += -steeringAngle*delta/4
-				frontRightWheel.rotation_degrees.y += -steeringAngle*delta/4
-		
+	var drivePerRay = engine.enginePower / rayElements.size()
+	if !turning_dir:
+		if frontLeftWheel.rotation_degrees.y < 0:
+			frontLeftWheel.rotation_degrees.y += steeringAngle*delta
+			frontRightWheel.rotation_degrees.y += steeringAngle*delta
+		else:
+			frontLeftWheel.rotation_degrees.y += -steeringAngle*delta
+			frontRightWheel.rotation_degrees.y += -steeringAngle*delta
+	if turning_dir and turning_dir == "left":
+		if frontLeftWheel.rotation_degrees.y >= steeringAngle:
+			frontLeftWheel.rotation_degrees.y = steeringAngle
+			frontRightWheel.rotation_degrees.y = steeringAngle
+		else:
+			frontLeftWheel.rotation_degrees.y += steeringAngle*delta
+			frontRightWheel.rotation_degrees.y += steeringAngle*delta
+	elif turning_dir and turning_dir == "right":
+		if frontLeftWheel.rotation_degrees.y <= -steeringAngle:
+			frontLeftWheel.rotation_degrees.y = -steeringAngle
+			frontRightWheel.rotation_degrees.y = -steeringAngle
+		else:
+			frontLeftWheel.rotation_degrees.y += -steeringAngle*delta
+			frontRightWheel.rotation_degrees.y += -steeringAngle*delta
+	
+	for ray in rayElements:
 		ray.applyDriveForce(dir * global_transform.basis.z * drivePerRay)
 
 func _ready() -> void:
@@ -86,7 +82,6 @@ func _ready() -> void:
 	# setup array of drive elements and setup drive power
 	for node in get_node("RaysWheels").get_children():
 		rayElements.append(node)
-	print("Found ", rayElements.size(), " raycasts connected to wheeled vehicle, setting to provide ", drivePerRay, " power each.") 
 	
 func _physics_process(delta) -> void:
 	handle4WheelDrive(delta)
