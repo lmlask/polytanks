@@ -82,6 +82,11 @@ var height_map = {0:["res://Textures/greyalpha-16bit.exr","Test map"],
 	1:["res://Textures/flat.exr","Flat map"],
 	2:["res://Textures/likethis.exr","Like this map"]}
 
+#var thread:Thread
+#
+#func _ready():
+#	thread = Thread.new()
+
 func pos2grid(pos:Vector3) -> Vector3:
 	return (pos/1024).snapped(Vector3(1,1024,1))
 func v3xz(v:Vector3)->Vector2:

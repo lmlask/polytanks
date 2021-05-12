@@ -35,7 +35,7 @@ func _process(_delta):
 #		add_random_tank()
 		timer -= 0.1
 		if vehicle.translation.y < -100:
-			vehicle.translation.y = 1000
+			vehicle.translation.y = 200
 	if Input.is_action_just_pressed("reset_vehicle"):
 		reset_tank(vehicle)
 	

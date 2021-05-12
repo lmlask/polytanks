@@ -58,7 +58,7 @@ func _ready():
 	$DirectionalLight.light_energy = 1
 
 	var terrain_size = fine_size
-	for i in range(6): #change here
+	for i in range(6): #change here default 8 for size 4
 		terrainMeshs[0].append(create_mesh(terrain_size))
 		terrainMeshs[1].append(create_tran_mesh(terrain_size, terrain_size*2)) #Correct
 		terrainMeshs[2].append(rotate_mesh(terrainMeshs[1][i])) #Correct
@@ -251,17 +251,20 @@ func check_area(pos):
 #	print("process tiles")
 	get_tree().call_group("terrain","update_tile",grid)
 	
-func terrain_complete(grid):
+func terrain_complete(data):
 	if not TerrainState == State.COMPLETE:
 		if TerrainState == State.START and GameState.InGame:
 			TerrainState = State.TANK
-			TerrainState = State.COMPLETE #Comment out to load full map
+			TerrainState = State.MAP
+#			TerrainState = State.COMPLETE #Comment out to load full map
 	#		print("resetting vehicle")
 	#		pass
-			R.ManVehicle.reset_tank(R.ManVehicle.vehicle) #maybe reset tank should be in a base class for all tanks
+			if data[0] == Vector3(0,0,0):
+				yield(get_tree(),"idle_frame")
+				R.ManVehicle.reset_tank(R.ManVehicle.vehicle) #maybe reset tank should be in a base class for all tanks
 			for i in tile_offset:
-#				process_tile(grid+i*1024,R.Map.terrainMeshs[0].size()-2)
-				process_tile(grid+i*1024,3)
+				process_tile(data[0]+i*1024,R.Map.terrainMeshs[0].size()-2)
+#				process_tile(data[0]+i*1024,3)
 		if TerrainState == State.TANK:
 			for x in range(-4,5): #
 				for y in range(-4,5):
@@ -270,9 +273,9 @@ func terrain_complete(grid):
 			TerrainState = State.MAP
 #			TerrainState = State.COMPLETE #Comment out to load full map
 		if	TerrainState == State.MAP:
-			if $Tiles.get_child_count() == 81:
-				TerrainState = State.COMPLETE
-				get_tree().call_group("terrain","update_tile",R.pos2grid(GameState.view_location))
+#			if $Tiles.get_child_count() == 81:
+			TerrainState = State.COMPLETE
+			get_tree().call_group("terrain","update_tile",R.pos2grid(GameState.view_location))
 	for i in LocsNode.get_children():
 #		print(i.name)
 		if i.is_in_group("loc"):
@@ -281,7 +284,7 @@ func terrain_complete(grid):
 		for i in j.get_node("Center").get_children():
 #		for i in j.get_node("Center").get_children():
 			if i.is_in_group("item"): #Fix this up, sort buildings/items or group them something better then "item"
-				grid = (i.global_transform.origin/1000).snapped(Vector3(1,10,1))
+				data[0] = (i.global_transform.origin/1000).snapped(Vector3(1,10,1))
 				R.FloorFinder.find_floor2(i)
 
 
