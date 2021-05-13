@@ -114,11 +114,19 @@ func _process(delta):
 		timer = 0.0
 		level = clamp(level,0,R.Map.terrainMeshs[0].size()-1)
 		if not prev_level == level or not prev_dir == direction and not thread.is_active():
-			prev_level = level
-			prev_dir = direction
-			print("post", translation)
-			thread.start(self, "_thread_loop", [], Thread.PRIORITY_LOW)
-#			print("terain complete.")
+			R.thread_count += 1
+			if R.thread_count > R.max_threads:
+				R.thread_count -= 1
+			else:
+				prev_level = level
+				prev_dir = direction
+#				print("post", translation)
+				thread.start(self, "_thread_loop", [], Thread.PRIORITY_LOW)
+	#			print("terain complete.")
+
+func check_thread_count():
+	if thread.is_active():
+		R.thread_check += 1
 
 func _thread_loop(_data):
 	print("thread start", translation)
@@ -136,7 +144,8 @@ func _thread_loop(_data):
 #	print("thread end")
 
 func terrain_complete(data):
-	print("joining thread", translation)
+	R.thread_count -= 1
+	print("thread end", translation)
 	$Tile.mesh = data[1]
 	$Tile/StaticBody/CollisionShape.shape = data[2]
 	thread.wait_to_finish()

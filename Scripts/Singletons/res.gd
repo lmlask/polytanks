@@ -82,11 +82,25 @@ var height_map = {0:["res://Textures/greyalpha-16bit.exr","Test map"],
 	1:["res://Textures/flat.exr","Flat map"],
 	2:["res://Textures/likethis.exr","Like this map"]}
 
-#var thread:Thread
-#
-#func _ready():
-#	thread = Thread.new()
+var max_threads:int = 2
+var thread_count:int = 1 #setget set_thred_count
+var thread_check:int
+var timer:float = 0.0
 
+func _ready():
+	max_threads = int(max(2,OS.get_processor_count()*0.75))
+
+func _process(delta): #adjust thread count
+	timer += delta
+	if timer > 5.0:
+		timer -= 5.0
+		thread_count = int(clamp(thread_count,1,max_threads))
+		if thread_check == 0:
+			thread_count -= 1
+		thread_check = 0
+		get_tree().call_group("terrain","check_thread_count")
+
+	
 func pos2grid(pos:Vector3) -> Vector3:
 	return (pos/1024).snapped(Vector3(1,1024,1))
 func v3xz(v:Vector3)->Vector2:

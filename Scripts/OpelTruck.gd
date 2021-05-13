@@ -52,7 +52,7 @@ func _process(delta):
 	if DownRay.is_colliding() and v < 0.1:
 		v = 0
 		translation.y = lerp(DownRay.get_collision_point().y,translation.y,0.95)
-		var tfs = Transform.looking_at(DownRay.get_collision_normal(),Vector3.RIGHT)
+		var tfs = Transform.looking_at(DownRay.get_collision_normal(),Vector3.RIGHT) #Fix this line, somtimes the collision normal has no length
 		tfs = tfs.rotated(tfs.basis.x,-PI/2)
 		transform.basis = tfs.basis.slerp(transform.basis,0.95)
 

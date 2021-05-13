@@ -25,4 +25,6 @@ func _process(delta):
 #		print("Driver, ID ", GameState.DriverID)
 #		print("hostingame", GameState.InGame,GameState.hostInGame)
 #		print("map", GameState.map)
+#		print(R.max_threads,"-",R.thread_count)
 		
+
