@@ -339,7 +339,7 @@ script = ExtResource( 6 )
 [node name="EngineController" type="Node" parent="."]
 script = ExtResource( 4 )
 state = "OFF WARM"
-maxEnginePower = 600.0
+maxEnginePower = 300.0
 minRPM = 0.25
 forward_gears = 6
 reverse_gears = 1
@@ -348,25 +348,35 @@ startup_time = 10.0
 rev_time = 2.0
 warm_startup_time = 2.0
 shutdown_time = 2.0
+gearTopSpeeds = {
+-1: 8,
+0: 0,
+1: 1,
+2: 1,
+3: 1,
+4: 1,
+5: 1,
+6: 1
+}
 gearTorqueMods = {
 -1: 0.7,
 0: 0.2,
 1: 1,
-2: 0.9,
-3: 0.8,
-4: 0.7,
-5: 0.6,
-6: 0.5
+2: 0.4,
+3: 0.25,
+4: 0.4,
+5: 0.2,
+6: 0.05
 }
 gearSlideMods = {
 -1: 1,
 0: 0.1,
 1: 1,
-2: 0.9,
-3: 0.8,
-4: 0.7,
-5: 0.6,
-6: 0.5
+2: 0.4,
+3: 0.25,
+4: 0.4,
+5: 0.2,
+6: 0.1
 }
 
 [node name="TurretController" type="Node" parent="."]

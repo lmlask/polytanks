@@ -23,7 +23,7 @@ onready var gearSlideMods : Dictionary
 # function for applying drive force to parent body (if grounded)
 func applyDriveForce(force : Vector3) -> void:
 	if is_colliding():
-		#parentBody.apply_impulse(parentBody.global_transform.basis.xform(parentBody.to_local(get_collision_point())), force / 60)
+		#parentBody.apply_impulse(parentBody.global_transform.basis.xform(parentBody.to_local(get_collision_point())), force/30)
 		parentBody.add_central_force(force)
 		
 
@@ -83,6 +83,7 @@ func _physics_process(delta) -> void:
 			
 		# note that the point has to be xform()'ed to be at the correct location. Xform makes the pos global
 		parentBody.apply_impulse(parentBody.global_transform.basis.xform(parentBody.to_local(get_collision_point())), finalForce)
+		#parentBody.add_central_force(finalForce)
 		previousDistance = curDistance
 		previousHit = curHit
 	else:

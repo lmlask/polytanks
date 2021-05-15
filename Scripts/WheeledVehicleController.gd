@@ -73,7 +73,8 @@ func handle4WheelDrive(delta) -> void:
 			frontRightWheel.rotation_degrees.y += -steeringAngle*delta
 	
 	for ray in rayElements:
-		ray.applyDriveForce(dir * global_transform.basis.z * drivePerRay)
+		var driveForce = dir * drivePerRay * global_transform.basis.z * GameState.speed
+		ray.applyDriveForce(driveForce)
 
 func _ready() -> void:
 	# setup front right and front left wheels

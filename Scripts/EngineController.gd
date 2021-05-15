@@ -144,6 +144,6 @@ func manageEnginePower(_delta):
 		if clutch == 1 or gear == 0:
 			enginePower = 0
 		elif turning:
-			enginePower = maxEnginePower * turnModifier * throttle  * 1/gearTorqueMods[gear]
+			enginePower = maxEnginePower * turnModifier * throttle
 		else:
-			enginePower = maxEnginePower * throttle  * 1/gearTorqueMods[gear]
+			enginePower = maxEnginePower * throttle
