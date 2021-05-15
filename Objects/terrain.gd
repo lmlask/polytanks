@@ -33,11 +33,23 @@ var mutex = Mutex.new()
 var inprogress = false
 # Called when the node enters the scene tree for the first time.
 
+#Threading
+var semaphore:Semaphore
+var thread:Thread
+var loop_thread = true
+
+
+# The thread will start here.
 
 func _ready():
 	$Tile.material_override = $Tile.material_override.duplicate()
 	set_paint()
 	R.Editor.connect("editor_state", self, "editor")
+	semaphore = Semaphore.new()
+	thread = Thread.new()
+	connect("terrain_completed", self, "terrain_complete", [], CONNECT_DEFERRED)
+	
+	
 
 func editor(data):
 #	print("From editor", data)
@@ -101,16 +113,49 @@ func _process(delta):
 	if timer > 1.0:
 		timer = 0.0
 		level = clamp(level,0,R.Map.terrainMeshs[0].size()-1)
-		if not prev_level == level or not prev_dir == direction:
-			prev_level = level
-			prev_dir = direction
-			create_tile_mesh(R.Map.terrainMeshs[direction][level])
-			processs_all_areas() #should generate normal after this step not before
-			gen_normals()
-			process_env()
-			$Tile/StaticBody/CollisionShape.shape = $Tile.mesh.create_trimesh_shape()
-			emit_signal("terrain_completed", R.pos2grid(translation))
-#			print("terain complete.")
+		if not prev_level == level or not prev_dir == direction and not thread.is_active():
+			R.thread_count += 1
+			if R.thread_count > R.max_threads:
+				R.thread_count -= 1
+			else:
+				prev_level = level
+				prev_dir = direction
+#				print("post", translation)
+				thread.start(self, "_thread_loop", [], Thread.PRIORITY_LOW)
+	#			print("terain complete.")
+
+func check_thread_count():
+	if thread.is_active():
+		R.thread_check += 1
+
+func _thread_loop(_data):
+	print("thread start", translation)
+#	while loop_thread:
+#		semaphore.wait()
+#	print("thread continue")
+	var mesh = create_tile_mesh(R.Map.terrainMeshs[direction][level])
+	processs_all_areas(mesh) #should generate normal after this step not before
+	gen_normals(mesh)
+#	$Tile.mesh = mesh
+#	$Tile/StaticBody/CollisionShape.shape = mesh.create_trimesh_shape()
+	var shape = mesh.create_trimesh_shape()
+	process_env()
+	emit_signal("terrain_completed", [R.pos2grid(translation),mesh,shape])
+#	print("thread end")
+
+func terrain_complete(data):
+	R.thread_count -= 1
+	print("thread end", translation)
+	$Tile.mesh = data[1]
+	$Tile/StaticBody/CollisionShape.shape = data[2]
+	thread.wait_to_finish()
+		
+func _exit_tree():
+	print("exit tree")
+#	loop_thread = false # Protect with Mutex.
+#	semaphore.post()
+	if thread.is_active():
+		thread.wait_to_finish()
 
 func fix_border(grid):
 	return
@@ -126,16 +171,16 @@ func fix_border(grid):
 		var node = R.Map.terrainNodes[grid+tile]
 		omdt[j].create_from_surface(node.get_node("Tile").mesh, 0)
 		j += 1
-	for i in omdt[0].get_vertex_count():
+		
+	for i in omdt[0].get_vertex_count(): #Repeat for all four sides
 		var v = omdt[0].get_vertex(i)
 		if v.x == 0:
 			down[v.z] = v.y
-	
-	print(down)
 	for i in cmdt.get_vertex_count():
 		var v = cmdt.get_vertex(i)
 		if v.x == 1024:
 			cmdt.set_vertex(i,Vector3(v.x,down[v.z],v.z))
+			
 	mesh.surface_remove(0)
 	cmdt.commit_to_surface(mesh)
 	$Tile.mesh = mesh
@@ -167,10 +212,10 @@ func create_tile_mesh(meshx, useheightmap = true):
 			mdt.set_vertex(i, vertex)
 	mesh.surface_remove(0)
 	mdt.commit_to_surface(mesh)
-	$Tile.mesh = mesh
+	return mesh
 	
-func gen_normals():
-	var mesh = $Tile.mesh
+func gen_normals(mesh):
+#	var mesh = $Tile.mesh
 	var mdt = MeshDataTool.new()
 	mdt.create_from_surface(mesh, 0)
 	for i in range(mdt.get_face_count()):
@@ -246,7 +291,7 @@ func add_area(line,width=10):
 	var midway = width_loc([line[1].translation,line[0].translation],width)
 	var node = add_handle(midway)
 	flatareas.append([line[0], line[1],width,node])
-	process_area([line[0].translation,line[1].translation],width,node)
+	process_area($Tile.mesh, [line[0].translation,line[1].translation],width,node)
 
 func width_loc(line,width):
 	var line_vec = (line[1]-line[0])/2
@@ -276,13 +321,13 @@ func update_handle(handle):
 #	process_env()
 #	emit_signal("terrain_completed", R.pos2grid(translation))
 
-func processs_all_areas():
+func processs_all_areas(mesh):
 	FlatG.clear()
 	if not flatareas.empty():
 		for i in flatareas:
-			process_area([i[0].translation,i[1].translation],i[2], i[3])
+			process_area(mesh, [i[0].translation,i[1].translation],i[2], i[3])
 
-func process_area(line,width,node):
+func process_area(mesh, line,width,node):
 	node.translation = width_loc([line[0],line[1]],width)
 	line[0] = line[0]-translation
 	line[1] = line[1]-translation
@@ -325,7 +370,7 @@ func process_area(line,width,node):
 #		print("good")
 #	print(rect)
 	
-	var mesh = $Tile.mesh#.duplicate()
+#	var mesh = $Tile.mesh#.duplicate()
 	var mdt = MeshDataTool.new()
 	mdt.create_from_surface(mesh, 0)
 	for i in range(mdt.get_edge_count()):
