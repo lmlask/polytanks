@@ -24,7 +24,7 @@ var tile_offset = [Vector3(1,0,0),Vector3(0,0,1),Vector3(-1,0,0),Vector3(0,0,-1)
 #var thread_update = Thread.new()
 #var map_thread = Thread.new()
 #var mutex = Mutex.new()
-var fine_size = 4 #change array size
+var fine_size = 16 #change array size
 #var rough_size = 100
 var map_size = 4
 #var tilemesh = {} #Should be obsolete
@@ -58,7 +58,7 @@ func _ready():
 	$DirectionalLight.light_energy = 1
 
 	var terrain_size = fine_size
-	for i in range(8): #change here default 8 for size 4
+	for i in range(6): #change here default 8 for size 4
 		terrainMeshs[0].append(create_mesh(terrain_size))
 		terrainMeshs[1].append(create_tran_mesh(terrain_size, terrain_size*2)) #Correct
 		terrainMeshs[2].append(rotate_mesh(terrainMeshs[1][i])) #Correct
@@ -255,7 +255,7 @@ func terrain_complete(data):
 	if not TerrainState == State.COMPLETE:
 		if TerrainState == State.START and GameState.InGame:
 			TerrainState = State.TANK
-#			TerrainState = State.MAP
+			TerrainState = State.MAP
 #			TerrainState = State.COMPLETE #Comment out to load full map
 	#		print("resetting vehicle")
 	#		pass

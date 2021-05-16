@@ -8,9 +8,11 @@ var host = false
 remote var xform = null
 var timer:float = 0.0
 export var shell_speed = 600
+var type:int
 
 func _ready():
-	pass
+	if host:
+		print("Firing:",GameState.Ammo.keys()[type])
 #	view.hide()
 #	set_process(false)
 
@@ -49,7 +51,8 @@ func _physics_process(delta):
 	#Multiplying by delta to prevent framerate-dependent shell speed
 #	print(Vector2(transform.basis.z.x,transform.basis.z.z).dot(GameState.wind_vector.normalized()))
 #	transform.origin += Vector3(GameState.wind_vector.x,0,GameState.wind_vector.y)/100
-	
+	if not host:
+		return
 	
 	#Spin shell model
 	for i in models:
@@ -66,9 +69,19 @@ func _physics_process(delta):
 			col = col.owner
 			if col:
 				if col.has_method("hit"):
-					print("hit")
-					col.hit(self)
+					print("Projectile hit something")
+#					col.hit(self,type, $RayCast.get_collider())
+					var angle = transform.basis.z.dot($RayCast.get_collision_normal())
+					var nm = col.get_network_master()
+					col.rpc_id(nm, "hit", type, angle)
+					transform.origin = $RayCast.get_collision_point()
 			life = -1
+
+func shellcam(i):
+	$view.visible = i
+	$view/Viewport/Camera.visible = i
+	$RemoteTransform.update_position = i
+	$RemoteTransform.update_rotation = i
 	
 
 func _on_Area_area_entered(area):
@@ -80,5 +93,5 @@ func _on_Area_body_entered(body):
 		hit(body)
 	
 func hit(_target):
-	print("noooo")
+	print("hmmm")
 	life = -1

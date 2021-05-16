@@ -68,6 +68,7 @@ func notify(vis):
 	visible = vis
 	$MeshInstance/StaticBody/CollisionShape.disabled = !vis
 		
-func hit(_node):
+remotesync func hit(type, col = null):
+	print("I got hit by:",GameState.Ammo.keys()[type])
 	life = 0
 	v = 1

@@ -62,23 +62,25 @@ func toggleTraverseMode():
 		traverse_mode = "power"
 	owner.get_node("Interior/TurretInterior/Dynamic/LeverTraverse").toggle()
 	
-func fire(id = 0, number = 0, host = false):
-		#spawning shell
-		var shell = shell_scene.instance()
-		shell.name = str(id,"-",number)
-		shell.host = host
-		
-		if GameState.ShellCam and GameState.InGame and host:
-			shell.shellcam(GameState.ShellCam)
-		add_child(shell)
-		shell.global_transform = turret.get_node("gun/gunMesh/barrel/projectile_spawner").global_transform
-		
-		#barrel recoil anim
-		barrel.recoil()
-		
-		#sound
-		muzzleSound.play()
-		
-		#recoil physics
-		var point = barrel.get_node("projectile_spawner").global_transform.origin
-		owner.apply_impulse(owner.global_transform.basis.xform(owner.to_local(point)), Vector3(0, 25, 0))
+func fire(id = 0, number = 0, host = false, type = 1):
+	#spawning shell
+	var shell = shell_scene.instance()
+	shell.name = str(id,"-",number)
+	shell.host = host
+	shell.type = type
+	
+	if GameState.ShellCam and GameState.InGame and host:
+		shell.shellcam(GameState.ShellCam)
+	add_child(shell)
+	shell.global_transform = turret.get_node("gun/gunMesh/barrel/projectile_spawner").global_transform
+	
+	#barrel recoil anim
+	if host:
+		barrel.recoil() #no recall unless its host because non hosts dont have an interior which reciol references
+	
+	#sound
+	muzzleSound.play()
+	
+	#recoil physics
+	var point = barrel.get_node("projectile_spawner").global_transform.origin
+	owner.apply_impulse(owner.global_transform.basis.xform(owner.to_local(point)), Vector3(0, 25, 0))

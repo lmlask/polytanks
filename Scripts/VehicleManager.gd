@@ -12,7 +12,7 @@ var tanks = []
 var timer:float = 0.0
 #var players = {}
 
-var start_pos = [Vector3(20,0,-12), Vector3(-12,0,-12),Vector3(6,0,-16),Vector3(14,0,-16),Vector3(14,0,-8)] #simple solution
+var start_pos = [Vector3(0,0,0), Vector3(15,0,15),Vector3(-15,0,-15),Vector3(14,0,-16),Vector3(14,0,-8)] #simple solution
 
 #var camrig #do everything to do with this differently
 
@@ -64,12 +64,13 @@ func reset_tank(v): #should be part of the vehicle
 		
 
 func start():
+	print(start_pos[GameState.tank])
 	R.Map.load_map(GameState.map,start_pos[GameState.tank])
 #	vehicle = R.VTPzIV.instance()
 #	vehicle = R.VWCamionetta.instance()
 	vehicle = R.Lobby.Vehicle.instance()
-	yield(get_tree(),"idle_frame")
-	R.ManVehicle.reset_tank(R.ManVehicle.vehicle)
+#	yield(get_tree(),"idle_frame")
+#	R.ManVehicle.reset_tank(R.ManVehicle.vehicle)
 
 	if tanks.size() > 0:
 #		for i in tanks: #handled by mapmanager
@@ -101,6 +102,7 @@ func start():
 #		vehicle.name = str(GameState.DriverID[GameState.tank]) #set tank name to id of driver
 	vehicle.VehicleMan = self #dont think this is a good idea
 	vehicle.name = str(GameState.tank)
+	vehicle.set_network_master(get_tree().get_network_unique_id())
 	
 	vehicleStartTransform = vehicle.global_transform
 #	$"../CameraRig"._camTarget = vehicle #give cam target
@@ -140,6 +142,7 @@ remote func add_tank(_t,tid):
 #		tank.rotate_y(-PI/2) #shouldnt be fixed
 		tank.next_transform(tank.transform)
 		tank.get_node("Players").queue_free()
+		tank.set_network_master(GameState.DriverID[tid]) #set master to owner
 
 func load_intro_tanks():
 	for _i in range(2):

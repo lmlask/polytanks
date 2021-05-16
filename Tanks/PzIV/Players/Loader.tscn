@@ -11,5 +11,4 @@ script = ExtResource( 2 )
 
 [node name="Camera" parent="." instance=ExtResource( 1 )]
 script = ExtResource( 3 )
-role = ""
 max_movement = Vector2( 0.1, 0.3 )

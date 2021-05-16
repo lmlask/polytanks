@@ -265,6 +265,7 @@ next_shell={
 3d_physics/layer_2="targets"
 3d_render/layer_3="tank_exterior"
 3d_physics/layer_3="interior_clickables"
+3d_physics/layer_4="hitbox"
 3d_render/layer_6="player"
 3d_physics/layer_6="player"
 3d_render/layer_7="remote"

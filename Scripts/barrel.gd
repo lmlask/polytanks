@@ -1,7 +1,7 @@
 extends MeshInstance
 
 var state = "idle"
-onready var tween = owner.get_node("Interior/Tween")
+onready var tween = owner.get_node("Interior/Tween") #Should not reference interior
 
 func _ready():
 	pass
