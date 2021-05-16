@@ -272,16 +272,20 @@ func interact():
 			add_shell(active_pos)
 
 func get_crosshair_tex():
+	print("active pos",ammo_code[positions_array.find(active_pos)])
 	if owner.get_node("Players/Loader/Camera").holding_shell:
 		return smoke_tex
-	var ammotype = decode(ammo_code[positions_array.find(active_pos)]) #CHECK, is this type scoped correctly, type already exists in this class
-	if ammotype == GameState.Ammo.HE:
-		return he_tex
-	elif ammotype == GameState.Ammo.HEAT:
-		return heat_tex
-	elif ammotype == GameState.Ammo.APC:
-		return apc_tex
-	elif ammotype == GameState.Ammo.APCR:
-		return apcr_tex
-	elif ammotype == GameState.Ammo.Smoke:
-		return smoke_tex
+	
+	return R.TankAmmoTex[decode(ammo_code[positions_array.find(active_pos)])][1]
+	
+#	var ammotype = decode(ammo_code[positions_array.find(active_pos)]) #CHECK, is this type scoped correctly, type already exists in this class
+#	if ammotype == GameState.Ammo.HE:
+#		return he_tex
+#	elif ammotype == GameState.Ammo.HEAT:
+#		return heat_tex
+#	elif ammotype == GameState.Ammo.APC:
+#		return apc_tex
+#	elif ammotype == GameState.Ammo.APCR:
+#		return apcr_tex
+#	elif ammotype == GameState.Ammo.Smoke:
+#		return smoke_tex

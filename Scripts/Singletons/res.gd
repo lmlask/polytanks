@@ -75,6 +75,29 @@ onready var EnvItems = {0:[Tree01,"Tree 01"], #all wrong
 	5:[Bush01,"Bush 01"]
 	}
 
+#Tank Ammo
+enum TankAmmo {None, APC, APCR, HE, HEAT, Smoke}
+#Crosshair textures
+var apc_tex = preload("res://Textures/Icons/APC.png")
+var apcr_tex = preload("res://Textures/Icons/APCR.png")
+var he_tex = preload("res://Textures/Icons/HE.png")
+var heat_tex = preload("res://Textures/Icons/HEAT.png")
+var smoke_tex = preload("res://Textures/Icons/dot.png")
+
+#Shell textures
+var apc = preload("res://Projectiles/PanzerIV/APC.tscn")
+var apcr = preload("res://Projectiles/PanzerIV/APCR.tscn")
+var he = preload("res://Projectiles/PanzerIV/HE.tscn")
+var heat = preload("res://Projectiles/PanzerIV/HEAT.tscn")
+var smoke = preload("res://Projectiles/PanzerIV/Smoke.tscn")
+var TankAmmoTex = {TankAmmo.None:[smoke,smoke_tex],
+	TankAmmo.APC:[apc,apc_tex],
+	TankAmmo.APCR:[apcr,apcr_tex],
+	TankAmmo.HE:[he,he_tex],
+	TankAmmo.HEAT:[heat,heat_tex],
+	TankAmmo.Smoke:[smoke,smoke_tex]}
+
+
 var tilefull = Vector3(1024,0,1024)
 var tilehalf = tilefull/2
 var heightMap = Image.new()
