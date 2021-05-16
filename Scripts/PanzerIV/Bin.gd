@@ -57,7 +57,8 @@ func _ready():
 	#Initialize ammo meshes
 	for i in range(0, positions_array.size()):
 		if ammo_types[decode(ammo_code[i])]:
-			var ammo_mesh = ammo_types[decode(ammo_code[i])].instance()
+#			var ammo_mesh = ammo_types[decode(ammo_code[i])].instance()
+			var ammo_mesh = R.TankAmmoTex[R.TankAmmo.values()[int(ammo_code[i])]][0].instance() #HERE
 			positions_array[i].call_deferred("add_child", ammo_mesh)
 			ammo_mesh.transform.origin = Vector3.ZERO
 			
@@ -272,11 +273,10 @@ func interact():
 			add_shell(active_pos)
 
 func get_crosshair_tex():
-	print("active pos",ammo_code[positions_array.find(active_pos)])
 	if owner.get_node("Players/Loader/Camera").holding_shell:
 		return smoke_tex
 	
-	return R.TankAmmoTex[decode(ammo_code[positions_array.find(active_pos)])][1]
+	return R.TankAmmoTex[ R.TankAmmo.values() [int(ammo_code[positions_array.find(active_pos)])] ] [1] #HERE
 	
 #	var ammotype = decode(ammo_code[positions_array.find(active_pos)]) #CHECK, is this type scoped correctly, type already exists in this class
 #	if ammotype == GameState.Ammo.HE:
