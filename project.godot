@@ -39,7 +39,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Paint.gd"
 }, {
-"base": "RigidBody",
+"base": "TankBase",
 "class": "PanzerIV",
 "language": "GDScript",
 "path": "res://Scripts/TrackedRaycastVehicleController.gd"
@@ -48,6 +48,11 @@ _global_script_classes=[ {
 "class": "SiteCentre",
 "language": "GDScript",
 "path": "res://Scripts/SiteCenter.gd"
+}, {
+"base": "RigidBody",
+"class": "TankBase",
+"language": "GDScript",
+"path": "res://Tanks/TankBase.gd"
 }, {
 "base": "Node",
 "class": "gameRoot",
@@ -63,6 +68,7 @@ _global_script_class_icons={
 "Painter": "",
 "PanzerIV": "",
 "SiteCentre": "",
+"TankBase": "",
 "gameRoot": ""
 }
 
