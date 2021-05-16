@@ -11,6 +11,9 @@ onready var gear2_sfx = preload("res://Sfx/gear2.wav")
 onready var tank = owner.owner
 onready var gearShift = owner.owner.get_node("Interior/HullInterior/Dynamic/GearShift")
 
+var accel = false
+var brake = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -41,9 +44,22 @@ func _physics_process(_delta):
 		return
 	manageSteeringPhysics() #To be fixed
 
+func _input(event):
+	if not GameState.role == GameState.Role.Driver:
+		return
+	if Input.is_action_just_pressed("ui_up"):
+		accel = true
+	elif Input.is_action_just_released("ui_up"):
+		accel = false
+	if Input.is_action_just_pressed("brake"):
+		brake = true
+	elif Input.is_action_just_released("brake"):
+		brake = false
+
+
 func manageThrottleAndBrake(delta):
 	# Manage throttle
-	if Input.is_action_pressed("ui_up"):
+	if accel:
 		engine.throttle = lerp(engine.throttle, 1.0, delta*2)
 		engine.brake = lerp(engine.brake, 0.0, delta*2)
 #		engine.throttle = clamp(engine.throttle, 0.0, 1.0)
@@ -51,7 +67,7 @@ func manageThrottleAndBrake(delta):
 			engine.throttle = 1
 		elif engine.throttle < 0.01:
 			engine.throttle = 0
-	elif Input.is_action_pressed("brake"):
+	elif brake:
 		engine.brake = lerp(engine.brake, 1.0, delta*2)
 		engine.throttle = lerp(engine.throttle, 0.0, delta*2)
 		if engine.brake > 0.99:

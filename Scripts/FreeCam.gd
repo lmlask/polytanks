@@ -120,6 +120,8 @@ func _input(event):
 		move.z = Input.get_action_strength("ui_up") - Input.get_action_strength("ui_down")
 		move.x = Input.get_action_strength("ui_left") - Input.get_action_strength("ui_right")
 		move.y = Input.get_action_strength("gear_down") - Input.get_action_strength("gear_up")
+		if not move == Vector3.ZERO:
+			get_tree().set_input_as_handled()
 		if Input.is_action_pressed("reset_vehicle"): #same action does multiple things
 			if paint:
 				R.Paint.update_texture()

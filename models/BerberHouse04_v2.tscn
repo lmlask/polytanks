@@ -38,7 +38,7 @@ material/1 = null
 material/2 = null
 
 [node name="StaticBody" type="StaticBody" parent="MeshInstance"]
-collision_layer = 98305
+collision_layer = 98313
 
 [node name="CollisionShape" type="CollisionShape" parent="MeshInstance/StaticBody"]
 shape = SubResource( 2 )
