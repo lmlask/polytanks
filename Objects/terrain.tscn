@@ -106,7 +106,6 @@ seamless = true
 noise = SubResource( 2 )
 
 [sub_resource type="ShaderMaterial" id=4]
-render_priority = -128
 shader = SubResource( 1 )
 shader_param/offset = null
 shader_param/color1 = Color( 0.71, 0.51617, 0.2627, 1 )

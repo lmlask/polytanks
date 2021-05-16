@@ -3,10 +3,9 @@
 [ext_resource path="res://Scripts/Explosion.gd" type="Script" id=1]
 
 [sub_resource type="SpatialMaterial" id=1]
+render_priority = 127
 flags_transparent = true
 vertex_color_use_as_albedo = true
-proximity_fade_enable = true
-proximity_fade_distance = 100.0
 
 [sub_resource type="SphereMesh" id=2]
 material = SubResource( 1 )
@@ -60,7 +59,8 @@ lifetime_randomness = 0.5
 mesh = SubResource( 5 )
 flag_align_y = true
 direction = Vector3( 0, 1, 0 )
+spread = 75.0
 gravity = Vector3( 0, -5, 0 )
-initial_velocity = 20.0
+initial_velocity = 50.0
 initial_velocity_random = 0.5
 color_ramp = SubResource( 6 )
