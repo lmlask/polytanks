@@ -16,4 +16,6 @@ func _ready():
 #	pass
 
 master func hit(type, angle, shape): 
-	print("hit %s/%s by:%s angle:%s" % [self.name, shape, GameState.Ammo.keys()[type], angle] ) 
+	var thickness = get_child(shape).shape.extents.z
+	print("hit %s/%s by:%s angle:%s thickness:%s" % [self.name, shape, GameState.Ammo.keys()[type], angle, thickness] ) 
+	
