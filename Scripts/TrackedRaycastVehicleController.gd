@@ -79,5 +79,6 @@ func _physics_process(delta) -> void:
 func calcStats(_delta):
 	speed = 3.6 * self.transform.basis.xform_inv(self.linear_velocity).z
 
-master func hit(type, col = null): 
-	print("hit by:",GameState.Ammo.keys()[type], col) #direct = -1, 90 degrees is 0, 0 or lower should be impossible
+master func hit(type, col = null, obj = null): 
+	print("wrong method")
+	print("hit %s by:%s angle:%s" % [obj, GameState.Ammo.keys()[type], col] ) #direct = -1, 90 degrees is 0, 0 or lower should be impossible

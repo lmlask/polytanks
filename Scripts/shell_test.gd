@@ -66,16 +66,14 @@ func _physics_process(delta):
 	if $RayCast.is_colliding():
 		var col = $RayCast.get_collider()
 		if col:
-			col = col.owner
-			if col:
-				if col.has_method("hit"):
-					print("Projectile hit something")
+			if col.has_method("hit"):
+				print("Projectile hit something")
 #					col.hit(self,type, $RayCast.get_collider())
-					var angle = transform.basis.z.dot($RayCast.get_collision_normal())
-					var nm = col.get_network_master()
-					col.rpc_id(nm, "hit", type, angle)
-					transform.origin = $RayCast.get_collision_point()
-			life = -1
+				var angle = transform.basis.z.dot($RayCast.get_collision_normal())
+				var nm = col.get_network_master()
+				col.rpc_id(nm, "hit", type, angle, $RayCast.get_collider_shape())
+				transform.origin = $RayCast.get_collision_point()
+		life = -1
 
 func shellcam(i):
 	$view.visible = i
