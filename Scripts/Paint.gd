@@ -27,7 +27,7 @@ func _ready():
 #	pass
 
 func paint(pos, paintMode):
-	var imgpos = Vector2(pos.x,pos.z)/4.5+Vector2(1024,1024)
+	var imgpos = Vector2(pos.x,pos.z)/R.ManMap.map_size+Vector2(1024,1024)
 #	print("Painting pos:",imgpos, pressure)
 	for x in range(-1,1):
 		for y in range(-1,1):

@@ -6,6 +6,7 @@ onready var Map:MapMain = Root.get_node("Map")
 onready var ManVehicle:ManagerVehicle = Root.get_node("VehicleManager")
 onready var FloorFinder:FF = ManVehicle.get_node("FloorFinder")
 onready var ManNetwork = Root.get_node("NetworkManager")
+onready var ManMap:MapMain = Root.get_node("Map")
 onready var GUI = Root.get_node("ViewportContainer/View/GUI")
 onready var VPlayers = Root.get_node("Vehicles/Players") #V for Vehciels ??? maybe N for Node NVTanks
 onready var VPlanes = Root.get_node("Vehicles/Planes") #V for Vehciels ??? maybe N for Node NVTanks

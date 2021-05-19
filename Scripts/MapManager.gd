@@ -26,7 +26,7 @@ var tile_offset = [Vector3(1,0,0),Vector3(0,0,1),Vector3(-1,0,0),Vector3(0,0,-1)
 #var mutex = Mutex.new()
 var fine_size = 16 #change array size
 #var rough_size = 100
-var map_size = 4
+var map_size = 4.5
 #var tilemesh = {} #Should be obsolete
 var terrainMeshs = {0:[],1:[],2:[],3:[],4:[]} #Center
 var terrainNodes = {}
@@ -263,8 +263,8 @@ func terrain_complete(data):
 				yield(get_tree(),"idle_frame")
 				R.ManVehicle.reset_tank(R.ManVehicle.vehicle) #maybe reset tank should be in a base class for all tanks
 			for i in tile_offset:
-				process_tile(data[0]+i*1024,R.Map.terrainMeshs[0].size()-2)
-#				process_tile(data[0]+i*1024,3)
+#				process_tile(data[0]+i*1024,R.Map.terrainMeshs[0].size()-2)
+				process_tile(data[0]+i*1024,0)
 		if TerrainState == State.TANK:
 			for x in range(-4,5): #
 				for y in range(-4,5):
@@ -273,9 +273,9 @@ func terrain_complete(data):
 			TerrainState = State.MAP
 #			TerrainState = State.COMPLETE #Comment out to load full map
 		if	TerrainState == State.MAP:
-#			if $Tiles.get_child_count() == 81:
-			TerrainState = State.COMPLETE
-			get_tree().call_group("terrain","update_tile",R.pos2grid(GameState.view_location))
+			if $Tiles.get_child_count() == 9:
+				TerrainState = State.COMPLETE
+				get_tree().call_group("terrain","update_tile",R.pos2grid(GameState.view_location))
 	for i in LocsNode.get_children():
 #		print(i.name)
 		if i.is_in_group("loc"):

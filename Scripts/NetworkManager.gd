@@ -14,7 +14,8 @@ func _ready():
 
 func setup_host():
 	var peer = NetworkedMultiplayerENet.new()
-	peer.create_server(8912, 4)
+	var err = peer.create_server(8913, 4)
+	print(err)
 	get_tree().network_peer = peer
 	intro.set_status("Your are host")
 	intro.disable_options()
@@ -23,7 +24,7 @@ func setup_host():
 
 func join_host():
 	var peer = NetworkedMultiplayerENet.new()
-	peer.create_client(intro.get_ip(), 8912)
+	peer.create_client(intro.get_ip(), 8913)
 	get_tree().network_peer = peer
 	
 

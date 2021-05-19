@@ -68,8 +68,6 @@ func set_pos(grid):
 
 func update_tile(grid):
 	if grid == R.pos2grid(translation):
-		print("Center, fix border")
-		fix_border(grid) #uncomment
 		level = 0
 		direction = 0
 		return
@@ -120,7 +118,6 @@ func _process(delta):
 			else:
 				prev_level = level
 				prev_dir = direction
-#				print("post", translation)
 				thread.start(self, "_thread_loop", [], Thread.PRIORITY_LOW)
 	#			print("terain complete.")
 
@@ -129,23 +126,25 @@ func check_thread_count():
 		R.thread_check += 1
 
 func _thread_loop(_data):
-	print("thread start", translation)
+#	print("thread start", translation)
 #	while loop_thread:
 #		semaphore.wait()
 #	print("thread continue")
 	var mesh = create_tile_mesh(R.Map.terrainMeshs[direction][level])
 	processs_all_areas(mesh) #should generate normal after this step not before
+#	fix_border(R.pos2grid(translation))
 	gen_normals(mesh)
 #	$Tile.mesh = mesh
 #	$Tile/StaticBody/CollisionShape.shape = mesh.create_trimesh_shape()
 	var shape = mesh.create_trimesh_shape()
-	process_env()
+#	process_env(translation/R.Map.map_size+Vector2(1024,1024))
+#	process_env()
 	emit_signal("terrain_completed", [R.pos2grid(translation),mesh,shape])
 #	print("thread end")
 
 func terrain_complete(data):
 	R.thread_count -= 1
-	print("thread end", translation)
+#	print("thread end", translation)
 	$Tile.mesh = data[1]
 	$Tile/StaticBody/CollisionShape.shape = data[2]
 	thread.wait_to_finish()
@@ -158,19 +157,24 @@ func _exit_tree():
 		thread.wait_to_finish()
 
 func fix_border(grid):
-	return
+	print("obsolete, this is buggy")
+#	if not R.ManMap.TerrainState == R.ManMap.State.COMPLETE:
+#		return
+	print("fixing border", grid)
 	var mesh = $Tile.mesh
 	if mesh == null:
 		return
 	var cmdt = MeshDataTool.new()
-	var omdt = [MeshDataTool.new(),MeshDataTool.new(),MeshDataTool.new(),MeshDataTool.new()]
+	var omdt = []
 	cmdt.create_from_surface(mesh, 0)
 	var down = {}
 	var j = 0
 	for tile in tile_offset:
-		var node = R.Map.terrainNodes[grid+tile]
-		omdt[j].create_from_surface(node.get_node("Tile").mesh, 0)
-		j += 1
+		if R.Map.terrainNodes.has(grid+tile):
+			omdt.append(MeshDataTool.new())
+			var node = R.Map.terrainNodes[grid+tile]
+			omdt[j].create_from_surface(node.get_node("Tile").mesh, 0)
+			j += 1
 		
 	for i in omdt[0].get_vertex_count(): #Repeat for all four sides
 		var v = omdt[0].get_vertex(i)
@@ -186,12 +190,16 @@ func fix_border(grid):
 	$Tile.mesh = mesh
 	
 func process_env():
+	print("process environment is buggy")
+	var from = translation/R.ManMap.map_size+Vector3(1024,0,1024)
+	var to = from+Vector3(1024,0,1024)/R.ManMap.map_size
+	
 	for i in EnvItems.get_children(): #LOLtech
 		i.queue_free()
 #	var loc:Vector2 = Vector2(0,0)/4.5+Vector2(1024,1024)
 	var pos
-	for x in range(1014,1034):
-		for y in range(1014,1034):
+	for x in range(int(max(0,from.x)),int(min(2048,to.x))):
+		for y in range(int(max(0,from.z)),int(min(2048,to.z))):
 			var col:Color = R.Paint.envimg.get_pixelv(Vector2(x,y))
 			if col.g > 0.5:
 				pos = (Vector2(x,y)-Vector2(1024,1024))*4.5
@@ -322,6 +330,7 @@ func update_handle(handle):
 #	emit_signal("terrain_completed", R.pos2grid(translation))
 
 func processs_all_areas(mesh):
+	print("This area processing is buggy on borders")
 	FlatG.clear()
 	if not flatareas.empty():
 		for i in flatareas:
