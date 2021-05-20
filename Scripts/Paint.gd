@@ -5,7 +5,7 @@ var img = Image.new()
 var tex = ImageTexture.new()
 var envimg = Image.new()
 var envtex = ImageTexture.new()
-var line = []
+var line:Array
 onready var FlatG = $FlatGeometry
 onready var ControlG = $ControlGeometry
 var selected_handle
@@ -45,15 +45,17 @@ func paint(pos, paintMode):
 				envimg.set_pixelv(imgpos+Vector2(x,y),col)
 
 func area(a):
-	if line.size() == 1:
-		a.x = clamp(a.x,line[0].owner.translation.x,line[0].owner.translation.x+1023.9)
-		a.z = clamp(a.z,line[0].owner.translation.z,line[0].owner.translation.z+1023.9)
-	var node = R.Map.terrainNodes[R.pos2grid(a)]
-	print(node)
-	line.append(node.add_handle(a))
+#	if line.size() == 1:
+#		a.x = clamp(a.x,line[0].owner.translation.x,line[0].owner.translation.x+1023.9)
+#		a.z = clamp(a.z,line[0].owner.translation.z,line[0].owner.translation.z+1023.9)
+#	var node = R.Map.terrainNodes[R.pos2grid(a)]
+#	print(node)
+	line.append(a)
+	print(line)
 	if line.size() == 2:
-		node.add_area(line)
+		R.ManMap.areas[R.ManMap.areas.size()] = line.duplicate()
 		line.clear()
+		add_road(R.ManMap.areas.size()-1)
 
 func handle_select(handle):
 	if selected_handle:
@@ -78,46 +80,46 @@ func _process(delta):
 		selected_handle.transform.origin -= selected_handle.transform.basis.x * R.Editor.move.x * delta * move_speed
 		selected_handle.transform.origin -= selected_handle.transform.basis.y * R.Editor.move.y * delta * move_speed
 
-func add_road(line):
+func add_road(i):
+	var line = R.ManMap.areas[i]
 	print("obsolete")
-	line[0] = line[0]+R.tilehalf
-	line[1] = line[1]+R.tilehalf
+	line[0] = line[0]
+	line[1] = line[1]
 	var G = Geometry
 	var node = R.Map.terrainNodes[Vector3(0,0,0)]
 	var line_vec = (line[1]-line[0]).normalized()
 	var dist = line[0].distance_to(line[1])
 	var tang = Transform.looking_at(line_vec,Vector3.UP).basis.x
-	var rs1 = line[0]+tang*25
-	var rs2 = line[0]-tang*25
-	var re1 = line[1]+tang*25
-	var re2 = line[1]-tang*25
+	var rs1 = line[0]+tang*50
+	var rs2 = line[0]-tang*50
+	var re1 = line[1]+tang*50
+	var re2 = line[1]-tang*50
 	var area:PoolVector3Array
 	area = [rs1,rs2,re1,re2]
 
 
 	FlatG.begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
 	for p in area:
-		FlatG.add_vertex(p-R.tilehalf+Vector3(0,0.1,0))
+		FlatG.add_vertex(p+Vector3(0,0.1,0))
 	FlatG.end()
 	ControlG.begin(Mesh.PRIMITIVE_LINES)
 	for p in area:
-		ControlG.add_vertex(rs1-R.tilehalf)
-		ControlG.add_vertex(re1-R.tilehalf)
-		ControlG.add_vertex(rs2-R.tilehalf)
-		ControlG.add_vertex(re2-R.tilehalf)
+		ControlG.add_vertex(rs1)
+		ControlG.add_vertex(re1)
+		ControlG.add_vertex(rs2)
+		ControlG.add_vertex(re2)
 		
 	ControlG.end()
-#	return
 	
 #	if road_rect.size() == 6:
 #		road_rect.remove(0)
 #		road_rect.remove(0)
 	#does not belong here, for POC
 	var rect:PoolVector2Array
-	rect.append(R.v3xz(area[0]))
-	rect.append(R.v3xz(area[1]))
-	rect.append(R.v3xz(area[2]))
-	rect.append(R.v3xz(area[3]))
+	rect.append(R.v3xz(area[0])/R.ManMap.map_size+Vector2(1024,1024))
+	rect.append(R.v3xz(area[1])/R.ManMap.map_size+Vector2(1024,1024))
+	rect.append(R.v3xz(area[2])/R.ManMap.map_size+Vector2(1024,1024))
+	rect.append(R.v3xz(area[3])/R.ManMap.map_size+Vector2(1024,1024))
 #	rect.append(Vector2(road_rect[1].x,road_rect[1].z))
 #	var rect1 = G.offset_polygon_2d(rect,20)
 	if not G.is_polygon_clockwise(rect):
@@ -128,8 +130,14 @@ func add_road(line):
 		print("***Potential problem not fixed")
 #	else:
 #		print("good")
-#	print(rect)
+	var size = R.heightMap.get_size()
+	var c = Color(0.3,0.3,0.3,1)
+	for x in range(size.x):
+		for y in range(size.y):
+			if G.is_point_in_polygon(Vector2(x,y),rect):
+				R.heightMap.set_pixel(x,y,c)
 	
+	return
 	var mesh = node.get_node("Tile").mesh.duplicate()
 	var mdt = MeshDataTool.new()
 	mdt.create_from_surface(mesh, 0)

@@ -32,6 +32,8 @@ var terrainMeshs = {0:[],1:[],2:[],3:[],4:[]} #Center
 var terrainNodes = {}
 enum State {START, TANK, MAP, COMPLETE}
 var TerrainState = State.START
+var areas:Dictionary
+var rects:Dictionary
 
 #var terrainTiles = {} #obsolete
 #enum tileRes {ROUGH, FINE, A,B,C,D}#obsolete
