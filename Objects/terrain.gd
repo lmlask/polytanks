@@ -105,6 +105,11 @@ func update_tile(grid):
 			direction = 0
 		return
 
+func _input(event):
+	if event is InputEventKey:
+		if Input.is_key_pressed(KEY_O):
+			prev_level = -1
+
 func _process(delta):
 #	print(flatareas)
 	timer += delta
@@ -150,7 +155,7 @@ func terrain_complete(data):
 	thread.wait_to_finish()
 		
 func _exit_tree():
-	print("exit tree")
+#	print("exit tree")
 #	loop_thread = false # Protect with Mutex.
 #	semaphore.post()
 	if thread.is_active():
@@ -190,7 +195,7 @@ func fix_border(grid):
 	$Tile.mesh = mesh
 	
 func process_env():
-	print("process environment is buggy")
+#	print("process environment is buggy")
 	var from = translation/R.ManMap.map_size+Vector3(1024,0,1024)
 	var to = from+Vector3(1024,0,1024)/R.ManMap.map_size
 	
@@ -330,7 +335,7 @@ func update_handle(handle):
 #	emit_signal("terrain_completed", R.pos2grid(translation))
 
 func processs_all_areas(mesh):
-	print("This area processing is buggy on borders")
+#	print("This area processing is buggy on borders")
 	FlatG.clear()
 	if not flatareas.empty():
 		for i in flatareas:

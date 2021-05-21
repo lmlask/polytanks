@@ -51,7 +51,7 @@ func area(a):
 #	var node = R.Map.terrainNodes[R.pos2grid(a)]
 #	print(node)
 	line.append(a)
-	print(line)
+#	print(line)
 	if line.size() == 2:
 		R.ManMap.areas[R.ManMap.areas.size()] = line.duplicate()
 		line.clear()
@@ -82,7 +82,7 @@ func _process(delta):
 
 func add_road(i):
 	var line = R.ManMap.areas[i]
-	print("obsolete")
+#	print("obsolete")
 	line[0] = line[0]
 	line[1] = line[1]
 	var G = Geometry
@@ -95,12 +95,14 @@ func add_road(i):
 	var re1 = line[1]+tang*50
 	var re2 = line[1]-tang*50
 	var area:PoolVector3Array
-	area = [rs1,rs2,re1,re2]
+	area = [rs2,rs1,re1,re2]
 
 
 	FlatG.begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
-	for p in area:
-		FlatG.add_vertex(p+Vector3(0,0.1,0))
+	FlatG.add_vertex(rs1)
+	FlatG.add_vertex(rs2)
+	FlatG.add_vertex(re1)
+	FlatG.add_vertex(re2)
 	FlatG.end()
 	ControlG.begin(Mesh.PRIMITIVE_LINES)
 	for p in area:
@@ -108,6 +110,11 @@ func add_road(i):
 		ControlG.add_vertex(re1)
 		ControlG.add_vertex(rs2)
 		ControlG.add_vertex(re2)
+		ControlG.add_vertex(rs1)
+		ControlG.add_vertex(rs2)
+		ControlG.add_vertex(re1)
+		ControlG.add_vertex(re2)
+		
 		
 	ControlG.end()
 	
@@ -120,9 +127,12 @@ func add_road(i):
 	rect.append(R.v3xz(area[1])/R.ManMap.map_size+Vector2(1024,1024))
 	rect.append(R.v3xz(area[2])/R.ManMap.map_size+Vector2(1024,1024))
 	rect.append(R.v3xz(area[3])/R.ManMap.map_size+Vector2(1024,1024))
+	var start = (rect[0]+rect[1])/2
+	var end = (rect[2]+rect[3])/2
 #	rect.append(Vector2(road_rect[1].x,road_rect[1].z))
 #	var rect1 = G.offset_polygon_2d(rect,20)
 	if not G.is_polygon_clockwise(rect):
+		print("*** not clockwise fix it")
 		var t = rect[0]
 		rect[0] = rect[1]
 		rect[1] = t
@@ -131,11 +141,16 @@ func add_road(i):
 #	else:
 #		print("good")
 	var size = R.heightMap.get_size()
-	var c = Color(0.3,0.3,0.3,1)
+	var c1 = R.heightMap.get_pixelv(start)
+	var c2 = R.heightMap.get_pixelv(end)
+	var d2 = start.distance_to(end)
 	for x in range(size.x):
 		for y in range(size.y):
-			if G.is_point_in_polygon(Vector2(x,y),rect):
-				R.heightMap.set_pixel(x,y,c)
+			var imgPoint = Vector2(x,y)
+			if G.is_point_in_polygon(imgPoint,rect):
+				var point = G.get_closest_point_to_segment_2d(imgPoint,start,end)
+				var d1 = start.distance_to(point)
+				R.heightMap.set_pixelv(imgPoint,lerp(c1,c2,d1/d2))
 	
 	return
 	var mesh = node.get_node("Tile").mesh.duplicate()

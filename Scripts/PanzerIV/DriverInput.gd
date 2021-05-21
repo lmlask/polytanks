@@ -55,6 +55,7 @@ func _input(event):
 		brake = true
 	elif Input.is_action_just_released("brake"):
 		brake = false
+	
 
 
 func manageThrottleAndBrake(delta):
