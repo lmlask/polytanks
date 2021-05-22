@@ -111,6 +111,7 @@ script = ExtResource( 18 )
 script = ExtResource( 10 )
 
 [node name="FlatGeometry" type="ImmediateGeometry" parent="Map/Paint"]
+visible = false
 material_override = SubResource( 3 )
 
 [node name="LineGeometry" type="ImmediateGeometry" parent="Map/Paint"]
@@ -118,7 +119,6 @@ material_override = SubResource( 4 )
 
 [node name="ControlNode" type="MeshInstance" parent="Map/Paint"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -100, 0 )
-visible = false
 mesh = SubResource( 8 )
 material/0 = null
 __meta__ = {

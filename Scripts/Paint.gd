@@ -22,6 +22,7 @@ func _ready():
 	envimg.fill(Color(0,0,0,0))
 	envtex.create_from_image(envimg)
 	envimg.lock()
+	R.Editor.connect("editor_state",self,"set_visible")
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -237,3 +238,8 @@ func update_texture():
 	get_tree().call_group("terrain","set_paint")
 #	$TextureRect.texture = tex
 	
+func set_visible(i):
+	FlatG.visible = i
+	LineG.visible = i
+	for n in AreaCN.get_children():
+		n.visible = i
