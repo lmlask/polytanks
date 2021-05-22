@@ -7,7 +7,9 @@ var envimg = Image.new()
 var envtex = ImageTexture.new()
 var line:Array
 onready var FlatG = $FlatGeometry
-onready var ControlG = $ControlGeometry
+onready var LineG = $LineGeometry
+onready var AreaCN = $ControlNodes
+onready var CN = $ControlNode
 var selected_handle
 var move_speed = 20
 
@@ -81,22 +83,34 @@ func _process(delta):
 		selected_handle.transform.origin -= selected_handle.transform.basis.y * R.Editor.move.y * delta * move_speed
 
 func add_road(i):
+	var width = 50
 	var line = R.ManMap.areas[i]
 #	print("obsolete")
-	line[0] = line[0]
-	line[1] = line[1]
+#	line[0] = line[0]
+#	line[1] = line[1]
+	var CN1 = CN.duplicate()
+	var CN2 = CN.duplicate()
+	var CN3 = CN.duplicate()
+	AreaCN.add_child(CN1)
+	AreaCN.add_child(CN2)
+	AreaCN.add_child(CN3)
+	CN1.translation = line[0]
+	CN2.translation = line[1]
+	CN1.show()
+	CN2.show()
 	var G = Geometry
 	var node = R.Map.terrainNodes[Vector3(0,0,0)]
 	var line_vec = (line[1]-line[0]).normalized()
 	var dist = line[0].distance_to(line[1])
 	var tang = Transform.looking_at(line_vec,Vector3.UP).basis.x
-	var rs1 = line[0]+tang*50
-	var rs2 = line[0]-tang*50
-	var re1 = line[1]+tang*50
-	var re2 = line[1]-tang*50
+	var rs1 = line[0]+tang*width
+	var rs2 = line[0]-tang*width
+	var re1 = line[1]+tang*width
+	var re2 = line[1]-tang*width
 	var area:PoolVector3Array
 	area = [rs2,rs1,re1,re2]
-
+	CN3.translation = (line[0]+line[1])/2+tang*width
+	CN3.show()
 
 	FlatG.begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
 	FlatG.add_vertex(rs1)
@@ -104,19 +118,19 @@ func add_road(i):
 	FlatG.add_vertex(re1)
 	FlatG.add_vertex(re2)
 	FlatG.end()
-	ControlG.begin(Mesh.PRIMITIVE_LINES)
+	LineG.begin(Mesh.PRIMITIVE_LINES)
 	for p in area:
-		ControlG.add_vertex(rs1)
-		ControlG.add_vertex(re1)
-		ControlG.add_vertex(rs2)
-		ControlG.add_vertex(re2)
-		ControlG.add_vertex(rs1)
-		ControlG.add_vertex(rs2)
-		ControlG.add_vertex(re1)
-		ControlG.add_vertex(re2)
+		LineG.add_vertex(rs1)
+		LineG.add_vertex(re1)
+		LineG.add_vertex(rs2)
+		LineG.add_vertex(re2)
+		LineG.add_vertex(rs1)
+		LineG.add_vertex(rs2)
+		LineG.add_vertex(re1)
+		LineG.add_vertex(re2)
 		
 		
-	ControlG.end()
+	LineG.end()
 	
 #	if road_rect.size() == 6:
 #		road_rect.remove(0)
@@ -156,7 +170,7 @@ func add_road(i):
 	var mesh = node.get_node("Tile").mesh.duplicate()
 	var mdt = MeshDataTool.new()
 	mdt.create_from_surface(mesh, 0)
-	ControlG.clear()
+	LineG.clear()
 	for i in range(mdt.get_edge_count()):
 		var e0 = mdt.get_edge_vertex(i, 0)
 		var e1 = mdt.get_edge_vertex(i, 1)
@@ -173,10 +187,10 @@ func add_road(i):
 					mdt.set_vertex(e0,v0)
 					mdt.set_vertex(e1,v1)
 					
-					ControlG.begin(Mesh.PRIMITIVE_LINES)
-					ControlG.add_vertex(v0+node.translation)
-					ControlG.add_vertex(v1+node.translation)
-					ControlG.end()
+					LineG.begin(Mesh.PRIMITIVE_LINES)
+					LineG.add_vertex(v0+node.translation)
+					LineG.add_vertex(v1+node.translation)
+					LineG.end()
 		for z in range(3):
 			if G.is_point_in_polygon(R.v3xz(v0),rect) or G.is_point_in_polygon(R.v3xz(v1),rect):
 				var y0 = G.get_closest_point_to_segment(v0,line[0],line[1]).y
