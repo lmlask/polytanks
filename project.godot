@@ -300,6 +300,7 @@ next_shell={
 
 [physics]
 
+common/physics_fps=144
 common/physics_jitter_fix=1.0
 3d/physics_engine="Bullet"
 3d/active_soft_world=false
