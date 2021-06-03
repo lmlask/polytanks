@@ -12,6 +12,7 @@ onready var AreaCN = $ControlNodes
 onready var CN = $ControlNode
 var selected_handle
 var move_speed = 20
+signal reload_area
 
 func _ready():
 	img.create(2048,2048,false,Image.FORMAT_RGBA8)
@@ -57,14 +58,16 @@ func area(a):
 #	print(line)
 	if line.size() == 2:
 		line.append(50)
-		R.ManMap.areas[R.ManMap.areas.size()] = line.duplicate()
+		var ut = OS.get_unix_time()
+		R.ManMap.areas[ut] = line.duplicate()
 		line.clear()
-		process_road(R.ManMap.areas.size()-1,true)
+		process_road(ut,true)
 
 func handle_select(handle):
 	if selected_handle:
 		update_area(selected_handle)
 	selected_handle = handle.get_parent()
+	update_area(selected_handle)
 	
 func _input(event):
 	if R.Editor.paint and R.Editor.enabled and not R.Editor.paintPanel.visible:
@@ -73,6 +76,33 @@ func _input(event):
 				update_area(selected_handle)
 				selected_handle = null
 				get_tree().set_input_as_handled()
+			if Input.is_key_pressed(KEY_X):
+				delete_area(selected_handle)
+				selected_handle = null
+				get_tree().set_input_as_handled()
+			if Input.is_key_pressed(KEY_R):
+				refresh_area()
+				get_tree().set_input_as_handled()
+			if Input.is_key_pressed(KEY_O):
+				emit_signal("reload_area")
+			
+func refresh_area():
+	R.load_image(R.ManMap.map)
+	for i in R.ManMap.areas:
+		process_road(i,false)
+	emit_signal("reload_area")
+
+
+func delete_area(handle):
+	FlatG.clear()
+	LineG.clear()
+	var aid = handle.get_meta("AreaID")
+	R.ManMap.areas.erase(aid)
+	for i in AreaCN.get_children():
+		print(aid)
+		if i.get_meta("AreaID") == aid:
+			i.queue_free()
+	print("Areas", R.ManMap.areas)
 
 func update_area(handle):
 	var aid = handle.get_meta("AreaID")

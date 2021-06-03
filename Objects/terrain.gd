@@ -48,7 +48,7 @@ func _ready():
 	semaphore = Semaphore.new()
 	thread = Thread.new()
 	connect("terrain_completed", self, "terrain_complete", [], CONNECT_DEFERRED)
-	
+	R.Paint.connect("reload_area", self, "reload_area")
 	
 
 func editor(data):
@@ -106,10 +106,9 @@ func update_tile(grid):
 			direction = 0
 		return
 
-func _input(event):
-	if event is InputEventKey:
-		if Input.is_key_pressed(KEY_O):
-			prev_level = -1
+func reload_area():
+	print("reloading area")
+	prev_level = -1
 
 func _process(delta):
 #	print(flatareas)

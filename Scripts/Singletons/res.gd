@@ -101,7 +101,7 @@ var TankAmmoTex = {TankAmmo.None:[smoke,smoke_tex],
 
 var tilefull = Vector3(1024,0,1024)
 var tilehalf = tilefull/2
-var heightMap = Image.new()
+var heightMap:Image = Image.new()
 var height_map = {0:["res://Textures/greyalpha-16bit.exr","Test map"],
 	1:["res://Textures/flat.exr","Flat map"],
 	2:["res://Textures/likethis.exr","Like this map"]}
@@ -131,6 +131,7 @@ func v3xz(v:Vector3)->Vector2:
 	return Vector2(v.x,v.z)
 	
 func load_image(map):
+	heightMap = Image.new()
 	if not map == -1:
 		heightMap = load(height_map[map][0]).get_data()
 		heightMap.lock()
